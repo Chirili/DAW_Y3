@@ -49,7 +49,24 @@
 
   <title>Ejercicio 13 - DOM b�sico y atributos XHTML</title>
   <script defer type="text/javascript">
-  var count = 0;
+  var count = 1;
+  var numItems = 0;
+  window.onload = () => {
+    document.getElementById("plus").onclick = addMultipleElements;
+    document.getElementById("minus").onclick = addMultipleElements
+  }
+  
+  function addMultipleElements(){
+    let items = document.getElementById("counter");
+    const {id} = this;
+    if(id === "plus"){
+      numItems ++;
+    }else{
+      numItems --;
+    }
+    items.innerHTML = numItems;
+  }
+  
   function deleteElement(element){
     let parentElement = element.parentElement;
     element.parentNode.parentNode.removeChild(parentElement);
@@ -57,23 +74,26 @@
     function anade() {
       let list = document.getElementById("lista");
       let newElement = document.createElement("li");
-      let newButton = document.createElement("input");
+      let newButton = document.createElement("button");
 
-      setAttributes(newButton, {"value":"Borrar","onclick":"deleteElement(this)","type":"button"})
-      newElement.innerHTML = "Nuevo elemento numero " + count;
-      list.appendChild(newElement).appendChild(newButton);
-      count ++;
-      function setAttributes(element, attributes){
-        for(key in attributes){
-          element.setAttribute(key,attributes[key]);
+      newButton.innerHTML = "Eliminar"
+      newButton.onclick = function(){
+        if(confirm("¿Estas seguro que desea elminar el elemento?")){
+        this.parentNode.parentNode.removeChild(this.parentNode);
         }
       }
+
+      list.appendChild(newElement)
+
+      newElement.innerHTML = "Nuevo elemento numero " + count;
+      newElement.appendChild(newButton);
+      count ++;
     }
   </script>
 </head>
 
 <body>
-  <div class="container" style="display: flex; justify-content: space;">
+  <div class="container" style="display: flex;">
       <ul id="lista">
         <li>Lorem ipsum dolor sit amet</li>
         <li>Consectetuer adipiscing elit</li>
@@ -83,6 +103,11 @@
       </ul>
     <div>
       <input type="button" value="Add element" onclick="anade();" style="margin: 1.5em 1.5em;">
+    </div>
+    <div class="display: flex">
+      <button id="plus">+</button>
+      <span id="counter">0</span>
+      <button id="minus">-</button>
     </div>
   </div>
 </body>

@@ -1,7 +1,12 @@
-.titulo {
+#titulo {
     color: aquamarine
 }
-
+#subtitulo {
+    color: blue
+}
+p > .especial {
+    color: purple;
+}
 strong {
     color: red;
 }
@@ -22,6 +27,9 @@ table, tr, th {
     border: 1px solid black;
     border-collapse: collapse;
 }
+tbody > tr > td > strong {
+    color: orange;
+}
 tr > th.special, td {
     border-right: 1px solid black;
     padding: 5px 6px;
@@ -31,7 +39,7 @@ thead tr .especial {
     color: orange;
 }
 tfoot tr th {
-    color: orange;
+    color: red;
 }
 tbody tr th.especial{
     color: orange;
