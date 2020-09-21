@@ -1,0 +1,90 @@
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0088)https://uniwebsidad.com/static/libros/ejercicios/javascript/ejercicio13/ejercicio13.html -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<script data-dapp-detection="">
+  (function () {
+    let alreadyInsertedMetaTag = false
+
+    function __insertDappDetected() {
+      if (!alreadyInsertedMetaTag) {
+        const meta = document.createElement('meta')
+        meta.name = 'dapp-detected'
+        document.head.appendChild(meta)
+        alreadyInsertedMetaTag = true
+      }
+    }
+
+    if (window.hasOwnProperty('web3')) {
+      // Note a closure can't be used for this var because some sites like
+      // www.wnyc.org do a second script execution via eval for some reason.
+      window.__disableDappDetectionInsertion = true
+      // Likely oldWeb3 is undefined and it has a property only because
+      // we defined it. Some sites like wnyc.org are evaling all scripts
+      // that exist again, so this is protection against multiple calls.
+      if (window.web3 === undefined) {
+        return
+      }
+      __insertDappDetected()
+    } else {
+      var oldWeb3 = window.web3
+      Object.defineProperty(window, 'web3', {
+        configurable: true,
+        set: function (val) {
+          if (!window.__disableDappDetectionInsertion)
+            __insertDappDetected()
+          oldWeb3 = val
+        },
+        get: function () {
+          if (!window.__disableDappDetectionInsertion)
+            __insertDappDetected()
+          return oldWeb3
+        }
+      })
+    }
+  })()</script>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title>Ejercicio 13 - DOM b�sico y atributos XHTML</title>
+  <script defer type="text/javascript">
+  var count = 0;
+  function deleteElement(element){
+    let parentElement = element.parentElement;
+    element.parentNode.parentNode.removeChild(parentElement);
+  }
+    function anade() {
+      let list = document.getElementById("lista");
+      let newElement = document.createElement("li");
+      let newButton = document.createElement("input");
+
+      setAttributes(newButton, {"value":"Borrar","onclick":"deleteElement(this)","type":"button"})
+      newElement.innerHTML = "Nuevo elemento numero " + count;
+      list.appendChild(newElement).appendChild(newButton);
+      count ++;
+      function setAttributes(element, attributes){
+        for(key in attributes){
+          element.setAttribute(key,attributes[key]);
+        }
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container" style="display: flex; justify-content: space;">
+      <ul id="lista">
+        <li>Lorem ipsum dolor sit amet</li>
+        <li>Consectetuer adipiscing elit</li>
+        <li>Sed mattis enim vitae orci</li>
+        <li>Phasellus libero</li>
+        <li>Maecenas nisl arcu</li>
+      </ul>
+    <div>
+      <input type="button" value="Add element" onclick="anade();" style="margin: 1.5em 1.5em;">
+    </div>
+  </div>
+</body>
+
+</html>
