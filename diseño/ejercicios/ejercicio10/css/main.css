@@ -1,0 +1,32 @@
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    font-family: Arial, Helvetica, sans-serif;
+}
+table, tr, th {
+    padding: 5px;
+    text-align: center;
+}
+table tr.cabecera th {
+    background-color: rgba(124, 124, 124, 0.568) !important;
+    padding: 5px;
+}
+table tr th {
+    padding-left: 20px;
+    background-color: #E6F3FF !important;
+}
+table tr:nth-child(even) td {
+    background-color: #FFFFCC;
+}
+.euro {
+    background: url(../images/euro.png) no-repeat 1%;
+}
+.dolar{
+    background: url(../images/dolar.png) no-repeat 1%;
+}
+.yen {
+    background: url(../images/yen.png) no-repeat 1%;
+}
+.libra {
+    background: url(../images/libra.png) no-repeat 1%;
+}
