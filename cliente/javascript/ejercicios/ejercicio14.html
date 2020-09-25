@@ -8,7 +8,6 @@
         window.onload = () => {
             let linksElements = document.getElementsByTagName('a');
             Array.from(linksElements).forEach(v => v.onclick = muestraOculta);
-
         }
         function muestraOculta() {
             let number = this.getAttribute('id').charAt(String(this.getAttribute('id').length-1));

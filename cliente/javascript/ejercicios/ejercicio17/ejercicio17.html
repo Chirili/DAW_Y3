@@ -1,0 +1,88 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>Ejercicio 16 - Informaci�n sobre eventos</title>
+    <style type="text/css">
+        body {
+            font-family: arial, helvetica;
+        }
+
+        #info {
+            width: 160px;
+            border: thin solid silver;
+            padding: .5em;
+            position: fixed;
+        }
+
+        #info h1 {
+            margin: 0;
+        }
+    </style>
+    <script>
+        window.onload = () => {
+            let container = document.getElementById('info');
+            container.onmousedown = function (event) {
+                // (1) prepare to moving: make absolute and on top by z-index
+                container.style.position = 'absolute';
+                container.style.zIndex = 1000;
+
+                // move it out of any current parents directly into body
+                // to make it positioned relative to the body
+                document.body.append(container);
+
+                // centers the ball at (pageX, pageY) coordinates
+                function moveAt(pageX, pageY) {
+                    container.style.left = pageX - container.offsetWidth / 2 + 'px';
+                    container.style.top = pageY - container.offsetHeight / 2 + 'px';
+                }
+
+                // move our absolutely positioned ball under the pointer
+                moveAt(event.pageX, event.pageY);
+
+                function onMouseMove(event) {
+                    moveAt(event.pageX, event.pageY);
+                }
+
+                // (2) move the ball on mousemove
+                document.addEventListener('mousemove', onMouseMove);
+                container.ondragstart = function(){
+                    return false;
+                }
+                // (3) drop the ball, remove unneeded handlers
+                container.onmouseup = function () {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    container.onmouseup = null;
+                };
+
+            };
+        }
+        
+        function informacion(event) {
+
+        }
+
+        function muestraInformacion(mensaje) {
+            document.getElementById("info").innerHTML = '<h1>' + mensaje[0] + '</h1>';
+            for (var i = 1; i < mensaje.length; i++) {
+                document.getElementById("info").innerHTML += '<p>' + mensaje[i] + '</p>';
+            }
+        }
+
+        document.onclick = informacion;
+
+    </script>
+</head>
+
+<body>
+    <div draggable="true" id="info"></div>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <script src="https://ajax.cloudflare.com/cdn-cgi/scripts/7089c43e/cloudflare-static/rocket-loader.min.js"
+        data-cf-settings="7ddc64723a84ad82a9ea487b-|49" defer=""></script>
+</body>
+
+</html>

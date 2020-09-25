@@ -1,0 +1,234 @@
+/* === IMPORTANTE ===================================================
+   No modificar estos estilos, ya que son imprescindibles para
+   que la p�gina se vea correctamente.
+   ================================================================== */
+
+/*-- B�sico ----------------------------------------------------------*/
+ul,
+ul li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+p,
+form {
+  margin: 0;
+  padding: 0;
+}
+
+.clear {
+  clear: both;
+}
+
+img {
+  border: none;
+}
+
+/*-- Layout ----------------------------------------------------------*/
+#contenedor {
+  width: 90%;
+  max-width: 900px;
+  width: clamp(900px,900px,auto);
+  margin: 0 auto;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9em;
+  line-height: 1.4em;
+}
+
+#cabecera,
+#menu,
+#lateral,
+#contenido,
+#contenido #principal,
+#contenido #secundario,
+#pie {
+  border: 2px solid #777;
+}
+
+#cabecera {
+  clear: both;
+}
+
+#menu {
+  clear: both;
+  
+}
+#menu ul li a{
+  color: white;
+  margin-right: 1em;
+  font-size: 1.3em;
+}
+#lateral {
+  float: left;
+  width: 20%;
+  font-size: 0.9em;
+}
+
+#contenido {
+  float: right;
+  width: 78%;
+}
+
+#contenido #principal {
+  float: left;
+  width: 78%;
+}
+
+#contenido #secundario {
+  float: right;
+  width: 20%;
+}
+
+#pie {
+  clear: both;
+}
+
+/*-- Cabecera --------------------------------------------------------*/
+#cabecera #logo {
+  float: left;
+}
+
+#cabecera #buscador {
+  float: right;
+}
+
+/*-- Menu ------------------------------------------------------------*/
+#menu ul#menu_principal li {
+  display: inline;
+  float: left;
+}
+
+/*-- Secci�n Principal -----------------------------------------------*/
+#contenido #principal .articulo img {
+  width: 100px;
+  float: left;
+}
+
+/*-- Pie de p�gina ---------------------------------------------------*/
+#pie .enlaces {
+  float: left;
+}
+
+#pie .copyright {
+  float: right;
+}
+
+/* === IMPORTANTE ===================================================
+   A partir de aqu�, se pueden a�adir todos los estilos propios que 
+   sean necesarios.
+   ================================================================== */
+
+
+#cabecera,
+#menu,
+#lateral,
+#lateral #noticias,
+#lateral #publicidad,
+#contenido,
+#contenido #principal,
+#contenido #secundario,
+#pie {
+  padding: .5em;
+  border: none;
+}
+
+#lateral {
+  padding: 0;
+}
+
+#cabecera {
+  padding: 1em;
+}
+
+#cabecera h1 {
+  background: url(../images/logo.gif) no-repeat -5px -10px;
+}
+
+#cabecera h1 span {
+  visibility: hidden;
+}
+
+#menu {
+  margin-bottom: .5em;
+  border-bottom: 1px solid #004C99;
+  background: url(../images/fondo_menu.gif) repeat-x;
+}
+
+#contenido {
+  width: 77%;
+  padding: 0;
+}
+
+#contenido #principal {
+  width: 73%;
+}
+
+#contenido #secundario {
+  border: 1px solid #C60;
+}
+
+#contenido #secundario h2 {
+  background: #DB905C;
+  padding: .2em;
+  color: white;
+}
+#secundario p {
+  margin-block-end: 0.5em;
+}
+
+#pie {
+  padding: .5em 0;
+  margin-top: 1em;
+  border-top: 1px solid #C5C5C5;
+  border-bottom: 1px solid #C5C5C5;
+  background: #F8F8F8;
+}
+
+#contenido #principal .articulo {
+  margin-bottom: 1em;
+}
+.articulo a {
+  color: #CC6600;
+}
+.articulo p {
+  margin: 0.3em 0;
+}
+#contenido #principal .articulo > h2 {
+  color: #CC6600;
+  font-size: 1.6em;
+  line-height: 1.2em;
+  margin-bottom: 0.3em;
+}
+
+#contenido #principal .articulo img {
+  margin: .5em;
+}
+
+#lateral #noticias {
+  border: 1px solid #C5C5C5;
+  background: #F8F8F8;
+}
+#noticias {
+  display: block;
+}
+#noticias h3 {
+  color: #003366;
+}
+#noticias span {
+  margin-right: 100%;
+  color: #999;
+}
+
+#lateral #publicidad {
+  margin-top: 1em;
+  border: 1px dashed #C60;
+  background: #FFF6CD;
+  color: #555;
+}
+#publicidad a{
+ color: #CC6600;
+}
