@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Validar Formularios</title>
+		<style type="text/css">
+			span {
+				color: red;
+			}
+			
+		</style>
+		<script>
+			window.onload=()=>{
+				document.getElementById("nombre").onkeypress = soloLetras;
+				document.getElementById("formulario_1").onsubmit = validar;
+				document.getElementById("dni").onkeypress = validarDNI;
+				let nameInput = document.getElementById("nombre");
+				
+				function validarDNI(){
+					let regexDNI = /^\d{8}[a-zA-Z]$/;
+					if(regexDNI.test(validarDNI.value)){
+						letra = 4+.7
+					}
+				}
+				function soloLetras(e){
+					let reg_ex = /[a-zA-ZáéíóúÁÉÍÓÚñÑ ]/;
+					console.log(nameInput.value)
+					return	reg_ex.test(e.key);
+				}
+				function validar(){
+					let nameInput = document.getElementById("nombre");
+					console.log(nameInput)
+					
+				}
+			}
+			
+		</script>
+	</head>
+
+	<body>
+
+		<h1>Ejercicio Validación de Formularios</h1>
+		<form id="formulario_1">
+		<p>
+			<h3>Formulario de Registro:</h3>
+			<label for="nombre">Nombre: </label>
+			<input type="text" name="nombre" id="nombre" maxlength="25" size="15" />
+			<span id="info_nombre"></span>
+			<div>(Mínimo 2 letras)</div>
+			<br><br>
+			
+			<label for="dni">NIF: </label>
+			<input type="text" name="dni" id="dni" maxlength="9" size="9" />
+			<span id="info_dni"></span>
+			<br><br><br>
+			
+      <label>Sexo: </label>
+			<select id="sexo">
+				<option value="">Selecciona una opción</option>
+				<option value="F">Femenino</option>
+				<option value="M">Masculino</option>
+				<option value="Y">Ya quisiera yo</option>
+			</select>
+			<span id="info_sexo"></span>
+      
+      <br><br><br>
+      <label for="sugerencia">Alguna sugerencia: </label>
+      <textarea id="sugerencia" name="sugerencia"></textarea>
+			<span id="info_sugerencia"></span>
+      <br><br>
+		</p>
+		<p><b>Todos los campos son obligatorios.</b></p>
+		<br>
+		<p>
+			<input type="submit" value="ENVIAR" >
+			<br><br>
+			<input type="reset" value="Limpiar">
+			
+		</p>
+		</form>
+	</body>
+</html>
+
+
