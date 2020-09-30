@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Validar Formularios</title>
+		<style type="text/css">
+			span {
+				color: red;
+			}
+			
+		</style>
+		<script>
+
+			window.onload = function() {
+				// Restricciones de entrada:
+				document.getElementById("nombre").onkeypress = PermiteSoloLetrasEspacios;
+				document.getElementById("nombre").onkeyup = aMayusculas;
+			
+				// Validación del formulario:
+				document.getElementById("formulario_1").onsubmit = ValidarFormulario;
+			}
+			
+			function PermiteSoloLetrasEspacios(){
+
+			}
+			function aMayusculas(){
+				this.value  = this.value.toUpperCase();
+			}
+			function ValidarNIF(nif){
+				validLetters = 'TRWAGMYFPDXBNJZSQVHLCKET';
+				number = (parseInt(nif.substr(0, nif.length)) % 23);
+				letter = validLetters.charAt(number);
+				return (letter == nif.substring(nif.length - 1).toUpperCase())
+			}
+			function ValidarFormulario() {
+				var correcto = true;
+				
+			  //  Validamos el nombre:
+			  if (document.getElementById("nombre").value.length <= 1) {
+			    document.getElementById("info_nombre").innerHTML = "Requerido con al menos 2 letras";
+				document.getElementById("nombre").focus();
+			    correcto = false;
+			  } else
+					document.getElementById("info_nombre").innerHTML = "";
+
+         //  Validamos el DNI / NIF:
+         //  Primero la longitud:
+				 var dni = document.getElementById("dni");
+         if (dni.value.length < 9) {
+          document.getElementById("info_dni").innerHTML = " El DNI está INCOMPLETO, por favor, completelo";
+		  if(correcto)dni.focus();
+          correcto = false;
+        }
+				//  Valido el dni:
+				if (!ValidarNIF(dni.value)) {
+					document.getElementById("info_dni").innerHTML = "El DNI es INCORRECTO";
+					correcto = false;
+				} else	
+					document.getElementById("info_dni").innerHTML = "";
+        
+        //  Validamos el sexo:
+				if (document.getElementById("sexo").value == "") {
+					document.getElementById("info_sexo").innerHTML = "Debe seleccionar una opción sexual";
+					if(correcto) document.getElementById("sexo").focus();
+					correcto = false;
+				} else
+					document.getElementById("info_sexo").innerHTML = "";
+        
+        //  Validamos las sugerencias:
+				if (document.getElementById("sugerencia").value.length < 2) {
+					document.getElementById("info_sugerencia").innerHTML = "Te sugiero que sugieras";
+					if(correcto) document.getElementById("sugerencia").focus();
+					correcto = false;
+				} else
+					document.getElementById("info_sugerencia").innerHTML = "";
+        
+        
+        //  Comprobamos si ha habido errores;
+				if (correcto)
+					alert("Validación correcta!! \n\nSe enviará petición AJAX");
+			//	else
+			//		alert("Validación INCORRECTA!! \n\nRevise y complete todos los campos");
+        
+       			 return false; 
+			}
+			
+			
+			
+		</script>
+	</head>
+
+	<body>
+
+		<h1>Ejercicio Validación de Formularios</h1>
+		<form id="formulario_1">
+		<p>
+			<h3>Formulario de Registro:</h3>
+			<label for="nombre">Nombre: </label>
+			<input type="text" name="nombre" id="nombre" maxlength="25" size="15" />
+			<span id="info_nombre"></span>
+			<div>(Mínimo 2 letras)</div>
+			<br><br>
+			
+			<label for="dni">NIF: </label>
+			<input type="text" name="dni" id="dni" maxlength="9" size="9" />
+			<span id="info_dni"></span>
+			<br><br><br>
+			
+      <label>Sexo: </label>
+			<select id="sexo">
+				<option value="">Selecciona una opción</option>
+				<option value="F">Femenino</option>
+				<option value="M">Masculino</option>
+				<option value="Y">Ya quisiera yo</option>
+			</select>
+			<span id="info_sexo"></span>
+      
+      <br><br><br>
+      <label for="sugerencia">Alguna sugerencia: </label>
+      <textarea id="sugerencia" name="sugerencia"></textarea>
+			<span id="info_sugerencia"></span>
+      <br><br>
+		</p>
+		<p><b>Todos los campos son obligatorios.</b></p>
+		<div>(como ejercicio hacer que el foco se quede en el primer campo que NO cumple)</div>
+		<br>
+		<p>
+			<input type="submit" value="ENVIAR" >
+			<br><br>
+			<input type="reset" value="Limpiar">
+			
+		</p>
+		</form>
+	</body>
+</html>
+
+

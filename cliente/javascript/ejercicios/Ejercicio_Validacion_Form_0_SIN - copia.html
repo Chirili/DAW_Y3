@@ -14,7 +14,7 @@
 			document.getElementById("nombre").onkeypress = soloLetras;
 			document.getElementById("formulario_1").onsubmit = validar;
 			document.getElementById('dni').onchange = checkInfoNifNie;
-
+			let nameInput = document.getElementById('nombre');
 			/*
 			* Comprueba que el NIF introducido es correcto
 			* return boolean
@@ -28,6 +28,7 @@
 
 			/*
 			* Comprueba si el NIF esta bien formado y tiene el tamaño correcto, para validarlo con la funcion correspondiente
+			
 			* return boolean
 			*/
 			function checkInfoNifNie() {
@@ -78,7 +79,8 @@
 						errorsContainer.innerHTML += errors[i] + "<br>";
 					}
 				}
-				if (validation.filter(v => v == false)) {
+				console.log(validation.filter(v => v == false));
+				if (validation.filter(v => v == false).length != 0) {
 					return false;
 				}
 			}
