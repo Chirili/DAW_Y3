@@ -13,6 +13,7 @@
 
 			document.getElementById("nombre").onkeypress = soloLetras;
 			document.getElementById("formulario_1").onsubmit = validar;
+			document.getElementById('dni').onchange = checkInfoNifNie;
 
 			/*
 			* Comprueba que el NIF introducido es correcto
@@ -32,10 +33,11 @@
 			function checkInfoNifNie() {
 				let regexDNI = /^\d{8}[a-zA-Z]$/;
 				let nif = document.getElementById('dni').value;
-
-				if((nif.length < 9) & !(regexDNI.test(nif))){
+				if ((nif.length < 9) & !(regexDNI.test(nif))) {
+					document.getElementById('info_dni').innerHTML = "El NIF no es correcto";
 					return false;
-				}else{
+				} else {
+					document.getElementById('info_dni').innerHTML = "";
 					return (isNifValid(nif));
 				}
 			}
@@ -43,7 +45,7 @@
 			*	Comprueba que se ha seleccionado algun sexo
 			* 	return boolean
 			*/
-			function checkSelect(){
+			function checkSelect() {
 				let select = document.getElementById('sexo');
 				return (select.selectedIndex > 0);
 			}
@@ -57,26 +59,26 @@
 			}
 
 			function validar() {
-				if (document.getElementById("nombre").value.length < 2) {
-					let nameInfo = document.getElementById("info_nombre");
-					nameInfo.innerHTML = "Se requieren al menos 2 letras";
-					document.getElementById('nombre').focus();
-					return false;
+				let validation = [
+					(document.getElementById('nombre').value.length >= 2),
+					(checkInfoNifNie()),
+					(checkSelect()),
+					(document.getElementById('sugerencia').value.length > 0)
+				]
+				let errors = [
+					"Se requieres al menos 2 letras",
+					"Error al validar el NIF",
+					"Por favor debe seleccionar un sexo",
+					"Por favor escriba alguna sugerencia"
+				]
+				let errorsContainer = document.getElementById("errors");
+				errorsContainer.innerHTML = "";
+				for (let i = 0; i < errors.length; i++) {
+					if (!validation[i]) {
+						errorsContainer.innerHTML += errors[i] + "<br>";
+					}
 				}
-				if(!checkInfoNifNie()){
-					let dniInfo = document.getElementById("info_dni");
-					dniInfo.innerHTML = "Error al validar el NIF, por favor introduce un NIF correcto";
-					document.getElementById('dni').focus();
-					return false;
-				}
-				if(!checkSelect()){
-					let sexoInfo = document.getElementById('info_sexo');
-					sexoInfo.innerHTML = "Por favor debe seleccionar un sexo";
-					return false;
-				}
-				if(document.getElementById('sugerencia').value.length == 0){
-					let infoSugerencia = document.getElementById('info_sugerencia');
-					infoSugerencia.innerHTML = "Por favor escriba alguna sugerencia";
+				if (validation.filter(v => v == false)) {
 					return false;
 				}
 			}
@@ -119,6 +121,7 @@
 		<br><br>
 		</p>
 		<p><b>Todos los campos son obligatorios.</b></p>
+		<span id="errors"></span>
 		<br>
 		<p>
 			<input type="submit" value="ENVIAR">
