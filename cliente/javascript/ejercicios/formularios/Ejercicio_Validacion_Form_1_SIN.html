@@ -8,11 +8,74 @@
 			}
 			
 		</style>
-		<script src="Utilidades.js"></script>
+		<script defer src="Utilidades.js"></script>
 		<script>
-
-		
+			window.onload = () => {
+				document.getElementById('formulario_1').onsubmit = ValidateForm;
+				document.getElementById('nombre').onkeypress = JustLetters;
+				document.getElementById('nombre').onkeyup = LettersToUpperCase;
+				let fechaInputs = ['f_dia','f_mes','f_ano'];
+				fechaInputs.forEach(v => document.getElementById(v).onkeypress = OnlyNumbers);
+			}
 			
+			function ValidateForm(){
+				let isFormValid = true;
+				let day = document.getElementById('f_dia').value;
+				let month = document.getElementById('f_mes').value;
+				let year = document.getElementById('f_ano').value;
+
+				if(document.getElementById('nombre').value.length < 2){
+					document.getElementById('info_nombre').innerHTML = "El nombre es demasiado corto";
+					document.getElementById('nombre').focus();
+					isFormValid = false;;
+				}else{
+					document.getElementById('info_nombre').innerHTML ="";
+				}
+
+				if(document.getElementById('apellidos').value.length < 4){
+					document.getElementById('info_apellidos').innerHTML = "Los apellidos son demasiado cortos";
+					if(isFormValid)document.getElementById('apellidos').focus();
+					isFormValid = false;
+				}else{
+					document.getElementById('info_apellidos').innerHTML = "";	
+				}
+
+				if(!ValidateNif(document.getElementById('dni').value)){
+					document.getElementById('info_dni').innerHTML = "Error, el NIF introducido no es correcto";
+					if(isFormValid)document.getElementById('dni').focus();
+					isFormValid = false;
+				}else{
+					document.getElementById('info_dni').innerHTML="";
+				}
+
+				if(document.getElementById('sexo').value == ""){
+					document.getElementById('info_sexo').innerHTML = "Selecciona un sexo";
+					if(isFormValid)document.getElementById('sexo').focus();
+					isFormValid = false;
+				}else{
+					document.getElementById('info_sexo').innerHTML = "";
+				}
+
+				if(!ValidateDate(day,month,year)){
+					if(isFormValid){
+						(document.getElementById('f_dia').value == 0) ? document.getElementById('f_dia').focus() :
+						(document.getElementById('f_mes').value == 0) ? document.getElementById('f_mes').focus() :
+						document.getElementById('f_ano').focus();
+					}
+					document.getElementById('info_fecha').innerHTML= "Fecha incorrecta";
+					isFormValid = false;
+				}else{
+					document.getElementById('info_fecha').innerHTML = "";
+				}
+				if (document.getElementById("sugerencia").value.length < 2) {
+					document.getElementById("info_sugerencia").innerHTML = "Introduce una sugerencia";
+					if(isFormValid) document.getElementById("sugerencia").focus();
+					isFormValid = false;
+				} else
+					document.getElementById("info_sugerencia").innerHTML = "";
+					
+				return isFormValid;
+			};
 		</script>
 	</head>
 
