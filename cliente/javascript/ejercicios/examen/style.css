@@ -1,0 +1,32 @@
+body{
+    justify-content: center;
+    align-items: center;
+    font-family: Montserrat;
+}
+div {
+ margin: auto auto 5px auto;
+ border: 1px solid blue;
+ padding: 0.5em;
+ width: 75%;
+}
+div h3 {
+    text-align: center;
+}
+input {
+    padding: 3px;
+    border-radius: 5px;
+    border: 2px solid;
+}
+
+button{
+    padding: 7px;
+    color: black;
+    background-color: darkgrey;
+    border-radius: 10px;
+    border: 0px;
+}
+
+p {
+    width: 350px;
+    border: 1px solid black;
+}
