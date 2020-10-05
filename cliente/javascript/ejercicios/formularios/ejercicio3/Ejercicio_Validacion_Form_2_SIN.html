@@ -8,20 +8,117 @@
 			}
 			
 		</style>
-		<script src="Utilidades.js"></script>
+		<script src="../Utilidades.js"></script>
 		<script>
 
 		
 		window.onload = ()=> {
-          let sexos = document.getElementsByName('sexo');
-		  Array.from(sexos).forEach(v => console.log(v.checked));
-		  for (let i of sexos) {
-			  console.log(i.checked)
-			  
-		  }
-		  
+			document.getElementById('formulario_1').onsubmit = ValidateForm;
+			document.getElementById('nombre').onkeypress = JustLetters;
+			document.getElementById('nombre').onkeyup = LettersToUpperCase;
+			document.getElementById('estatura').onkeypress = OnlyNumbersWComma;
+			let fechaInputs = ['f_dia','f_mes','f_ano'];
+			fechaInputs.forEach(v => document.getElementById(v).onkeypress = OnlyNumbers);
+			
+			
 		}
-		
+		function ValidateForm(){
+				let isFormValid = true;
+				let day = document.getElementById('f_dia').value;
+				let month = document.getElementById('f_mes').value;
+				let year = document.getElementById('f_ano').value;
+				
+
+				//Validacion del campo nombre
+				if(document.getElementById('nombre').value.length < 2){
+					document.getElementById('info_nombre').innerHTML = "El nombre es demasiado corto";
+					document.getElementById('nombre').focus();
+					isFormValid = false;;
+				}else{
+					document.getElementById('info_nombre').innerHTML ="";
+				}
+				//Validacion del campo apellido
+				if(document.getElementById('apellidos').value.length < 4){
+					document.getElementById('info_apellidos').innerHTML = "Los apellidos son demasiado cortos";
+					if(isFormValid)document.getElementById('apellidos').focus();
+					isFormValid = false;
+				}else{
+					document.getElementById('info_apellidos').innerHTML = "";	
+				}
+				//Validacion del NIF
+				if(!ValidateNif(document.getElementById('dni').value)){
+					document.getElementById('info_dni').innerHTML = "Error, el NIF introducido no es correcto";
+					if(isFormValid)document.getElementById('dni').focus();
+					isFormValid = false;
+				}else{
+					document.getElementById('info_dni').innerHTML="";
+				}
+				//Validacion de los input radio de sexo
+				if(Array.from(document.getElementsByName('sexo')).filter(v => v.checked).length == 0){
+					document.getElementById('info_sexo').innerHTML = "Selecciona un sexo";
+					isFormValid = false;
+				}else{
+					document.getElementById('info_sexo').innerHTML = "";
+				}
+				//Validacion de la fecha
+				if(!ValidateDate(day,month,year)){
+					if(isFormValid){
+						(document.getElementById('f_dia').value == 0) ? document.getElementById('f_dia').focus() :
+						(document.getElementById('f_mes').value == 0) ? document.getElementById('f_mes').focus() :
+						document.getElementById('f_ano').focus();
+					}
+					document.getElementById('info_fecha').innerHTML= "Fecha incorrecta";
+					isFormValid = false;
+				}else{
+					document.getElementById('info_fecha').innerHTML = "";
+				}
+				//Validacion de la estatura
+				if(!HeightField(document.getElementById('estatura').value)){
+					let estaturaContainer = document.getElementById('info_estatura');
+					estaturaContainer.innerHTML = "Introduce una estatura correcta";
+					document.getElementById('estatura').value = "";
+					if(isFormValid)document.getElementById('estatura').focus();
+					isFormValid=false;
+				}else{
+					document.getElementById('info_estatura').innerHTML = "";
+				}
+				//Validacion de los select de estado civil
+				if(document.getElementById('estado_civil').selectedIndex < 1){
+					document.getElementById('info_estado_civil').innerHTML = "Selecciona un estado civil";
+					if(isFormValid)document.getElementById('estado_civil').focus();
+					document.getElementById('estado_civil').focus;
+					isFormValid = false;
+				}else{
+					document.getElementById('info_estado_civil').innerHTML = "";
+				}
+				// Validacion del checkbox de bebidas
+				if(Array.from(document.getElementsByName('bebidas')).filter(v => v.checked).length < 3){
+					document.getElementById('info_bebidas').innerHTML = "Selecciona al menos "+ (3 - Array.from(document.getElementsByName('bebidas')).filter(v => v.checked).length)+ " bebidas mas"
+
+					isFormValid = false;
+				}else{
+					document.getElementById('info_bebidas').innerHTML = "";
+				}
+				//Validacion campo cuenta corriente
+				if(document.getElementById('ccc').value.length <= 20){
+					document.getElementById('info_ccc').innerHTML = "Escriba correctamente las cuenta corriente";
+					if(isFormValid)document.getElementById('ccc').focus();
+					isFormValid = false;
+				}else{
+					document.getElementById('info_ccc').innerHTML = "";
+				}
+				//Validacion del campo sugerencia
+				if (document.getElementById("sugerencia").value.length < 2) {
+					document.getElementById("info_sugerencia").innerHTML = "Introduce una sugerencia";
+					if(isFormValid) document.getElementById("sugerencia").focus();
+					isFormValid = false;
+				} else
+					document.getElementById("info_sugerencia").innerHTML = "";
+					
+				return isFormValid;
+			
+			return false;
+		}
 		</script>
 	</head>
 
