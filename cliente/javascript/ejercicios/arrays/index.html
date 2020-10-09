@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="index.js"></script>
+    <style>
+        table, tr, td,th{
+            padding: 10px;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+    <script>
+        window.onload = () => {
+            document.getElementById('createTable').onclick = createTable;
+        }
+        function createTable(){
+            let tableContainer = document.getElementById('tabla');
+            let table = document.createElement('table');
+            let tableHead = document.createElement('thead');
+            let tableBody = document.createElement('tbody');
+            let filas = document.getElementById('filas').value;
+            let columnas = document.getElementById('columnas').value;
+
+            if(tableContainer.hasChildNodes(table)){
+                tableContainer.removeChild(tableContainer.childNodes[0]);
+            }
+            
+            tableContainer.appendChild(table);
+            table.appendChild(tableHead);
+            table.appendChild(tableBody);
+
+            for(let i = 0; i < filas; i++){
+                let fila = document.createElement('tr');
+                (i == 0) ? tableHead.appendChild(fila) : tableBody.appendChild(fila);
+                for(let j = 0; j < columnas;j++){
+                    let columna;
+                    if(i == 0){
+                        columna = document.createElement('th');
+                        columna.innerText = `Fila ${i+1} Columna ${j+1}`;
+                        fila.appendChild(columna);
+                    }else{
+                        columna = document.createElement('td');
+                        columna.innerText = `Fila ${i+1} Columna ${j+1}`;
+                        fila.appendChild(columna);
+                    }
+                                        
+                }
+            }
+        }
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    <label for="filas">Filas: </label><input id="filas" type="text"><br>
+    <label for="columnas">Columnas: </label><input id="columnas" type="text">
+    <button id="createTable">Crear Tabla</button>
+    <div id="tabla"></div>
+    <table><tbody>sdfasdf</tbody></table>
+</body>
+</html>
