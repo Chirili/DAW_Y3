@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      function descargarArchivo() {
+        var peti = new XMLHttpRequest();
+        peti.onreadystatechange = muestraContenido;
+        peti.open("GET", "http://localhost/ajax/fichero.json");
+        peti.send();
+        function muestraContenido() {
+          if ((peti.readyState == 4) &&(peti.status == 200)) {
+            console.log(peti.response);
+            let {div1, div2, parrafos, contParrafos} = JSON.parse(peti.responseText)
+            document.getElementById('div1').innerHTML = div1;
+            document.getElementById('div2').innerHTML = div2;
+            for(let i = 0; i < parrafos; i++){
+                let parrafo = document.createElement('p');
+                parrafo.innerHTML = "Parrafo numero" + (i+1)+ ": " + contParrafos;
+                document.getElementById('parrafos').append(parrafo);
+            }
+          }
+        }
+      }
+      window.onload = descargarArchivo;
+    </script>
+  </head>
+  <body>
+      <div id="div1"></div>
+      <div id="div2"></div>
+      <div id="parrafos"></div>
+
+  </body>
+</html>
