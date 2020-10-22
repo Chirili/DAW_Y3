@@ -5,8 +5,53 @@
     <title>Provincias Localidades</title>
     
     <script type="text/javascript">
-			//  Recibe un string JSON con que representa un resultset de CODIGO y NOMBRE.
-		
+      //  Recibe un string JSON con que representa un resultset de CODIGO y NOMBRE.
+      /*
+      function fillProvincias() {
+        let peticion = new XMLHttpRequest();
+        peticion.onreadystatechange = muestraContenido;
+        peticion.open("GET", "http://localhost/ajax/servidor.php?servicio=provincias");
+        peticion.send();
+        function muestraContenido() {
+          console.log(peticion.response);
+        }
+      }
+      */
+      window.onload = () => {
+
+        let peticion = new XMLHttpRequest();
+        document.getElementById("provincia").onchange = fillLocalidades;
+        peticion.onload = () => {
+         
+          let provincias = JSON.parse(peticion.response);
+          for (let i = 0; i < provincias.length; i++){
+            let {CODIGO, NOMBRE} = provincias[i];
+            let option = document.createElement('option');
+            option.setAttribute("value",CODIGO);
+            option.innerHTML = NOMBRE;
+            document.getElementById('provincia').append(option);
+          }
+          fillLocalidades()
+        }
+        peticion.open("GET", "http://localhost/ajax/servidor.php?servicio=provincias");
+        peticion.send();
+      };
+      function fillLocalidades(event){
+        document.getElementById('localidad').innerHTML = "";
+        let pLocalidades = new XMLHttpRequest();
+        let url = "http://localhost/ajax/servidor.php?servicio=localidades&codigop="+((arguments.length == 0)?document.getElementById('provincia').firstElementChild.value : this.value);
+        pLocalidades.open("GET",url);
+        pLocalidades.send();
+        pLocalidades.onload = () => {
+            let localidades = JSON.parse(pLocalidades.response);
+            for(localidad of localidades){
+              let option = document.createElement('option');
+              option.setAttribute("value",localidad.CODIGO);
+              option.innerHTML = localidad.NOMBRE;
+              document.getElementById('localidad').append(option);
+            }
+        }
+      }
     </script>
     
   </head>
@@ -15,7 +60,7 @@
     
     <label for="provincia">Provincia:</label>
     <select id="provincia">
-      
+
     </select>
     <br><br>
     

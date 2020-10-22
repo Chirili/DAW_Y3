@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  php:
+    image: php-server
+    ports: 
+      - "8080:80"
+    volumes: 
+      - ./server/:/var/www/html/
+    links:
+      - mysql
+  mysql:
+    image: mysql
+    ports: 
+      - "5000:5000"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes: 
+      - ./data/:/var/lib/mysql
