@@ -8,14 +8,19 @@ table, tr, th {
     text-align: center;
 }
 table tr.cabecera th {
-    background-color: rgba(124, 124, 124, 0.568) !important;
+    background: url(../images/fondo_gris.gif);
     padding: 5px;
 }
 table tr th {
     padding-left: 20px;
     background-color: #E6F3FF !important;
 }
+/*
 table tr:nth-child(even) td {
+    background-color: #FFFFCC;
+}
+*/
+.euro ~ td, .libra ~ td {
     background-color: #FFFFCC;
 }
 .euro {

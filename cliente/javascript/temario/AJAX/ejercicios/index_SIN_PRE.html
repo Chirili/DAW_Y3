@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Provincias Localidades</title>
+
+    <script type="text/javascript">
+      //  Definimos el objto XMLHttpRequest para hacer peticiones AJAX como
+      //    variable (constante, que no va a cambiar) global.
+      const peti = new XMLHttpRequest();
+
+      const llenaSelect = (select, arrObj, inicial) => {
+        /*  Aqui ponemos el código para llenar de opciones el	
+			select que se le pasa por parámetro (select) a partir del array de objetos
+			que también sele pasa por parámetro (arrObj)
+			
+			Es mejor hacer una función "genérica" así, porque la vamos a utilizar para
+			llegar los dos select, el de provincias y el de localidades.
+			Por cierto, a las funciones se les suele definir como const, puesto 
+			que no va a cambiar su valor, su contenido.
+			*/
+        console.log("arrOnbj = ", arrObj);
+        select.options.length = 0; //  Limpiamos/borramos todos los que pudiera tener.
+        var o;
+        if (inicial) {
+          o = document.createElement("option");
+          o.value = -1;
+          o.innerHTML = inicial;
+          select.options.add(o);
+        }
+        arrObj.forEach((ele) => {
+          o = document.createElement("option");
+          o.value = ele.CODIGO;
+          o.innerHTML = ele.NOMBRE;
+          select.options.add(o);
+        });
+      };
+      const cargaProvincias = () => {
+        /* Hacemos la petición AJAX al servidor para que nos devuelva la lista
+			de todas las provincias  (array de objetos)
+			*/
+        petiAJAX("GET", "servidor.php?servicio=provincias", (data) => {
+          console.log(data);
+          const sel = document.getElementById("provincia");
+          llenaSelect(sel, JSON.parse(data), "Selecciona opción");
+        });
+      };
+
+      const cargaLocalidades = () => {
+        console.log("lllegaaaaaa");
+
+        var codigop = document.getElementById("provincia").value;
+        console.log("codigop = ", codigop);
+
+        peti.onreadystatechange = () => {
+          if (peti.readyState == 4 && peti.status == 200) {
+            console.log(peti.responseText);
+            const sel = document.getElementById("localidad");
+            llenaSelect(sel, JSON.parse(peti.responseText));
+          }
+        };
+
+        //  Suponemos que este fichero está en la misma carpeta donde está servidor.php
+        peti.open(
+          "GET",
+          " servidor.php?servicio=localidades&codigop=" + codigop
+        );
+        //  Si el servicio al que llamamos está en la misma carpeta no hay que poner toda la url
+        peti.send();
+      };
+
+      window.onload = () => {
+        cargaProvincias();
+
+        document.getElementById("provincia").onchange = cargaLocalidades;
+
+        //  Tienes que crear el manejador de evento onchange para que cuando el/la usuari@
+        //  Cambie la provinica se ejecute esa función y pida las localidades para el
+        //  código de provincia seleccionado (y que previamente has cargado en el select, haciendo uso de la función llenaSelect)
+        //   Para pedir las localidades sería: servidor.php?servicio=localidades&codigop=30
+        //    La (semi) url anterior pide las localidades de Murcia (código provinica: 30)
+      };
+    </script>
+  </head>
+  <body>
+    <h2>Ejemplo proyecto web con JAVA y AJAX</h2>
+
+    <label for="provincia">Provincia:</label>
+    <select id="provincia"></select>
+    <br /><br />
+
+    <label for="localidad">Localidad</label>
+    <select id="localidad">
+      <option value="-1">Seleccione Provincia</option>
+    </select>
+    <br /><br />
+  </body>
+</html>

@@ -4,7 +4,7 @@ function Conectar($bd, $usuario, $clave) {
 	$conn = null;
 	try {
 		//  NOS CONECTAMOS (y seleccionamos la bd):
-    $conn = new PDO('mysql:host=localhost;dbname='. $bd, $usuario, $clave);
+    $conn = new PDO('mysql:host=great_mirzakhani;dbname='. $bd, $usuario, $clave);
 	} catch (PDOException $e) {
     print "¡Error!: " . $e->getMessage() . "<br/>";
 	}
@@ -15,7 +15,7 @@ function Conectar($bd, $usuario, $clave) {
 function conectar2($bd, $usuario, $clave) {
   try {
       $opciones = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8");
-      @$bd = new PDO('mysql:host=localhost;dbname='. $bd, $usuario, $clave, $opciones);
+      @$bd = new PDO('mysql:host=great_mirzakhani;dbname='. $bd, $usuario, $clave, $opciones);
       $bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //aquí le digo que voy a utilizar excepciones
       return $bd;
   } catch (PDOException $e) {
