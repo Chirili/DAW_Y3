@@ -1,4 +1,4 @@
-const petiAJAX = (metodo, url, callback) => {
+const AJAXRes = (metodo, url, callback) => {
   const peticion = new XMLHttpRequest();
 
   peticion.open(metodo, url);
@@ -10,3 +10,4 @@ const petiAJAX = (metodo, url, callback) => {
     }
   };
 };
+

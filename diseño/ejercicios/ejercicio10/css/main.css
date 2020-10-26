@@ -23,15 +23,15 @@ table tr:nth-child(even) td {
 .euro ~ td, .libra ~ td {
     background-color: #FFFFCC;
 }
-.euro {
+table tr:nth-child(2) > th {
     background: url(../images/euro.png) no-repeat 1%;
 }
-.dolar{
+table tr:nth-child(3) > th {
     background: url(../images/dolar.png) no-repeat 1%;
 }
-.yen {
-    background: url(../images/yen.png) no-repeat 1%;
-}
-.libra {
+table tr:nth-child(4) > th {
     background: url(../images/libra.png) no-repeat 1%;
+}
+table tr:nth-child(5) > th {
+    background: url(../images/yen.png) no-repeat 1%;
 }
