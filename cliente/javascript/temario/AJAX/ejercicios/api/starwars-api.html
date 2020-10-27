@@ -1,82 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script src="utilsAjax.js"></script>
-    <script>
-      window.onload = () => {
-        let dataContainer = document.getElementById("data");
-        let url = "https://swapi.dev/api/people/";
-        AJAXRes("GET", "https://swapi.dev/api/people/", (data) => {
-          let personajes = Array.from(data.results);
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script src="utilsAjax.js"></script>
+  <script>
+    window.onload = () => {
+      let dataContainer = document.getElementById("data");
+      let data;      
+      function loadData(url) {        
+        AJAXRes("GET", url, (response) => {
+          let personajes = Array.from(response.results);
           for (let i = 0; i < personajes.length; i++) {
-            let {name,height,mass,birth_year,gender,homeworld} = personajes[i];
+            let { name, height, mass, birth_year, gender, homeworld } = personajes[i];
             let fila = document.createElement("tr");
-            dataContainer.appendChild(fillColumns([name, height, mass, birth_year, gender],fila,homeworld));
+            dataContainer.appendChild(fillColumns([name, height, mass, birth_year, gender], fila, homeworld));
+            data = response;
           }
         });
       };
-      document.getElementById('siguiente').onclick = nextPage;
-      function fillColumns(data, tr,homeworld) {
+      document.getElementById('siguiente').onclick= function (e) {
+        loadData(data.next);
+      }
+      document.getElementById('anterior').onclick= function (e) {
+        loadData(data.previous);
+      }
+      
+      loadData("https://swapi.dev/api/people/")
+    }
 
-        for (let i = 0; i < data.length; i++) {
-          let column = document.createElement("td");
-          column.innerHTML = data[i];
-          
-          tr.appendChild(column);
-          if(data.length-1 == i){
-            let enlace = document.createElement('a');
-            enlace.innerHTML = homeworld;
-            column.innerHTML = "";
-            column.appendChild(enlace);
-          }
+    function fillColumns(data, tr, homeworld) {
+      for (let i = 0; i < data.length; i++) {
+        let column = document.createElement("td");
+        column.innerHTML = data[i];
+        tr.appendChild(column);
+        if (data.length - 1 == i) {
+          let enlace = document.createElement('a');
+          let homeWorldColumn = document.createElement('td');
+          enlace.innerHTML = homeworld;
+          homeWorldColumn.innerHTML = "";
+          homeWorldColumn.appendChild(enlace);
+          tr.appendChild(homeWorldColumn)
         }
-        return tr;
       }
-    </script>
-    <style>
+      return tr;
+    }
+    function nextPage() {
+
+    }
+  </script>
+  <style>
     .contenido {
-        display: flex;
+      display: flex;
     }
-    button{
-        display: block;
-        margin-bottom: 10px;
-        margin-left: 10px;
+
+    button {
+      display: block;
+      margin-bottom: 10px;
+      margin-left: 10px;
     }
-      table,
-      tr,
-      td,
-      th {
-        text-align: center;
-        padding: 5px;
-        border: 1px solid black;
-        border-collapse: collapse;
-      }
-    </style>
-  </head>
-  <body>
-      <div class="contenido">
-      <div class="tabla">
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Altura</th>
-          <th>Peso</th>
-          <th>Nacimiento</th>
-          <th>Genero</th>
-          <th>Homeworld</th>
-        </tr>
-      </thead>
-      <tbody id="data"></tbody>
-    </table>
+
+    table,
+    tr,
+    td,
+    th {
+      text-align: center;
+      padding: 5px;
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="contenido">
+    <div class="tabla">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Altura</th>
+            <th>Peso</th>
+            <th>Nacimiento</th>
+            <th>Genero</th>
+            <th>Homeworld</th>
+          </tr>
+        </thead>
+        <tbody id="data"></tbody>
+      </table>
     </div>
     <div class="buttons">
-        <button id="siguiente">Siguiente</button>
-        <button>Anterior</button>
+      <button id="siguiente">Siguiente</button>
+      <button id="anterior">Anterior</button>
     </div>
-    </div>
-  </body>
+  </div>
+</body>
+
 </html>

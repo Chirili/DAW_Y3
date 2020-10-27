@@ -11,3 +11,7 @@ const AJAXRes = (metodo, url, callback) => {
   };
 };
 
+const resolveNextPage = (nextPage, callBack)=>{
+  
+};
+
