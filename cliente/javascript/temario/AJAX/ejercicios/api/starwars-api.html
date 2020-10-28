@@ -1,101 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-  <script src="utilsAjax.js"></script>
-  <script>
-    window.onload = () => {
-      let dataContainer = document.getElementById("data");
-      let data;      
-      function loadData(url) {        
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="utilsAjax.js"></script>
+    <script>
+      window.onload = () => {
+        loadData("https://swapi.dev/api/people/");
+      };
+      function loadWorld(url) {
+        AJAXRes("GET", url, (response) => {
+          let {
+            name,
+            rotation_period,
+            orbital_period,
+            climate,
+            diameter,
+            terrain,
+          } = response;
+          fillWorld([
+            name,
+            rotation_period,
+            orbital_period,
+            climate,
+            diameter,
+            terrain,
+          ]);
+        });
+      }
+      function fillWorld(world) {
+        let palabras = [
+          "Nombre: ",
+          "Velocidad de rotacion: ",
+          "Periodo orbital: ",
+          "Clima: ",
+          "Diametro: ",
+          "Terreno: ",
+        ];
+        let worldContainer = document.querySelector(".datosPlaneta");
+        if (worldContainer.hasChildNodes()) {
+          document
+            .querySelectorAll(".datosPlaneta p")
+            .forEach((p) => p.remove());
+        }
+        for (let i = 0; i < world.length; i++) {
+          let parrafo = document.createElement("p");
+          parrafo.innerHTML = palabras[i] + world[i];
+          worldContainer.appendChild(parrafo);
+        }
+      }
+      function loadData(url) {
+        let dataContainer = document.getElementById("data");
+        let data;
+        if (document.querySelector("#data").hasChildNodes) {
+          document.querySelectorAll("#data tr").forEach((tr) => tr.remove());
+        }
+        
         AJAXRes("GET", url, (response) => {
           let personajes = Array.from(response.results);
           for (let i = 0; i < personajes.length; i++) {
-            let { name, height, mass, birth_year, gender, homeworld } = personajes[i];
+            let {name,height,mass,birth_year,gender,homeworld,} = personajes[i];
             let fila = document.createElement("tr");
-            dataContainer.appendChild(fillColumns([name, height, mass, birth_year, gender], fila, homeworld));
+            dataContainer.appendChild(
+              fillColumns(
+                [name, height, mass, birth_year, gender],
+                fila,
+                homeworld
+              )
+            );
             data = response;
+            (data.next === null) ? document.querySelector('#siguiente').disabled = true : document.querySelector('#siguiente').disabled=false;
+            (data.previous === null) ? document.querySelector('#anterior').disabled = true : document.querySelector('#anterior').disabled=false;
           }
+          let enlaces = document.querySelectorAll("#data a");
+          enlaces.forEach(function (e) {
+            e.onclick = function (a) {
+              a.preventDefault();
+              loadWorld(e.innerHTML);
+            };
+          });
         });
-      };
-      document.getElementById('siguiente').onclick= function (e) {
-        loadData(data.next);
+       
+        document.getElementById("siguiente").onclick = function (e) {
+          loadData(data.next);
+        };
+        document.getElementById("anterior").onclick = function (e) {
+          loadData(data.previous);
+        };
       }
-      document.getElementById('anterior').onclick= function (e) {
-        loadData(data.previous);
-      }
-      
-      loadData("https://swapi.dev/api/people/")
-    }
-
-    function fillColumns(data, tr, homeworld) {
-      for (let i = 0; i < data.length; i++) {
-        let column = document.createElement("td");
-        column.innerHTML = data[i];
-        tr.appendChild(column);
-        if (data.length - 1 == i) {
-          let enlace = document.createElement('a');
-          let homeWorldColumn = document.createElement('td');
-          enlace.innerHTML = homeworld;
-          homeWorldColumn.innerHTML = "";
-          homeWorldColumn.appendChild(enlace);
-          tr.appendChild(homeWorldColumn)
+      function removeColumns() {
+        console.log(document.getElementById("data").children);
+        for (fila of document.getElementById("data").children) {
+          fila.remove();
         }
+        console.log(document.getElementById("data").children);
       }
-      return tr;
-    }
-    function nextPage() {
+      function fillColumns(data, tr, homeworld) {
+        for (let i = 0; i < data.length; i++) {
+          let column = document.createElement("td");
+          column.innerHTML = data[i];
+          tr.appendChild(column);
+          if (data.length - 1 == i) {
+            let enlace = document.createElement("a");
+            let homeWorldColumn = document.createElement("td");
+            enlace.innerHTML = homeworld;
+            enlace.setAttribute("href", "#");
+            homeWorldColumn.innerHTML = "";
+            homeWorldColumn.appendChild(enlace);
+            tr.appendChild(homeWorldColumn);
+          }
+        }
+        return tr;
+      }
+      function nextPage() {}
+    </script>
+    <style>
+      .datosPlaneta {
+        margin-top: 10px;
+        order: 2;
+      }
+      .buttons {
+        order: 1;
+        margin-top: 10px;
+      }
+      table,
+      tr,
+      td,
+      th {
+        text-align: center;
+        padding: 5px;
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      tr{
+        color: white;
+        background-color: cornflowerblue;
+      }
+      tr:nth-child(even){
+        background-color: rgb(149, 178, 231);
+      }
+      a:visited {
+        color: white;
+      }
+      th{
+        background-color: coral;
+        color: white;
+      }
+      .buttons button{
+        border: 2px solid rgb(158, 158, 158);
+        padding: 5px;
+        background-color: dodgerblue;
+        border-radius: 10px;
+      }
 
-    }
-  </script>
-  <style>
-    .contenido {
-      display: flex;
-    }
+    </style>
+  </head>
 
-    button {
-      display: block;
-      margin-bottom: 10px;
-      margin-left: 10px;
-    }
-
-    table,
-    tr,
-    td,
-    th {
-      text-align: center;
-      padding: 5px;
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="contenido">
-    <div class="tabla">
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Altura</th>
-            <th>Peso</th>
-            <th>Nacimiento</th>
-            <th>Genero</th>
-            <th>Homeworld</th>
-          </tr>
-        </thead>
-        <tbody id="data"></tbody>
-      </table>
+  <body>
+    <div class="contenido">
+      <div class="tabla">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Altura</th>
+              <th>Peso</th>
+              <th>Nacimiento</th>
+              <th>Genero</th>
+              <th>Homeworld</th>
+            </tr>
+          </thead>
+          <tbody id="data"></tbody>
+        </table>
+      </div>
+      <div class="buttons">
+        <button id="anterior">Anterior</button>
+        <button id="siguiente">Siguiente</button>
+      </div>
+      <h3>Datos del planeta</h3>
     </div>
-    <div class="buttons">
-      <button id="siguiente">Siguiente</button>
-      <button id="anterior">Anterior</button>
-    </div>
-  </div>
-</body>
-
+    <div class="datosPlaneta"></div>
+  </body>
 </html>
