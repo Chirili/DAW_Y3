@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "path": "cliente"
+    },
+    {
+      "path": "servidor"
+    },
+    {
+      "path": "diseño"
+    }
+  ],
+  "settings": {
+    "liveServer.settings.port": 5501
+  }
+}

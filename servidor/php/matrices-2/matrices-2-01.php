@@ -33,24 +33,23 @@ print "<br>";
 for($i = 0; $i < $cantidadDados;$i++){
   $numero = rand(1,6);
   array_push($dados,$numero);
-  print "<img src=/img/$numero".".svg>";
+  print "<img src=http://localhost:8081/matrices-2/img/$numero".".svg>";
 }
 $numero = rand(1,6);
 print "<br>";
 print "Dado a eliminar";
 print "<br>";
-print "<img src=/img/$numero".".svg>";
+print "<img src=http://localhost:8081/matrices-2/img/$numero".".svg>";
 print "<br>";
+if($dados[0] == $numero){
+  unset($dados[0]);
+}
 while(array_search($numero,$dados)){
   $dadoEliminar = array_search($numero,$dados);
   unset($dados[$dadoEliminar]);
 }
-ksort($dados);
-print_r($dados);
-for($i = 0; $i <= count($dados); $i++){
-  if($dados[$i] != null){
-    print "<img src=/img/$dados[$i]".".svg>";
-  }
+foreach($dados as $dado){
+  print "<img src=\"http://localhost:8081/matrices-2/img/$dado".".svg\">";
 }
 ?>
   <footer>

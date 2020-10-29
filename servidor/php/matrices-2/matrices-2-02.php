@@ -16,6 +16,15 @@
     Escriba aquí su nombre
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .bolaContainer{
+      font-size: 3em;
+      display: flex;
+    }
+    .bolaContainer p{
+      margin: 0;
+    }
+  </style>
 </head>
 
 <body>
@@ -27,8 +36,23 @@
 /*
  Para pinar las bolas escribir &#10110
 */ 
-print "  <p class=\"aviso\">Ejercicio incompleto</p>\n";
-
+$numeroBolas = rand(5,15);
+$bolas = array();
+print "<h3>Entre estas ".$numeroBolas." bolas...</h3>";
+print "<div class=\"bolaContainer\">";
+for($i=0; $i < $numeroBolas; $i++){
+  $bola = rand(10102,10111);
+  array_push($bolas,$bola);
+  print "<p>&#".$bola."</p>";
+}
+print "</div>";
+$bolasUnicas = array_unique($bolas);
+print "<h3>... hay ".count($bolasUnicas)." bolas unicas</h3>";
+print "<div class=\"bolaContainer\">";
+foreach($bolasUnicas as $unica){
+  print "<p>&#".$unica."</p>";
+}
+print "</div>";
 ?>
 
   <footer>
