@@ -11,33 +11,12 @@
       };
       function loadWorld(url) {
         AJAXRes("GET", url, (response) => {
-          let {
-            name,
-            rotation_period,
-            orbital_period,
-            climate,
-            diameter,
-            terrain,
-          } = response;
-          fillWorld([
-            name,
-            rotation_period,
-            orbital_period,
-            climate,
-            diameter,
-            terrain,
-          ]);
+          let {name,rotation_period,orbital_period,climate,diameter,terrain,} = response;
+          fillWorld([name,rotation_period,orbital_period,climate,diameter,terrain]);
         });
       }
       function fillWorld(world) {
-        let palabras = [
-          "Nombre: ",
-          "Velocidad de rotacion: ",
-          "Periodo orbital: ",
-          "Clima: ",
-          "Diametro: ",
-          "Terreno: ",
-        ];
+        let palabras = ["Nombre: ","Velocidad de rotacion: ","Periodo orbital: ","Clima: ","Diametro: ","Terreno: ",];
         let worldContainer = document.querySelector(".datosPlaneta");
         if (worldContainer.hasChildNodes()) {
           document
@@ -63,15 +42,13 @@
             let {name,height,mass,birth_year,gender,homeworld,} = personajes[i];
             let fila = document.createElement("tr");
             dataContainer.appendChild(
-              fillColumns(
-                [name, height, mass, birth_year, gender],
-                fila,
-                homeworld
-              )
+              fillColumns([name, height, mass, birth_year, gender],fila,homeworld)
             );
             data = response;
-            (data.next === null) ? document.querySelector('#siguiente').disabled = true : document.querySelector('#siguiente').disabled=false;
-            (data.previous === null) ? document.querySelector('#anterior').disabled = true : document.querySelector('#anterior').disabled=false;
+            console.log(data.next === null);
+            console.log(data.previous === null);
+            document.querySelector('#siguiente').disabled = data.next === null;
+            document.querySelector('#anterior').disabled = data.previous === null;
           }
           let enlaces = document.querySelectorAll("#data a");
           enlaces.forEach(function (e) {
@@ -102,12 +79,9 @@
           column.innerHTML = data[i];
           tr.appendChild(column);
           if (data.length - 1 == i) {
-            let enlace = document.createElement("a");
+            let enlace = `<a href=${homeworld}>${homeworld}<a/>`;
             let homeWorldColumn = document.createElement("td");
-            enlace.innerHTML = homeworld;
-            enlace.setAttribute("href", "#");
-            homeWorldColumn.innerHTML = "";
-            homeWorldColumn.appendChild(enlace);
+            homeWorldColumn.innerHTML = enlace;
             tr.appendChild(homeWorldColumn);
           }
         }
@@ -119,6 +93,9 @@
       .datosPlaneta {
         margin-top: 10px;
         order: 2;
+      }
+      #gifContainer{
+        position: absolute;
       }
       .buttons {
         order: 1;
@@ -159,6 +136,7 @@
 
   <body>
     <div class="contenido">
+      <span id="gifContainer"></span>
       <div class="tabla">
         <table>
           <thead>

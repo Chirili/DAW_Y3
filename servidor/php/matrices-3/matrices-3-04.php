@@ -56,7 +56,20 @@ foreach($cartasDOrdenadas as $cartaOrdenada){
 }
 print "</div>";
 
-
+$cartasObtenidas = array_count_values($cartas);
+print "<h3>Numero de cartas obtenidas(Sin ordenar)</h3>";
+print "<div class=\"cartaContainer\">";
+foreach($cartasObtenidas as $key => $cartaObtenida){
+  print "<p>&#$key -<span style=\"font-size:0.8em;\">$cartaObtenida</span></p>";
+}
+print "</div>";
+arsort($cartasObtenidas);
+print "<h3>Numero de cartas obtenidas(Ordenadas)</h3>";
+print "<div class=\"cartaContainer\">";
+foreach($cartasObtenidas as $key => $cartaObtenida){
+  print "<p>&#$key -<span style=\"font-size:0.8em;\">$cartaObtenida</span></p>";
+}
+print "</div>";
 ?>
 
   <footer>
