@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenWeatherMap</title>
+    <script src="./ajaxUtils.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <script>
+        window.onload = () => {
+            let data;
+            document.querySelector("#buscarCiudad").onclick = () => {
+                let ciudad = document.querySelector("#ciudad").value;
+                let url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&lang=sp&units=metric&appid=ac46b3148b7000e276d9f00fc2344fbd`;
+                resolveAjax("GET", url, (datos) => {
+                    let amanecer = new Date(datos.sys.sunrise * 1000);
+                    let puesta = new Date(datos.sys.sunset * 1000);
+                    document.querySelector(".infoTemperaturas").children[0].innerHTML = "Máxima: " + datos.main.temp_max;
+                    document.querySelector(".infoTemperaturas").children[1].innerHTML = "Mínima: " + datos.main.temp_min;
+                    document.querySelectorAll(".infoTemperaturas")[1].children[0].innerHTML = "Humedad: " + datos.main.humidity;
+                    document.querySelectorAll(".infoTemperaturas")[1].children[1].innerHTML = "Presion: " + datos.main.pressure;
+                    document.querySelector(".viento").children[0].innerHTML = "Velocidad: " + datos.wind.speed;
+                    document.querySelector(".viento").children[1].innerHTML = "Grados: " + datos.wind.deg;
+                    document.querySelector(".adicionalSection").children[0].innerHTML = "Amanecer: " + amanecer.toLocaleTimeString();
+                    document.querySelector(".adicionalSection").children[1].innerHTML = "Pues del sol: " + puesta.toLocaleTimeString();
+                    document.querySelector(".cityName h2").innerHTML = datos.name;
+                    document.querySelector(".temperature").innerHTML = datos.main.temp + "&deg;";
+                    document.querySelector(".leyend").innerHTML = datos.weather[0]["description"];
+                    data = datos;
+                    let urlCities = `https://api.openweathermap.org/data/2.5/find?lat=${data.coord.lat}&lon=${data.coord.lon}&cnt=5&appid=ac46b3148b7000e276d9f00fc2344fbd`;
+                    resolveAjax("GET", urlCities, (datos) => {
+                        console.log(datos);
+                    });
+                })
+            };
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="botones">
+            <button>Ciudad</button>
+            <button>Latitud</button>
+        </div>
+        <div class="navegacion">
+            <div class="buscador">
+                <input id="ciudad" type="text" name="ciudad">
+                <button id="buscarCiudad">Buscar</button>
+
+            </div>
+            <select name="lenguaje" id="">
+                <option value="Lenguaje">Lenguaje</option>
+            </select>
+        </div>
+        <div class="bodyContainer">
+            <div class="cardContainer">
+                <div class="card">
+                    <div class="cardHeader">
+                        <div class="cityName">
+                            <h2>Seville</h2>
+                        </div>
+                        <div class="temperature">
+                            12º
+                        </div>
+                    </div>
+                    <div class="leyend">
+                        Cielo Despejado
+                    </div>
+
+                    <div class="cardBody">
+                        <div class="bodySection">
+                            <h2 class="wind">
+                                Temperatura
+                            </h2>
+                            <div class="infoTemperaturas">
+                                <div>Maxima: </div>
+                                <div>Minima: </div>
+                            </div>
+                            <div class="infoTemperaturas">
+                                <div>Humedad: </div>
+                                <div>Presion:</div>
+                            </div>
+                        </div>
+                        <div class="bodySection">
+                            <h2>Viento</h2>
+                            <div class="viento">
+                                <div>Velocidad: </div>
+                                <div>Grados: </div>
+                            </div>
+                        </div>
+                        <div class="bodySection">
+                            <h2>Adicional</h2>
+                            <div class="adicionalSection">
+                                <div>Puesta del sol: </div>
+                                <div>Amanecer: </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tableContainer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Ciudades proximas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>
+                                Nombre
+                            </th>
+                            <th>
+                                Temperatura
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
