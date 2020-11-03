@@ -41,7 +41,7 @@
                         cresponse.previous = 0;
                         data = cresponse;
                         fillTable(cresponse.list);
-
+                        bntAnterior.disabled = (data.previous == 0);
                     });
                 })
             }
@@ -50,14 +50,16 @@
             function fillCard(datos) {
                 let amanecer = new Date(datos.sys.sunrise * 1000);
                 let puesta = new Date(datos.sys.sunset * 1000);
-                document.querySelector(".infoTemperaturas").children[0].innerHTML = "Máxima: " + datos.main.temp_max+"&deg;";
-                document.querySelector(".infoTemperaturas").children[1].innerHTML = "Mínima: " + datos.main.temp_min + "&deg;";
-                document.querySelectorAll(".infoTemperaturas")[1].children[0].innerHTML = "Humedad: " + datos.main.humidity+ "%";
-                document.querySelectorAll(".infoTemperaturas")[1].children[1].innerHTML = "Presion: " + datos.main.pressure;
-                document.querySelector(".viento").children[0].innerHTML = "Velocidad: " + datos.wind.speed;
-                document.querySelector(".viento").children[1].innerHTML = "Grados: " + datos.wind.deg;
-                document.querySelector(".adicionalSection").children[0].innerHTML = "Amanecer: " + amanecer.toLocaleTimeString();
-                document.querySelector(".adicionalSection").children[1].innerHTML = "Puesta del sol: " + puesta.toLocaleTimeString();
+                let flexItems = document.querySelectorAll('.flexInfo');
+                console.log(document.querySelectorAll(".flexInfo")[2].children[0].innerHTML);
+                flexItems[0].children[0].innerHTML = "Máxima: " + datos.main.temp_max+"&deg;";
+                flexItems[0].children[1].innerHTML = "Mínima: " + datos.main.temp_min + "&deg;";
+                flexItems[1].children[0].innerHTML = "Humedad: " + datos.main.humidity+ "%";
+                flexItems[1].children[1].innerHTML = "Presion: " + datos.main.pressure;
+                flexItems[2].children[0].innerHTML = "Velocidad: " + datos.wind.speed;
+                flexItems[2].children[1].innerHTML = "Grados: " + datos.wind.deg;
+                flexItems[3].children[0].innerHTML = "Amanecer: " + amanecer.toLocaleTimeString();
+                flexItems[3].children[1].innerHTML = "Puesta del sol: " + puesta.toLocaleTimeString();
                 document.querySelector(".cityName h2").innerHTML = datos.name;
                 document.querySelector(".temperature").innerHTML = datos.main.temp + "&deg;";
                 document.querySelector(".leyend").innerHTML = datos.weather[0]["description"];
@@ -104,8 +106,9 @@
     <div class="container">
         <div class="navegacion">
             <div class="buscador">
-                <input id="ciudad" type="text" name="ciudad">
-                <button id="buscarCiudad">Buscar</button>
+                <span class="infoCiudad">Introduce el nombre de una ciudad:</span>
+                <input id="ciudad" class="boton search" type="text" name="ciudad">
+                <button id="buscarCiudad" class="boton " class="boton">Buscar</button>
             </div>
         </div>
         <div class="bodyContainer">
@@ -116,40 +119,35 @@
                         <div class="cityName">
                             <h2></h2>
                         </div>
-                        <div class="temperature">
-                            
-                        </div>
+                        <div class="temperature"></div>
                     </div>
-                    <div class="leyend">
-                        
-                    </div>
-
+                    <div class="leyend"></div>
                     <div class="cardBody">
                         <div class="bodySection">
                             <h2 class="wind">
                                 Temperatura
                             </h2>
-                            <div class="infoTemperaturas">
-                                <div>Maxima: </div>
-                                <div>Minima: </div>
+                            <div class="flexInfo">
+                                <div></div>
+                                <div></div>
                             </div>
-                            <div class="infoTemperaturas">
-                                <div>Humedad: </div>
-                                <div>Presion:</div>
+                            <div class="flexInfo">
+                                <div></div>
+                                <div></div>
                             </div>
                         </div>
                         <div class="bodySection">
                             <h2>Viento</h2>
-                            <div class="viento">
-                                <div>Velocidad: </div>
-                                <div>Grados: </div>
+                            <div class="flexInfo">
+                                <div> </div>
+                                <div> </div>
                             </div>
                         </div>
                         <div class="bodySection">
                             <h2>Adicional</h2>
-                            <div class="adicionalSection">
-                                <div>Puesta del sol: </div>
-                                <div>Amanecer: </div>
+                            <div class="flexInfo">
+                                <div></div>
+                                <div></div>
                             </div>
                         </div>
                     </div>
@@ -157,7 +155,6 @@
             </div>
             <div class="tableContainer">
                 <table>
-                    
                     <thead>
                         <tr>
                             <th colspan="2">Ciudades proximas</th>
@@ -176,8 +173,8 @@
                     </tbody>
                 </table>
                 <div class="arrowContainer">
-                    <button class="detras">Anterior</button>
-                    <button class="delante">Delante</button>
+                    <button disabled=true class="detras boton">Anterior</button>
+                    <button class="delante boton">Delante</button>
                 </div>
             </div>
         </div>
