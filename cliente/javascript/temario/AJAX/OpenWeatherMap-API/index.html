@@ -10,63 +10,118 @@
     <script>
         window.onload = () => {
             let data;
+            let btnSiguiente = document.querySelector('.delante');
+            let bntAnterior = document.querySelector('.detras');
             document.querySelector("#buscarCiudad").onclick = () => {
-                let ciudad = document.querySelector("#ciudad").value;
-                let url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&lang=sp&units=metric&appid=ac46b3148b7000e276d9f00fc2344fbd`;
-                resolveAjax("GET", url, (datos) => {
-                    let amanecer = new Date(datos.sys.sunrise * 1000);
-                    let puesta = new Date(datos.sys.sunset * 1000);
-                    document.querySelector(".infoTemperaturas").children[0].innerHTML = "Máxima: " + datos.main.temp_max;
-                    document.querySelector(".infoTemperaturas").children[1].innerHTML = "Mínima: " + datos.main.temp_min;
-                    document.querySelectorAll(".infoTemperaturas")[1].children[0].innerHTML = "Humedad: " + datos.main.humidity;
-                    document.querySelectorAll(".infoTemperaturas")[1].children[1].innerHTML = "Presion: " + datos.main.pressure;
-                    document.querySelector(".viento").children[0].innerHTML = "Velocidad: " + datos.wind.speed;
-                    document.querySelector(".viento").children[1].innerHTML = "Grados: " + datos.wind.deg;
-                    document.querySelector(".adicionalSection").children[0].innerHTML = "Amanecer: " + amanecer.toLocaleTimeString();
-                    document.querySelector(".adicionalSection").children[1].innerHTML = "Puesta del sol: " + puesta.toLocaleTimeString();
-                    document.querySelector(".cityName h2").innerHTML = datos.name;
-                    document.querySelector(".temperature").innerHTML = datos.main.temp + "&deg;";
-                    document.querySelector(".leyend").innerHTML = datos.weather[0]["description"];
-                    data = datos;
-                    let urlCities = `https://api.openweathermap.org/data/2.5/find?lat=${data.coord.lat}&lon=${data.coord.lon}&cnt=5&appid=ac46b3148b7000e276d9f00fc2344fbd`;
-                    resolveAjax("GET", urlCities, (datos) => {
-                        console.log(datos);
+                findCityTemp(document.querySelector("#ciudad").value);
+            };
+            btnSiguiente.onclick = () => {
+                if (data.next <= data.list.length)
+                    data.next += 10;
+                data.previous += 10;
+                fillTable(data.list.slice(data.previous, data.next));
+                btnSiguiente.disabled = (data.next >= data.list.length);
+                bntAnterior.disabled = !(data.previous > 0);
+            }
+            bntAnterior.onclick = () => {
+                if (data.next >= 10 && data.previous >= 0)
+                    data.previous -= 10;
+                data.next -= 10;
+                fillTable(data.list.slice(data.previous, data.next));
+                btnSiguiente.disabled = !(data.next < data.list.length);
+                bntAnterior.disabled = (data.previous == 0);
+            }
+            function findCityTemp(cityName) {
+                let url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&lang=sp&units=metric&appid=ac46b3148b7000e276d9f00fc2344fbd`;
+                resolveAjax("GET", url, (response) => {
+                    fillCard(response)
+                    let urlCities = `https://api.openweathermap.org/data/2.5/find?lat=${response.coord.lat}&lon=${response.coord.lon}&units=metric&cnt=50&appid=ac46b3148b7000e276d9f00fc2344fbd`;
+                    resolveAjax("GET", urlCities, (cresponse) => {
+                        cresponse.next = 10;
+                        cresponse.previous = 0;
+                        data = cresponse;
+                        fillTable(cresponse.list);
+
                     });
                 })
-            };
+            }
+
+
+            function fillCard(datos) {
+                let amanecer = new Date(datos.sys.sunrise * 1000);
+                let puesta = new Date(datos.sys.sunset * 1000);
+                document.querySelector(".infoTemperaturas").children[0].innerHTML = "Máxima: " + datos.main.temp_max+"&deg;";
+                document.querySelector(".infoTemperaturas").children[1].innerHTML = "Mínima: " + datos.main.temp_min + "&deg;";
+                document.querySelectorAll(".infoTemperaturas")[1].children[0].innerHTML = "Humedad: " + datos.main.humidity+ "%";
+                document.querySelectorAll(".infoTemperaturas")[1].children[1].innerHTML = "Presion: " + datos.main.pressure;
+                document.querySelector(".viento").children[0].innerHTML = "Velocidad: " + datos.wind.speed;
+                document.querySelector(".viento").children[1].innerHTML = "Grados: " + datos.wind.deg;
+                document.querySelector(".adicionalSection").children[0].innerHTML = "Amanecer: " + amanecer.toLocaleTimeString();
+                document.querySelector(".adicionalSection").children[1].innerHTML = "Puesta del sol: " + puesta.toLocaleTimeString();
+                document.querySelector(".cityName h2").innerHTML = datos.name;
+                document.querySelector(".temperature").innerHTML = datos.main.temp + "&deg;";
+                document.querySelector(".leyend").innerHTML = datos.weather[0]["description"];
+            }
+            function fillTable(datos) {
+                let tableBody = document.querySelector('#data');
+                if (tableBody.hasChildNodes) {
+                    let newTBody = document.createElement('tbody');
+                    newTBody.setAttribute('id', "data");
+                    tableBody.parentNode.children[1].remove()
+                    document.querySelector('table').appendChild(newTBody);
+                }
+                if (datos.length < 10) {
+                    for (dato of datos) {
+                        let fila = document.createElement('tr');
+                        let columnaNombre = `<td><a href="https://api.openweathermap.org/data/2.5/weather?q=${dato.name}&lang=sp&units=metric&appid=ac46b3148b7000e276d9f00fc2344fbd">
+                    ${dato.name}</a></td>`;
+                        let columnaTiempo = `<td>${dato.main.temp}</td>`;
+                        fila.innerHTML = columnaNombre + columnaTiempo;
+                        document.querySelector('#data').append(fila);
+                    }
+                } else {
+                    for (let i = 0; i < 10; i++) {
+                        let fila = document.createElement('tr');
+                        let columnaNombre = `<td><a href="https://api.openweathermap.org/data/2.5/weather?q=${datos[i].name}&lang=sp&units=metric&appid=ac46b3148b7000e276d9f00fc2344fbd">
+                    ${datos[i].name}</a></td>`;
+                        let columnaTiempo = `<td>${datos[i].main.temp} &deg;</td>`;
+                        fila.innerHTML = columnaNombre + columnaTiempo;
+                        document.querySelector('#data').append(fila);
+                    }
+                }
+                document.querySelectorAll('a').forEach((e) => {
+                    e.onclick = (a) => {
+                        a.preventDefault();
+                        findCityTemp(e.innerHTML);
+                    }
+                })
+            }
         }
     </script>
 </head>
 
 <body>
     <div class="container">
-        <div class="botones">
-            <button>Ciudad</button>
-            <button>Latitud</button>
-        </div>
         <div class="navegacion">
             <div class="buscador">
                 <input id="ciudad" type="text" name="ciudad">
                 <button id="buscarCiudad">Buscar</button>
-
             </div>
-            <select name="lenguaje" id="">
-                <option value="Lenguaje">Lenguaje</option>
-            </select>
         </div>
         <div class="bodyContainer">
+            <span id="cargando"></span>
             <div class="cardContainer">
                 <div class="card">
                     <div class="cardHeader">
                         <div class="cityName">
-                            <h2>Seville</h2>
+                            <h2></h2>
                         </div>
                         <div class="temperature">
-                            12º
+                            
                         </div>
                     </div>
                     <div class="leyend">
-                        Cielo Despejado
+                        
                     </div>
 
                     <div class="cardBody">
@@ -102,12 +157,11 @@
             </div>
             <div class="tableContainer">
                 <table>
+                    
                     <thead>
                         <tr>
                             <th colspan="2">Ciudades proximas</th>
                         </tr>
-                    </thead>
-                    <tbody>
                         <tr>
                             <th>
                                 Nombre
@@ -116,8 +170,15 @@
                                 Temperatura
                             </th>
                         </tr>
+                    </thead>
+                    <tbody id="data">
+
                     </tbody>
                 </table>
+                <div class="arrowContainer">
+                    <button class="detras">Anterior</button>
+                    <button class="delante">Delante</button>
+                </div>
             </div>
         </div>
     </div>

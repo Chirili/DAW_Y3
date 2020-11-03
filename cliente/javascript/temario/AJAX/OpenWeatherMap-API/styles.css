@@ -19,11 +19,30 @@ body {
     padding: 1em;
     justify-content: center;
 }
-table , tr , th{
-    border: 1px solid black;
+table , tr , th,td{
+    border-radius: 10px;
+    padding: 8px;
+    margin: auto;
     border-collapse: collapse;
+     color: #e2f3f5;
+    background: #002651;
 }
+th, td {
+    border-bottom: 2px solid #775ada;
+}
+table > tbody > tr:last-child > td{
+    border-bottom: unset;
+}
+table a {
+    color: #e2f3f5;
+}
+.arrowContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
 .tableContainer{
+    text-align: center;
     margin: auto;
 }
 .cardHeader{
@@ -44,6 +63,10 @@ table , tr , th{
 .temperature{
     width: 100%;
     margin: auto;
+}
+#gif{
+    left: 50%;
+    position: absolute;
 }
 .cardContainer {
     padding: 1em;
