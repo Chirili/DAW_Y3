@@ -23,7 +23,7 @@
                     document.querySelector(".viento").children[0].innerHTML = "Velocidad: " + datos.wind.speed;
                     document.querySelector(".viento").children[1].innerHTML = "Grados: " + datos.wind.deg;
                     document.querySelector(".adicionalSection").children[0].innerHTML = "Amanecer: " + amanecer.toLocaleTimeString();
-                    document.querySelector(".adicionalSection").children[1].innerHTML = "Pues del sol: " + puesta.toLocaleTimeString();
+                    document.querySelector(".adicionalSection").children[1].innerHTML = "Puesta del sol: " + puesta.toLocaleTimeString();
                     document.querySelector(".cityName h2").innerHTML = datos.name;
                     document.querySelector(".temperature").innerHTML = datos.main.temp + "&deg;";
                     document.querySelector(".leyend").innerHTML = datos.weather[0]["description"];
