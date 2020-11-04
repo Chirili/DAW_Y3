@@ -10,6 +10,11 @@
     <script>
         window.onload = () => {
             let data;
+            let prueba = ["hola","prueba"];
+            let mapa = prueba.map((value,index) =>{
+                return {index,value};
+            })
+            console.log(mapa);
             let btnSiguiente = document.querySelector('.delante');
             let bntAnterior = document.querySelector('.detras');
             document.querySelector("#buscarCiudad").onclick = () => {
