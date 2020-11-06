@@ -1,57 +1,111 @@
 <?php
-//  Indicamos que el resultado va a ser en json:
 header('Content-Type: application/json');
+include("../../../conexion/conexion.php");
+$conn = Conectar2("ajax", "root", "");
 
-include("conexion.php");
-//  Para poder obtener el resultset en forma de array asociativo
-//  debemos de usar la función Conectar2:
-$conn = conectar2("AJAX", "root", "");
-
-//  Con esta línea recogemos los datos (en formato JSON), enviados por el cliente:
-$datos = file_get_contents('php://input');  //  $datos es un string, y no un objeto php
-//  Lo convertimos a un objeto php:
+$datos = file_get_contents('php://input');
 $objeto=json_decode($datos);
 
-//  print "objeto->servicio = " . $objeto->servicio;
-//  return;
-print($objeto);
 if($objeto != null) {
   switch($objeto->servicio) {
     case "listar":
-    	listadoPersonas();
+    	print json_encode(listadoPersonas());
       break;
     case "insertar":
       insertarPersona($objeto);
-			listadoPersonas();
+			print json_encode(listadoPersonas());
       break;
     case "borrar":
-      borrarPersona($objeto->ID);
-			listadoPersonas();
+      borrarPersona($objeto->id);
+			print json_encode(listadoPersonas());
       break;
+		case "modificar":
+			modificarPersona($objeto);
+			print json_encode(listadoPersonas());
+			break;
+			
+		case "selPersonaID":
+			print json_encode(selPersonaID($objeto->id));
 	}
 }
 
 function listadoPersonas() {
 	global $conn;
-	$sc = "Select * From personas Order By ID";
-	$rs = Consulta($conn, $sc);
-	//  Devolvemos la filas del cuerpo de la tabla:
-	print json_encode($rs->fetchAll(PDO::FETCH_ASSOC));
+	try {
+		$sc = "Select * From personas Order By ID";
+		$stm = $conn->prepare($sc);
+		$stm->execute();
+		return ($stm->fetchAll(PDO::FETCH_ASSOC));
+	} catch(Exception $e) {
+		die($e->getMessage());
+	}
 }
 
-function insertarPersona($obj) {
+function insertarPersona($objeto) {
 	global $conn;
-	//  La consulta de INSERCION:
-	$sc = "Insert into personas(DNI, NOMBRE, APELLIDOS) Values('$obj->DNI', '$obj->NOMBRE', '$obj->APELLIDOS')";
-	$rs = Consulta($conn, $sc);
+	try {
+		$sql = "INSERT INTO personas(DNI, NOMBRE, APELLIDOS) VALUES (?, ?, ?)";	
+		$conn->prepare($sql)->execute(
+			array(
+				$objeto->dni,
+				$objeto->nombre,
+				$objeto->apellidos
+				)
+			);
+		return true;
+	} catch (Exception $e) {
+			die($e->getMessage());
+			return false;
+	}
 }
 
 function borrarPersona($id){
 	global $conn;
-	//  La consulta de ELIMINACIÓN:
-	$sc = "Delete From personas Where ID = $id";
-	$rs = Consulta($conn, $sc);
+	try {
+		$sql = "Delete From personas Where ID = ?";	
+		$conn->prepare($sql)->execute(array($id));
+		return true;
+	} catch (Exception $e) {
+			die($e->getMessage());
+			return false;
+	}
 }
+
+function modificarPersona($objeto) {
+	global $conn;
+	try {
+		$sql = "UPDATE personas SET 
+							DNI				= ?,
+							NOMBRE		= ?, 
+							APELLIDOS	= ?
+						WHERE id = ?";
+		$conn->prepare($sql)->execute(
+		array(
+			$objeto->dni,
+			$objeto->nombre, 
+			$objeto->apellidos, 
+			$objeto->id
+			) 
+		);
+		return true;
+	} catch (Exception $e) {
+		die($e->getMessage());
+		return false;
+	}
+}
+
+function selPersonaID($id) {
+	global $conn;
+	try {
+		$sc = "Select * From personas Where ID = ?";
+		$stm = $conn->prepare($sc);
+		$stm->execute(array($id));
+		return ($stm->fetch(PDO::FETCH_ASSOC));
+	} catch(Exception $e) {
+		die($e->getMessage());
+	}	
+}
+
 
 ?>
 

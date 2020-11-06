@@ -1,0 +1,22 @@
+.container{
+    margin: 0;
+    padding: 0;
+}
+.ipp ,.iaaa{
+    display: none;
+}
+.ipp:checked + .texto, .iaaa:checked + .texto2 {
+visibility: hidden;}
+.texto,.texto2{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background: red;
+    z-index: 120;
+}
+.texto2{
+    z-index: 1;
+    background: green;
+}
