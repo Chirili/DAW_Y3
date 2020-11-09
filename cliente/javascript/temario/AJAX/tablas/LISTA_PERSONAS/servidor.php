@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-include("../../../conexion/conexion.php");
+include("conexion.php");
 $conn = Conectar2("ajax", "root", "");
 
 $datos = file_get_contents('php://input');
