@@ -4,46 +4,83 @@
   <head>
     <meta charset="UTF-8"/>
     <title>Ejercicio Listado Personas. AJAX</title>
-    <style type="text/css">
-
-    </style>
     <script src="./ajaxUtils.js" defer></script>
     <script type="text/javascript">
 		
       window.onload = () => {
         pedirPersonas();
-        document.querySelector('#btAnade').onclick = ()=>{
-          aniadePersona();
-        }
         document.querySelector('#btBorrar').onclick = ()=>{
           borraPersona();
         }
+        document.querySelector('#btnAdd').onclick = () =>{
+          formAddPersona();
+        }
       }
+      function formAddPersona(){
+        let inputs = document.querySelectorAll('#personaForm input');
+        document.querySelector('#personaForm fieldset legend').innerHTML = "Añadir Persona";
+        let botonForm = document.querySelector('#btnForm')
+        botonForm.innerHTML = "Añadir";
+        for(let i=0; i < inputs.length;i++){
+          inputs[i].value = "";
+        }
+        document.querySelector('#personaForm').style.display = "block";
+        document.querySelector('#cancelar').onclick = ()=>{
+          document.querySelector('#personaForm').style.display = "none";
+        };
+        botonForm.onclick = ()=>{
+          let personaJSON = {
+            servicio:"insertar",
+            dni:document.querySelector('#personaForm #dni').value,
+            nombre:document.querySelector('#personaForm #nombre').value,
+            apellidos:document.querySelector('#personaForm #apellidos').value
+          }
+          document.querySelector('#personaForm').style.display = "none";
+          aniadePersona(JSON.stringify(personaJSON));
+
+        }
+      };
       function borraPersona(){
         let id = document.querySelector('#id').value;
         let jsonObject = JSON.stringify({servicio: "borrar",ID:id})
-        resolveAjax("POST","http://localhost/ajax/tablas/servidor.php",jsonObject,()=>{
+        resolveAjax("POST","http://localhost/ajax/tablas/servidor.php",jsonObject,(datos)=>{
+          pintarPersonas(datos);
         });
-        pedirPersonas();
       };
-			function aniadePersona(){
+      function borraByPersona(id){
+        let jsonObject = JSON.stringify({servicio: "borrar",ID:id})
+        resolveAjax("POST","http://localhost/ajax/tablas/servidor.php",jsonObject,(datos)=>{
+          pintarPersonas(datos)
+        });
+      };
+			function aniadePersona(personaJSON){
           let dni = document.querySelector('#dni').value;
           let nombre = document.querySelector('#nombre').value;
           let apellidos = document.querySelector('#apellidos').value;
           let jsonObject = JSON.stringify({servicio:"insertar",DNI:dni,NOMBRE:nombre,APELLIDOS:apellidos})
-          resolveAjax("POST","http://localhost/ajax/tablas/servidor.php",jsonObject,(datos)=>{
+          resolveAjax("POST","http://localhost/ajax/tablas/servidor.php",personaJSON,(datos)=>{
+            pintarPersonas(datos);
           })
-          pedirPersonas();
+          
       }
 			function pedirPersonas(){
         resolveAjax("POST","http://localhost/ajax/tablas/servidor.php", JSON.stringify({servicio:"listar"}),(datos)=>{
-          console.table(datos);
-          pintarPersonas(datos)
+          pintarPersonas(datos);
         });
       };
       function pintarPersonas(datos){
+        if(document.querySelector('#filas_tabla').hasChildNodes()){
+          document.querySelector('#filas_tabla').remove()
+          let tBody = document.createElement('tbody');
+          tBody.setAttribute('id','filas_tabla')
+          document.querySelector('#tabla_personas').append(tBody);
+        }
         let cuerpo = document.querySelector('#filas_tabla');
         for(persona of datos){
+          let botonB = "<button type='button' class='borrar'>Borrar</button>";
+          let botonE = "<button type='button' class='editar'>Editar</button>";
+          let columnaBorrar = document.createElement('td');
+          let columnaEditar = document.createElement('td');
           let fila = document.createElement('tr');
           for(i in persona){
             let columna = document.createElement('td');
@@ -51,13 +88,61 @@
             fila.append(columna);
             cuerpo.append(fila);
           }
+          columnaBorrar.innerHTML = botonB;
+          columnaEditar.innerHTML = botonE;
+          fila.append(columnaBorrar);
+          fila.append(columnaEditar);
+        }
+        document.querySelectorAll('.borrar').forEach(boton => boton.onclick = function(){
+          let elemento = this.parentElement.parentElement;
+          if(confirm("¿Esta seguro que deseas borrar a "+elemento.children[1].innerHTML+" "+elemento.children[2].innerHTML+"?"))
+            borraByPersona(elemento.firstElementChild.innerHTML);
+        });
+        document.querySelectorAll('.editar').forEach(boton => boton.onclick = modificarPersona);
+      }
+      function modificarPersona(){
+        let data = this.parentNode.parentNode;
+        document.querySelector('#personaForm fieldset legend').innerHTML = "Modificar Persona";
+        document.querySelector('#btnForm').innerHTML = "Modificar";
+        let inputs = document.querySelectorAll('#personaForm input');
+        document.querySelector('#personaForm').style.display = "block";
+        document.querySelector('#cancelar').onclick = ()=>{
+          document.querySelector('#personaForm').style.display = "none";
+        };
+
+        document.querySelector('#btnForm').onclick = ()=>{
+          let resolve = {
+            servicio:"modificar",
+            id:data.children[0].innerHTML,
+            dni:document.querySelector('#personaForm #dni').value,
+            nombre:document.querySelector('#personaForm #nombre').value,
+            apellidos:document.querySelector('#personaForm #apellidos').value
+          }
+          resolveAjax("POST","http://localhost/ajax/tablas/servidor.php", JSON.stringify(resolve),(datos)=>{
+            document.querySelector('#personaForm').style.display = "none";
+            pintarPersonas(datos);
+          });
+        }
+        for(let i=0; i < inputs.length;i++){
+          inputs[i].value = data.children[i+1].innerHTML;
         }
       }
     </script>
+    <style type="text/css">
+    #editar{
+      position: fixed;
+      width: 500px;
+      left: 35%;
+      top: 10%;
+    }
+    #editar > fieldset {
+      margin-block-end: .5em;
+    }
+    </style>
   </head>
   <body>
     <h1>Registro de Usuarios</h1>
-
+    <!--
     <form>
       <label for="dni">DNI:</label>
       <input type="text" id="dni" name="dni" value="27473339T" />
@@ -71,26 +156,37 @@
       <br/>
 
       <br/>
-     
+      -->
+     <button id="btnAdd" type="button">Nueva Persona</button>
       <table id="tabla_personas" border="1">
         <tr>
           <th>ID</th>
           <th>DNI</th>
           <th>NOMBRE</th>
           <th>APELLIDOS</th>
+          <th>BORRAR</th>
+          <th>EDITAR</th>
         </tr>
         
         <tbody id="filas_tabla">
         
         </tbody>
       </table>
-
-      <br/>
-      <br/>
-      <input type="button" value="AÑADIR" id="btAnade" />
-			<br><br>
-			<input type="button" value="BORRAR" id="btBorrar" />
-			<input type="text" id="id" name="id" value="" size="5" placeholder="ID a borrar" />
+    </form>
+    <form id="personaForm" style="display: none;">
+      <fieldset>
+        <legend></legend>
+        <label for="dni">DNI: </label>
+        <input id="dni" type="text" name="dni">
+        <br><br>
+        <label for="nombre">Nombre: </label>
+        <input id="nombre" type="text" name="nombre">
+        <br><br>
+        <label for="apellidos">Apellidos: </label>
+        <input id="apellidos" type="text" name="apellidos">
+      </fieldset>
+      <button id="btnForm" type="button">Modificar</button>
+      <button id="cancelar" type="button">Cancelar</button>
     </form>
 
   </body>

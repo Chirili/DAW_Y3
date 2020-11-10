@@ -15,7 +15,7 @@ if(array_sum($validacion) == 5){
     print "Genero de la persona: $_REQUEST[sexo]<br>";
     print "Cantidad de aficiones que practica: ".count($_REQUEST["aficiones"])."<br>";
 }else{
-    print (array_sum($validacion) == 4) ? "Hay 1 error en los datos." : "Hay" .(5-array_sum($validacion))." errores.";
+    print (array_sum($validacion) == 4) ? "Hay 1 error en los datos." : "Hay " .(5-array_sum($validacion))." errores.";
 }
 ?>
 <!DOCTYPE html>
@@ -38,11 +38,18 @@ if($datos){
        <input type="text" name="apellidos">
        <br>
        <label for="edad">Introduce tu edad: </label> 
-       <input type="text" name="edad">
+        <select name="edad" id="">
+        <?php
+           for($i=10;$i <91;$i++ ){
+               print "<option value='$i'>$i</option>";
+           }
+        ?>
+       </select>
        <br>
        <p>Selecciona tu genero: </p>
        <input type="radio" name="sexo" value="hombre" id=""> Hombre
        <input type="radio" name="sexo" value="mujer" id="">Mujer
+
        <p>Selecciona tus aficiones</p>
        <input type="checkbox" name="aficiones[]" value="musica" id=""> Musica
        <input type="checkbox" name="aficiones[]" value="deporte" id=""> Deporte

@@ -24,8 +24,9 @@
     <label for="estatura">Introduce tu estatura: </label>
     <?php 
     if(!empty($_REQUEST["estatura"])){
-        print "<input type=\"text\" name=\"estatura\" value=\"$_REQUEST[estatura]\"";
         
+        print "<input type=\"text\" name=\"estatura\" value=\"$_REQUEST[estatura]\">";
+        if($_REQUEST["estatura"] <70 || $_REQUEST["estatura"] > 250){print "Error introduce un numero entre 70 y 250";}
     }else{
        
     ?>
