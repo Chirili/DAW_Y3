@@ -10,10 +10,9 @@
         loadData("https://swapi.dev/api/people/");
       };
       function loadWorld(url) {
-        AJAXRes("GET", url, (response) => {
-          let {name,rotation_period,orbital_period,climate,diameter,terrain,} = response;
-          fillWorld([name,rotation_period,orbital_period,climate,diameter,terrain]);
-        });
+        fetch(url)
+        .then(res=> res.json())
+        .then(data => fillWorld([data.name,data.rotation_period,data.orbital_period,data.climate,data.diameter,data.terrain]))
       }
       function fillWorld(world) {
         let palabras = ["Nombre: ","Velocidad de rotacion: ","Periodo orbital: ","Clima: ","Diametro: ","Terreno: ",];
@@ -30,23 +29,24 @@
         }
       }
       function loadData(url) {
+        fetch(url)
+        .then(res => res.json())
+        .then(dataResponse => fillTable(dataResponse));
+      }
+      function fillTable(dataResponse){
         let dataContainer = document.getElementById("data");
         let data;
         if (document.querySelector("#data").hasChildNodes) {
           document.querySelectorAll("#data tr").forEach((tr) => tr.remove());
         }
-        
-        AJAXRes("GET", url, (response) => {
-          let personajes = Array.from(response.results);
+        let personajes = Array.from(dataResponse.results);
           for (let i = 0; i < personajes.length; i++) {
             let {name,height,mass,birth_year,gender,homeworld,} = personajes[i];
             let fila = document.createElement("tr");
             dataContainer.appendChild(
               fillColumns([name, height, mass, birth_year, gender],fila,homeworld)
             );
-            data = response;
-            console.log(data.next === null);
-            console.log(data.previous === null);
+            data = dataResponse;
             document.querySelector('#siguiente').disabled = data.next === null;
             document.querySelector('#anterior').disabled = data.previous === null;
           }
@@ -57,14 +57,12 @@
               loadWorld(e.innerHTML);
             };
           });
-        });
-       
-        document.getElementById("siguiente").onclick = function (e) {
-          loadData(data.next);
-        };
-        document.getElementById("anterior").onclick = function (e) {
-          loadData(data.previous);
-        };
+          document.getElementById("siguiente").onclick = function (e) {
+            loadData(data.next);
+          };
+          document.getElementById("anterior").onclick = function (e) {
+            loadData(data.previous);
+          };
       }
       function removeColumns() {
         console.log(document.getElementById("data").children);

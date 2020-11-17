@@ -15,7 +15,7 @@
         <input type="text" name="numero2">
         <br>
         <br>
-        <input type="radio" name="operacion" value="suma">Suma
+        <input type="radio" name="operacion" checked="true" value="suma">Suma
         <input type="radio" name="operacion" value="resta">Resta
         <input type="radio" name="operacion" value="multiplicacion">Multiplicacion
         <input type="radio" name="operacion" value="division">Division
@@ -24,9 +24,9 @@
     </form>
 </body>
 </html>
-<?php 
+<?php
 require_once "operaciones.php";
 $num1 = $_REQUEST["numero1"];
 $num2 = $_REQUEST["numero2"];
-print "Resultado de la operacion: " . operaciones($num1,$num2,!isset($_REQUEST["operaciones"])  ? :$_REQUEST["operaciones"]);
+print "Resultado de la operacion: " . operaciones($num1,$num2,!isset($_REQUEST["operaciones"])  ? "suma":$_REQUEST["operaciones"]);
 ?>

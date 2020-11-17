@@ -24,7 +24,8 @@ function LettersToUpperCase(){
 }
 function ValidateDate(day,month,year){
     let date = new Date(year,month-1,day);
-    return (date.getDate() == day && date.getMonth() == month-1 && date.getFullYear() == year);
+    if(date.getDate() == day && date.getMonth() == month-1 && date.getFullYear() == year){
+    }
 }
 function OnlyNumbers(e){
     return ('0123456789'.indexOf(e.key) != -1);

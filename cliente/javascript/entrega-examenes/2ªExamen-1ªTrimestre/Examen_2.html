@@ -1,0 +1,163 @@
+<html>
+  <head>   
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+    <title>Examen 2</title>
+    <script src="./utils.js" defer></script>
+    <script type="text/javascript">
+      window.onload = ()=>{
+
+        document.querySelector('#nombre').onkeyup = ToUpperCase;
+        document.querySelector('#nombre').onkeypress = JustLetters;
+        document.querySelector('#apellidos').onkeyup = ToUpperCase;
+        document.querySelector('#apellidos').onkeypress = JustLetters;
+        document.querySelector('#nif').onkeypress = CheckNifInput;
+        document.querySelector('#usuario').onkeypress = CheckUserInput;
+        document.querySelector('#enviar').onclick = ValidateForm;
+      }
+      /*
+      *Funcion para validar el DNI V2
+      */
+      function ValidateNIF_V2(nif){
+          let letters = "TRWAGMYFPDXBNJZSQVHLCKET";
+          let number = nif.substr(0, 8) % 23;
+          let res = {
+            "letra" : letters[number],
+            "valido" : (letters[number] == nif[nif.length-1].toUpperCase()),
+            "nif" : nif.substr(0,8)+letters[number]
+          }
+          return res;
+      }
+      function ValidateForm(e){
+        //Validacion del Nombre
+        let isValidForm = true;
+        if(document.querySelector('#nombre').value.length == 0){
+          document.querySelector('#spnombre').innerHTML = "Introduce un nombre de usuario, por favor.";
+          isValidForm = false;
+        }else{
+          document.querySelector('#spnombre').innerHTML = "";
+        }
+        //Validacion de los apellidos
+        if(document.querySelector('#apellidos').value.length == 0){
+          document.querySelector('#spapellidos').innerHTML = "Introduce un nombre de usuario, por favor.";
+          isValidForm = false;
+        }else{
+          document.querySelector('#spapellidos').innerHTML = "";
+        }
+        //Validacion del NIF
+        let nifData = document.querySelector('#nif').value;
+        if(nifData.length < 9 || !ValidateNif(nifData)){
+          document.querySelector('#spnif').innerHTML = "El NIF introducido no es correcto";
+          isValidForm = false;
+        }else{
+          document.querySelector('#spnif').innerHTML = "";
+        }
+        //Validacion del usuario
+        if(document.querySelector('#usuario').value.length < 5){
+          document.querySelector('#spusuario').innerHTML = "La longitud del Usuario no es correcta";
+          isValidForm = false;
+        }else{
+          document.querySelector('#spusuario').innerHTML = "";
+        }
+        //Validacion de la contraseña
+        let passData = document.querySelector('#clave').value;
+        let validate = [false,false,false,false];
+        console.log(validate);
+        letras = [[],[]];
+        //Esto se encarga de rellenar dos arrays con todas la letras del abcdario tanto minusculas como mayusculas
+        for(let i = 0; i < 26; i++){
+          letras[0].push(String.fromCharCode(65+i));
+          letras[1].push(String.fromCharCode(97+i));
+        }
+        //Compruebo cada letra si se encuentra en uno de esos dos arrays
+        for(let i = 0; i < passData.length; i++){
+          if('*_@&$%?#'.indexOf(passData[i]) != -1)validate[0] = true;
+          if('0123456789'.indexOf(passData[i])!= -1)validate[1] = true;
+          if(letras[0].toString().indexOf(passData[i]) != -1) validate[2] = true;
+          if(letras[1].toString().indexOf(passData[i]) != -1)validate[3] = true;
+        }
+        //Validacion de la contraseña
+        if(passData.length < 8 || validate.some(v => v == false)){
+          document.querySelector('#spclave').innerHTML = "Error: la contraseña debe contener un numero, letra mayuscula,minuscula y caracteres especiales(*_@#$%)"
+          isValidForm = false;
+        }else{
+          document.querySelector('#spclave').innerHTML = "";
+        }
+        //Validacion de la contraseña repetida
+        let claveRepValid = true;
+        let claveRepetida = document.querySelector('#rep_clave').value;
+        let errorClaveRepetida = document.querySelector('#sprep_clave');
+        if(claveRepetida.length != passData.length){
+          errorClaveRepetida.innerHTML = "Las contraseñas no coinciden";
+          isValidForm = false;
+        }else{
+          for(let i = 0; i < passData.length;i++){
+            if(passData[i] !== claveRepetida[i]) claveRepValid = false;
+          }
+          (!claveRepValid) ? errorClaveRepetida.innerHTML = "Las contraseñas no coinciden":errorClaveRepetida.innerHTML = "";
+        }
+        //Validacion de la fecha
+        let errorFecha = document.querySelector('#spf_nacimiento');
+        if(!ValidateDate(document.querySelector('#fn_dia').value,document.querySelector('#fn_mes').value,document.querySelector('#fn_ano').value)){
+          errorFecha.innerHTML = "Error: Introduzca una fecha correcta";
+        }else{
+          let fecha = new Date(document.querySelector('#fn_ano').value,document.querySelector('#fn_mes').value - 1,document.querySelector('#fn_dia').value);
+          let fechaActual = new Date();
+          fechaActual.setFullYear(fechaActual.getFullYear()-18);
+          if(fechaActual.getTime()<fecha.getTime()){
+            errorFecha.innerHTML = "Error: Tienes que ser mayor de 18 años";
+            isValidForm = false;
+           }else{errorFecha.innerHTML = "";}
+        }
+
+        if(!isValidForm){
+          e.preventDefault();
+        }
+      }
+    </script>
+
+  </head>
+
+  <body>
+  <center>FORMULARIO</center>
+  <form id="f1" action="Alta_Usuario.php">
+    <p>
+      Nombre: <input type="text" id="nombre" >
+      <span id="spnombre"></span>
+    </p>
+    <p>
+      Apellidos: <input type="text" id="apellidos" >
+      <span id="spapellidos"></span>
+    </p>
+    <p>
+      NIF: <input type="text" id="nif">
+      <span id="spnif"></span>
+    </p>
+    <p>
+      Usuario: <input type="text" id="usuario">
+      <span id="spusuario"></span>
+    </p>
+    <p>
+      Clave: <input type="text" id="clave">
+      <span id="spclave"></span>
+    </p>
+    <p>
+      Repetir Clave: <input type="password" id="rep_clave">
+      <span id="sprep_clave"></span>
+    </p>
+    <p>
+      Fecha de Nacimiento:
+      <input type="text" id="fn_dia" maxlength="2" size="1" /> / 
+      <input type="text" id="fn_mes" maxlength="2" size="1"/> / 
+      <input type="text" id="fn_ano" maxlength="4" size="3"/> (dd/mm/aaaa) 
+      <span id="spf_nacimiento"></span>
+    </p>
+
+    <br><br>
+    <p>
+      <input type="submit" value="Enviar" id="enviar" />
+      <br><br>
+      <input type="reset" value="Limpiar Campos" id="limpiar_campos" />
+    </p>
+  </form>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Examen Coordenadas</title>
+		<style type="text/css">
+			span {
+				color: red;
+			}
+			
+			.resultado{
+				text-align: center;
+				font-size: 1.5em;
+				color: maroon;
+			}]
+			
+		</style>
+		<script src="./utils.js" defer></script>
+		<script type="text/javascript">
+
+		window.onload = ()=>{
+		const url = "http://localhost/ajax/examen/servicio_coordenadas.php";
+		let servicioColumnas = JSON.stringify({"servicio":"rangoColumnas"});
+		resolveAjax('POST',url,servicioColumnas,(datos)=>{
+			resolveAjax('POST',url,JSON.stringify({"servicio":"rangoFilas"}),(datosf)=>{
+				let letra_aleatoria = datos[Math.floor(Math.random()*datos.length)];
+				let numero_aleatorio = datosf[Math.floor(Math.random()*datosf.length)];
+				document.querySelector('#coordenadas').innerHTML = letra_aleatoria+numero_aleatorio;
+			})
+		})
+		document.querySelector('#btValidar').onclick = function(){
+			let coords = document.querySelector('#coordenadas').innerHTML;
+			resolveAjax('POST',url,JSON.stringify({"servicio":"elemento","fila":coords[1],"columna":coords[0]}),(res)=>{
+				console.log(res);
+				if(res == document.querySelector('#valor').value){
+					document.querySelector('#info_valor').innerHTML  ="El numero introducido correcto";
+				}else{
+					document.querySelector('#info_valor').innerHTML  ="El numero introducido es incorrecto";
+				}
+			})
+		}
+		}
+		
+
+		</script>
+	</head>
+
+	<body>
+		
+		<h1>Acceso al sistema</h1>
+		<form>
+		<p>
+			<h3>Sistema de validación según tarjeta de coordenadas:</h3>
+			<label for="valor">Introduzca el valor para las coordenadas: <span id="coordenadas"> </span> </label>
+			<br>
+			<input type="text" id="valor" maxlength="2" size="1" autofocus />
+			<span id="info_valor"> </span>
+			<br><br>
+		</p>
+		<p class="resultado">
+		
+		</p>
+		<p>
+			<input type="button" id="btValidar" value="ACEPTAR" >
+		</p>
+		</form>
+		
+	</body>
+</html>
+
+
