@@ -19,6 +19,8 @@
                 session_start();
                 
                     $_SESSION["num_preguntas"] = count($_REQUEST);
+                    $_SESSION["preguntas"] = [];
+                    print_r($_REQUEST);
                     for($i=0;$i < $_SESSION["num_respuestas"];$i++){
                         print "<th>".($i+1)."</th>";
                     }
@@ -30,8 +32,9 @@
                         print "<tr>";
                         if(!empty($pregunta)){
                         print "<th>$pregunta :</th>";
-                        for ($i=0; $i < $_SESSION["num_respuestas"]; $i++) { 
-                            print"<td><input type=radio name=$numeroPregunta value=".($i+1)."></td>";
+                        for ($i=0; $i < $_SESSION["num_respuestas"]; $i++) {
+                            $_SESSION["preguntas"][$numeroPregunta] = $pregunta;
+                            print"<td><input type=radio name=\"".$numeroPregunta[-1]."\" value=".($i+1)."></td>";
                         }
                     }
                         print "</tr>";

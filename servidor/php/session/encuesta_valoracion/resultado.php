@@ -12,11 +12,11 @@
     <h1>Encuesta(Resultado)</h1>
     <p>Se han contestado <?=count($_REQUEST)?> pregunta(s) de un total de <?=$_SESSION["num_preguntas"]?></p>
     <?php
-    print_r($_REQUEST);
-    print_r($_SESSION);
-        for($i=0; $i < count($_REQUEST); $i++){
-            print "A la pregunta" .($i+1)."se ha respondido";
+    foreach($_SESSION["preguntas"] as $numPregunta => $pregunta){
+        if(array_key_exists($numPregunta[-1],$_REQUEST)){
+            print "<p>A la pregunta <strong>" .$pregunta."</strong> se ha contestado ".$_REQUEST[$numPregunta[-1]];
         }
+    }
     ?>
 </body>
 </html>
