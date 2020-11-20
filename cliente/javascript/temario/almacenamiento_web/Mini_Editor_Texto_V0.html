@@ -11,10 +11,10 @@
 			border: 1px solid blue;
 			padding: 0.4em;
 		}
-		span {
+		span,label {
 			border: 2px solid red;
 			margin: 1.1em;
-			padding: .2em;
+			padding: .5em;
 			cursor: pointer;
 			background-color: pink;
 		}
@@ -23,23 +23,54 @@
 		
     <script type="text/javascript">
       window.onload=()=>{
-		  document.getElementById('texto').onselect = (e)=>{
-			  console.log(e);
+		  let texto;
+		  document.querySelector('#guardar').onclick = ()=>{
+			localStorage[document.querySelector('#key').value] = document.querySelector('#texto').innerHTML;
 		  }
+		  
+		  document.querySelector('#negrita').addEventListener("mousedown",ponerNegrita);
+		  document.querySelector('#cursiva').addEventListener("mousedown",ponerCursiva);
+		  document.querySelector('#subrayado').addEventListener("mousedown",ponerSubrayado);
+		  document.querySelector('#color').addEventListener("mousedown",cambiarColor);
+		  document.querySelector('#color').addEventListener("change",cambiarColor);
+		 
 	  }
+	  function ponerNegrita(e){
+		  document.execCommand('bold',false,null);
+		  e.preventDefault();
+	  }
+	  function ponerCursiva(e){
+		document.execCommand('italic',false,null);
+		e.preventDefault();
+	  }
+	  function ponerSubrayado(e){
+		document.execCommand('underline',false,null);
+		e.preventDefault();
+	  }
+	  function cambiarColor(e){
+		
+		console.log(document.querySelector('#color').value);
+		document.execCommand('foreColor',false,document.querySelector('#color').value);
+		e.preventDefault();
+	  }
+ 
+
+
       
     </script>
   </head>
   
   <body>
 
-    <h3>Procesador de Textos</h3>
+	<h3>Procesador de Textos</h3>
+	Nombre para el texto<input id="key" type="text">
 		<p>
 			<span id="guardar">Guardar</span>
 			<span id="negrita">Negrita</span>
 			<span id="cursiva">Cursiva</span>
 			<span id="subrayado">Subrayado</span>
-			<span id="color">Color</span>
+			<label for="mierda">Selecciona color:</label>
+  			<input type="color" id="color" name="mierda" >
 		</p>
 		<div id="texto" contentEditable="true" spellcheck="true">
 			Esto es un texto de prueba para no tener que estar escribiendo.
