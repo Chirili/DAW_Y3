@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container{
+            width: 150px;
+            height: 150px;
+            animation: agitar 1s linear infinite;
+            background-color: red;
+        }
+        @keyframes agitar {
+            25%{
+               transform: translateX(5px);
+            }
+            50%{
+                transform: translateX(-5px);
+            }
+            65%{
+                transform: translateX(10px);
+            }
+            85%{
+                transform: translateX(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+</body>
+</html>

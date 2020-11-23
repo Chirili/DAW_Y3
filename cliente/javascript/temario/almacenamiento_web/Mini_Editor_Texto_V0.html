@@ -33,7 +33,28 @@
 		  document.querySelector('#subrayado').addEventListener("mousedown",ponerSubrayado);
 		  document.querySelector('#color').addEventListener("mousedown",cambiarColor);
 		  document.querySelector('#color').addEventListener("change",cambiarColor);
-		 
+		  let conteTexto = document.querySelector('#textos');
+		  Object.getOwnPropertyNames(localStorage).forEach((elemento)=>{
+			let option = new Option(elemento,elemento);
+			option.onclick = function(){
+				document.querySelector('#texto').innerHTML = localStorage.getItem(this.value);
+			}
+				conteTexto.append(option);
+		  });
+		  /*
+		  for(i in localStorage){
+			
+			if(localStorage.getItem(i) != null){
+				let option = document.createElement('option');
+				option.setAttribute('id',i);
+				option.innerHTML = i;
+				option.addEventListener('click',function(){
+					document.querySelector('#texto').innerHTML = localStorage.getItem(this.id);
+				});
+				conteTexto.append(option);
+			}
+		  }
+		 */
 	  }
 	  function ponerNegrita(e){
 		  document.execCommand('bold',false,null);
@@ -63,14 +84,14 @@
   <body>
 
 	<h3>Procesador de Textos</h3>
-	Nombre para el texto<input id="key" type="text">
+	Nombre para el texto<input id="key" type="text">Textos guardados: <select multiple name="" id="textos"></select>
 		<p>
 			<span id="guardar">Guardar</span>
 			<span id="negrita">Negrita</span>
 			<span id="cursiva">Cursiva</span>
 			<span id="subrayado">Subrayado</span>
 			<label for="mierda">Selecciona color:</label>
-  			<input type="color" id="color" name="mierda" >
+			<input type="color" id="color" name="" >
 		</p>
 		<div id="texto" contentEditable="true" spellcheck="true">
 			Esto es un texto de prueba para no tener que estar escribiendo.
