@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>   
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+    <title>Plantilla</title>
+    <script type="text/javascript">
+      
+			var db;
+			
+      window.onload = function(){
+				db = openDatabase('mydb', '1.0', 'borrar', 2 * 1024 * 1024);
+				
+
+				
+				db.transaction(function (tx) {
+					tx.executeSql('DROP TABLE provincias');
+				});
+				
+				db.transaction(function (tx) {
+					var sc = "CREATE TABLE IF NOT EXISTS provincias (" +
+						"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+						"id_provincia INTEGER, " +
+						"provincia VARCHAR(200))";
+					tx.executeSql(sc);
+				});
+				
+				
+				db.transaction(function (tx) {
+					sc = "INSERT INTO `provincias` (`id_provincia`, `provincia`) VALUES(30, 'Murcia')";
+					tx.executeSql(sc);
+					
+					sc = "INSERT INTO `provincias` (`id_provincia`, `provincia`) VALUES(41, 'Sevilla')";
+					tx.executeSql(sc);
+				});
+				
+
+				document.querySelector("#btPintar").onclick=pintaDatos;
+			}
+			
+			
+			function pintaDatos(){
+				//  Crear aquí el código para pintar (en el div id="sal") los datos de las provincias.
+				db.transaction(function(tx){
+					tx.executeSql('SELECT * FROM provincias',[],function(tx,results){
+						for(row of results.rows){
+							console.log(JSON.stringify(row));
+							let datos = `<p>${JSON.stringify(row)}<p/><br><p>ID de la provincia: ${row.id}, Nombre de la provincia: ${row.id_provincia}</>`;
+							document.querySelector('#sal').innerHTML += datos;
+						}
+					})
+				})	
+			
+			}
+      
+    </script>
+  </head>
+  
+  <body>
+
+    <h3>Pintamos los datos: </h3>
+		
+		<button id="btPintar">Pintar datos</button>
+		
+		<p>
+			<div id="sal"> </div>
+    </p>
+		
+  </body>
+  
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>   
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+    <title>Plantilla</title>
+		
+		<style>
+			.fPunto{
+				display: none;   
+				position: absolute;
+				top: 10%;
+				left: 10%;
+				width: 30%;
+				background-color: pink;
+				z-index: 2;
+			}
+			
+			.fPunto input{
+				display: block;
+				margin-bottom: 1.5em;
+			}
+			
+			.fPunto button{
+				margin-right: 1.4em;
+			}
+			
+			.fondoDisable{
+				filter: grayscale(100%) blur(2px);
+				cursor: not-allowed;
+        pointer-events: none;
+			}
+			
+			
+		
+		</style>
+		
+    <script type="text/javascript">
+      
+			var db;
+			
+      window.onload = function(){
+				db = openDatabase('rutas_geo', '1.0', 'Rutas GPS', 100 * 1024 * 1024);
+				crearBD(); 
+				pintarDatos();
+				document.querySelector("#selRutas").onchange=pintaDatosRuta;
+				document.querySelector("#btAnadePunto").onclick=muestrafPunto;
+				
+				document.querySelector("#btCancelar").onclick=cancelarForm;
+				document.querySelector("#btAnade").onclick=anadePuntoForm;
+			}
+			
+			function llenaSelectDB(sel, rs){
+				//  Pon tu el resto del código:
+				console.log(sel,rs);
+				let optDefault = new Option("Selecciona una ruta",-1);
+				sel.append(optDefault);
+				rs.forEach(fila => {
+					let opt = new Option(fila.nombre,fila.id);
+					sel.append(opt);
+				})
+			}
+			
+			function pintarDatos(){
+				//  Pon tu el resto del código:
+				let select = document.querySelector('#selRutas');
+				db.transaction(function(trx){
+					trx.executeSql('select * from rutas',[],function(tx,res){
+						llenaSelectDB(select,Array.from(res.rows))
+					});
+				})	
+			}
+			
+			function pintaDatosRuta(){
+				console.log("id ruta = " + this.value);
+				
+				//  Pon tu el resto del código:i
+				let table = document.querySelector('#detalle_ruta');
+				
+				let thead = document.createElement('thead');
+				let tbody = document.createElement('tbody');
+				let fila = document.createElement('tr');
+				thead.append(fila);
+				db.transaction(function(trx){
+					trx.executeSql("select * from detalle_ruta",[],(trx,res)=>{
+						Object.getOwnPropertyNames(res.rows[0]).forEach(campo =>{
+							let columna = document.createElement('th');
+							columna.innerHTML= campo;
+							fila.append(columna);
+						})
+						Array.from(res.rows).forEach(data =>{
+							let filad = document.createElement('tr');
+							for(dato in data){
+								let columna = document.createElement('td');
+								columna.innerHTML = data[dato];
+								filad.append(columna);
+							}
+							tbody.append(filad);
+						})
+					})
+				})
+				table.append(thead);
+				table.append(tbody);
+			}
+			
+			
+			
+			
+			
+			
+			//  Acciones del formulario:
+			
+			function muestrafPunto(){
+				document.querySelector("#contenido").className = "fondoDisable";
+				document.querySelector("#fPunto").style.display = "block";
+			}
+
+			function cancelarForm(e){
+				e.preventDefault();
+				document.querySelector("#contenido").className = "";
+				document.querySelector("#fPunto").style.display = "none";
+			}
+			
+			function anadePuntoForm(e){
+				let optValue = document.querySelector('#selRutas').value;
+				if(optValue == -1){
+					alert("Introduce un ruta para mostrar detalles");
+				}else{
+				//  Pon tu el resto del código:
+				let long = document.querySelector('#latitud').value;
+				let lat = document.querySelector('#longitud').value;
+				db.transaction(function(trx){
+					trx.executeSql(`insert into detalle_ruta(id_ruta,latitud,longitud,altitud,fecha) values(?,?,?,?,?)`,[optValue,lat,long,0,Date.now()]);
+				})
+			}	
+			}
+			
+			
+			function crearBD(){
+				//  Creamos la Base de datos (reservamos 100 MB):
+				var bd = openDatabase('rutas_geo', '1.0', 'Rutas GPS', 100 * 1024 * 1024);
+				
+				//  Creamos la tabla rutas:
+				bd.transaction(function (tx) {
+					var sc = "CREATE TABLE IF NOT EXISTS rutas (" +
+						"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+						"nombre VARCHAR(255), " +
+						"fecha DATE, " +
+						"hora TIME)";
+					tx.executeSql(sc);
+				});
+
+				
+				//  Creamos la labla detalle_ruta:
+				bd.transaction(function (tx) {
+					var sc = "CREATE TABLE IF NOT EXISTS detalle_ruta (" +
+						"id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+						"id_ruta INTEGER, " +
+						"latitud REAL, " +
+						"longitud REAL, " +
+						"altitud INTEGER, " +
+						"fecha DATE) ";
+					tx.executeSql(sc);
+				});
+			
+			
+				//  Metemos un par de registros:
+				//  Comentarlo después de meter los registros:
+				/*
+				bd.transaction(function (tx) {
+					sc = "INSERT INTO rutas (nombre, fecha, hora) VALUES('Mi primera ruta', '2017-11-11', '11:13')";
+					tx.executeSql(sc);
+					
+					sc = "INSERT INTO rutas (nombre, fecha, hora) VALUES('Sevilla medieval', '2017-12-08', '19:16')";
+					tx.executeSql(sc);
+				});
+				*/
+			}
+      
+    </script>
+  </head>
+  
+  <body>
+
+	<div id="contenido">
+	
+    <h3>Rutas Geo: </h3>
+		
+		<p>
+			<label for="selRutas">Selecciona la ruta: </label>
+			<select id="selRutas"></select>
+		</p>
+		
+		<p>
+			<button id="btAnadePunto">Añadir punto</button>
+		</p>
+		<h3>Detalle de la ruta</h3>
+		<table id="detalle_ruta">
+		
+		
+		
+		</table>
+		
+		
+		</div>
+		
+		<!-- Formulario para añadir un punto:  -->
+		<form id="fPunto" class="fPunto">
+			<fieldset>
+				<label for="latitud">Latitud: </label>
+				<input id="latitud" type="text">
+				
+				<label for="longitud">Longitud: </label>
+				<input id="longitud" type="text">
+			
+				<p>
+				<button id="btAnade">Añadir</button>
+				<button id="btCancelar">Cancelar</button>
+				</p>
+			
+			</fieldset>
+			
+		</form>
+		
+		<p>
+			<div id="sal"> </div>
+    </p>
+		
+  </body>
+  
+</html>
