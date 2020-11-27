@@ -75,6 +75,10 @@
 				
 				//  Pon tu el resto del código:i
 				let table = document.querySelector('#detalle_ruta');
+				if(document.querySelector('#detalle_ruta tbody') && document.querySelector('#detalle_ruta thead').remove()){
+					document.querySelector('#detalle_ruta tbody').remove();
+					document.querySelector('#detalle_ruta thead').remove();
+				}
 				
 				let thead = document.createElement('thead');
 				let tbody = document.createElement('tbody');

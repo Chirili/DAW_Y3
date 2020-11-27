@@ -5,7 +5,7 @@
 Reglas de estilos de la barra
 */
 body::-webkit-scrollbar{
-    width: .8em;
+    width: 5em;
 }
 body::-webkit-scrollbar-thumb {
     background-color:#1b212e;
@@ -18,7 +18,6 @@ body::-webkit-scrollbar-track{
 html{
     scroll-behavior: smooth;
     background-color: #303a52;
-    filter: invert(100) hue-rotate(180);
 }
 .container{
     margin: 0;
@@ -26,7 +25,6 @@ html{
 }
 
 body,h2,h3{
-    color: #141820;
     font-family: Montserrat;
     margin: 0;
     padding: 0;
@@ -39,10 +37,9 @@ body,h2,h3{
     position: fixed;
     height: 100%;
     overflow: auto;
-    filter: invert(100);
-
     border: solid #e2f3f5;
     border-width: 0 2px 0 0;
+    border-color: white;
 }
 ul,li{
     margin: 0;
@@ -54,7 +51,6 @@ label{
     padding: .7em .5em .7em 1.7em;
     position: relative;
     color: white;
-    filter: invert(100);
     margin-block-end: .3em;
     background-color: #5a6379;
     font-size: 1.2em;
@@ -80,17 +76,28 @@ label:hover::after{
 }
 .content .menu {   
     text-align: center;
+    color: white;
     position: absolute;
-    top: 50%;
-    right: 10px;
+    width: 250px;
+    top: 30%;
+    left: 0;
 }
-.content .menu{
-    mix-blend-mode: difference;
+.content .menu h3{
+    color: white;
+    border-bottom: 2px solid white;
+    line-height: 30px;
+    margin-bottom: 5px;
 }
 .content .menu ul li a{
     color: white;
+    font-size: 1.3em;
     text-decoration: none;
+    transition: ;
 }
+.content .menu ul li a:hover::after{
+    width: 100%;
+}
+
 input[type=radio]{
     visibility: hidden;
 }
@@ -104,8 +111,7 @@ input[type=radio]:checked +.content{
 .content{
     display: none;
     opacity: 0;
-    position: relative;
-  }
+}
 
 .inicio{
     vertical-align: middle;

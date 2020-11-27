@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/
+xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Ejemplo Sel</title>
+		
+		<style>
+			section{
+				display: flex;
+				
+			}
+		</style>
+		
+    <script type="text/javascript">
+    window.onload = ()=>{
+
+		document.querySelector('#cerveza').onchange = ()=>{
+			document.querySelector('#numero').value = document.querySelector('#cerveza').value;
+		}
+		document.querySelector('#btSel').onclick=()=>{
+			let valor = document.querySelector('#numero').value;
+			Array.from(document.querySelector('#cerveza').options).find(option => option.value == valor).selected=true;
+		}
+	}
+	
+			
+    </script>
+  </head>
+  <body>
+	
+		<h3>Ejemplo javascrip</h3>
+	
+		<h5>Ejemplo de seleccionar una opción de un select desde javascript</h5>
+		<section>
+			<div>
+				<label for="cerveza">Escoge la cerveza que te gusta</label>
+				<select id="cerveza">
+					<option value="-1">Selecciona una</option>
+					<option value="1">Cruzcampo</option>
+					<option value="2">Alambra especial</option>
+					<option value="4">Paulaner</option>
+					<option value="7">Desperados</option>
+					<option value="9">Grimbergen optimo bruno</option>
+					<option value="11">Judas</option>
+					<option value="13">Lucifer</option>
+					<option value="14">Ambar Export</option>
+					<option value="17">Ninguna, no me gusta</option>
+					<option value="19">Si escoges la anterior me memo</option>
+				</select>
+			</div>
+			
+			<div>
+				<label for="numero">Número de selección</label>
+				<input type="text" id="numero" size="2"> 
+				<button id="btSel">Seleccionar cerveza</button>
+			</div>
+			
+			</section>
+		
+		
+	
+	</body>
+</html>
