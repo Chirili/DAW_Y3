@@ -9,9 +9,7 @@
 		
       window.onload = () => {
         pedirPersonas();
-        document.querySelector('#btBorrar').onclick = ()=>{
-          borraPersona();
-        }
+        
         document.querySelector('#btnAdd').onclick = () =>{
           formAddPersona();
         }
@@ -68,6 +66,7 @@
           pintarPersonas(datos);
         });
       };
+      
       function pintarPersonas(datos){
         if(document.querySelector('#filas_tabla').hasChildNodes()){
           document.querySelector('#filas_tabla').remove()
@@ -100,6 +99,7 @@
         });
         document.querySelectorAll('.editar').forEach(boton => boton.onclick = modificarPersona);
       }
+
       function modificarPersona(){
         let data = this.parentNode.parentNode;
         document.querySelector('#personaForm fieldset legend').innerHTML = "Modificar Persona";
