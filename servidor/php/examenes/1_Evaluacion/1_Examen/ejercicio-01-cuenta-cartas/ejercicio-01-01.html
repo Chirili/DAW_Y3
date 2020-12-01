@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>
+    Cuenta cartas
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <h1>Cuenta cartas</h1>
+
+  <form action="ejercicio-01-02.php" method="post">
+    <p>Elija un número de cartas (entre 5 y 20) y la paridad (par o impar) y el palo (corazones, diamantes, picas o trebol).</p>
+    
+    <!--  ESCRIBA AQUI EL FORMULARIO -->
+    Escriba el numero de cartas: <input type="text" name="num_cartas">
+    <p>Elija la paridad</p>
+    <input type="radio" name="paridad" value="par"> Par
+    <input type="radio" name="paridad" value="impar"> Impar
+
+    <p>Elija el palo:</p>
+    <select name="palo">
+      <option value="-1">Selecciona un palo</option>
+      <option value="picas">Picas</option>
+      <option value="corazones">Corazones</option>
+      <option value="diamantes">Diamantes</option>
+      <option value="treboles">Tréboles</option>
+    </select>
+    <button type="submit">Enviar</button>
+  </form>
+</body>
+</html>

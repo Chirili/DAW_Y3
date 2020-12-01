@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Listen for XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9000
+        },
+        {
             "type": "pwa-chrome",
             "request": "launch",
             "name": "Open Ejercicio_Validacion_Form_1_SIN.html",
