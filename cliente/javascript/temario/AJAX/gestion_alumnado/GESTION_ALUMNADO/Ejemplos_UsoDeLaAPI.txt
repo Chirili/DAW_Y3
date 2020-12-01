@@ -1,0 +1,108 @@
+
+Para obtener toda la lista del alumnado:
+
+{"accion": 3}
+
+
+		¡¡¡¡OJO!!!!  
+
+Los servicios se seleccionan con el atributo "accion" y NO con "servicio", como se ha visto
+anteriormente. 
+
+
+
+
+Para añadir un nuevo/a alumna/o:
+
+{"accion": 0, "NOMBRE": "Jaimito", "APELLIDOS": "Pérez", "SEXO": "H", "FECHA_NACIMIENTO": "2020-11-17", "ESTADO_CIVIL": "7"}
+
+En general el formato válido para las fechas es el estádar: año/mes/dia. Es válido para todas las bases de datos.
+
+
+
+
+Para eliminar a una alumna o alumno:
+
+{"accion": 2, "ID": 153}
+
+Lo anterior eliminaría al alunno o alumna cuyo ID = 153.
+
+
+
+
+Para obtener todos los datos de una alumna o alumno:
+
+{"accion": 4, "ID": 20}
+
+
+
+
+
+Para obtener la lista de sexos:
+
+{"accion": 5}
+
+
+
+
+
+Para obtener la lista de estados civiles:
+
+{"accion": 9}
+
+
+
+
+En general para saber cuales son los servicios (acciones) que ofrece la API, se puede ver visualizando
+el fichero servicios.php
+
+Donde el valor de cada case se obtiene del atributo "accion" que es enviado en formato JSON.
+
+
+case 3:  // Listar
+				print json_encode($modelo->Listar());
+				break;
+			
+			case 1: //  Modificar
+				$modelo->Actualizar($objeto);
+				print json_encode($modelo->Listar());
+				break;
+
+			case 0:  //  Añadir / insertar
+				$modelo->Registrar($objeto);
+				print json_encode($modelo->Listar());
+				break;
+				
+			case 2:  //  Eliminar/borrar
+				$modelo->Eliminar($objeto->ID);
+				print json_encode($modelo->Listar());
+				break;
+				
+			case 4:  // Obtener alumno por id
+				print json_encode($modelo->Obtener($objeto->ID));
+				break;
+				
+				
+			
+			case 5: //  Devolvemos la lista de los sexos (H = hombre;  M = mujer)
+				print json_encode($modelo->Sexos());
+				break;
+			
+			case 9:  // Listar Estados Civiles
+				print json_encode($modelo->ListarEC());
+				break;
+			
+			case 6:  //  Añadir / insertar ESTADOS CIVILES.
+				$modelo->RegistrarEC($objeto);
+				print json_encode($modelo->ListarEC());
+				break;
+			
+			case 7: //  Modificar ESTADO CIVIL
+				$modelo->ActualizarEC($objeto);
+				print json_encode($modelo->ListarEC());
+				break;
+			
+			case 8:  //  Eliminar/borrar ESTADO CIVIL
+				$modelo->EliminarEC($objeto->ID);
+				print json_encode($modelo->ListarEC());
+				break;

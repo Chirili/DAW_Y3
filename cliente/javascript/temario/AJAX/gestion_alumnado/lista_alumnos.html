@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Ejercicio Listado Personas. AJAX</title>
+    <style type="text/css">
+        h3 {
+            color: red;
+        }
+        /* CSS para el formulario:   */
+        
+        .formPersonas {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            z-index: 11;
+            background-color: pink;
+            border: 2px solid maroon;
+            border-radius: 15px;
+            padding: 1em;
+            color: red;
+            transition: all 1s;
+        }
+        
+        .formPersonas div label {
+            display: block;
+            margin-top: .5em;
+        }
+        
+        .formPersonas .btn {
+            display: block;
+            margin-top: 1em;
+        }
+        
+        .ver {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+
+    <!-- <script type="text/javascript" src="util2AJAX.js"></script> -->
+    <script type="text/javascript">
+    window.onload = ()=>{
+        const URL = 'http://localhost/gestion_alumnos/servicios.php';
+        document.querySelector('#btNuevaPersona').onclick = ()=>{
+            document.querySelector("#formPersonas").classList.toggle("ver");
+            fillSelect();
+        };
+        document.querySelector('#formPersonas #btCancelar').onclick = ()=>{
+            document.querySelector('#formPersonas').classList.toggle("ver");
+        }
+        document.addEventListener('click',function(e){
+            console.log(e,e.path[2].childNodes[0].innerHTML);
+        })
+        document.querySelector('#btAnade').onclick = (e)=>{
+            console.log(Array.from(document.querySelectorAll('#sexo option')).find(option => option.selected == true));
+            let student = {
+                "NOMBRE": document.querySelector('#nombre').value,
+                "APELLIDOS": document.querySelector('#apellidos').value, 
+                "SEXO":Array.from(document.querySelectorAll('#sexo option')).find(option => option.selected == true).value,
+                "FECHA_NACIMIENTO": document.querySelector('#fecha_nacimiento').value,
+                "ESTADO_CIVIL": Array.from(document.querySelectorAll('#estado_civil option')).find(option => option.selected == true).value
+            }
+            console.log(student);
+            getSendJsonData(0,(data)=>{
+                fillTable(data);
+            },student);
+        }
+        listStudents();
+        }
+        function listStudents(){
+           getSendJsonData(3,(data)=>fillTable(data))
+        }
+        function fillTable(data){
+            let ordenar =  ['ID','NOMBRE',"APELLIDOS","SEXO_NOMBRE","FECHA_NACIMIENTO","NOMBRE_EC"];
+            
+            table = document.querySelector('#tabla_personas');
+            tBodyFilas = document.querySelector('#filas_tabla');
+            if(tBodyFilas.hasChildNodes() || tBodyFilas.childNodes[0].nodeName === '#text'){
+                tBodyFilas.remove();
+                tBodyFilas = document.createElement('tbody',{id:"filas_tabla"});
+                tBodyFilas.id = "filas_tabla";
+                table.append(tBodyFilas);
+            }
+            for (object of data) {
+                let tr = document.createElement('tr');
+                for (let i = 0; i < ordenar.length;i++) {
+                        let td = document.createElement('td');
+                        td.innerHTML = object[ordenar[i]];
+                        tr.append(td);
+                }
+                let tdBorrar = document.createElement('td');
+                tdBorrar.innerHTML = "<button id='btBorrar'>Borrar</button>";
+                tr.append(tdBorrar);
+                let tdMod = document.createElement('td');
+                tdMod.innerHTML = "<button id='btMod'>Modificar</button>";
+                tr.append(tdMod);
+                tBodyFilas.append(tr);
+            }
+        }
+        
+        function getSendJsonData(accion,callBack,parameters={}){
+            let data;
+            fetch('http://localhost/gestion_alumnos/servicios.php',{
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type' : 'application/json'
+            }),
+            body: JSON.stringify((Object.entries(parameters)===0) ? {"accion":accion}:Object.assign({"accion":accion},parameters)),
+            })
+            .then(res => res.json())
+            .then(result=>callBack(result));
+        }
+        function fillSelect(){
+            getSendJsonData(9,(data)=>{
+                for (object of data) {
+                    let optionContainer = document.querySelector('#estado_civil');
+                    let option = new Option(object.NOMBRE,object.ID);
+                    optionContainer.append(option);
+                }
+            })
+            getSendJsonData(5,(data)=>{
+                for (object of data) {
+                    let optionContainer = document.querySelector('#sexo');
+                    let option = new Option(object.NOMBRE,object.CODIGO);
+                    optionContainer.append(option);
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <h3>Registro de Usuarios</h3>
+    <!-- AÑADIR PERSONA -->
+    <div id="formPersonas" class="formPersonas">
+        <fieldset>
+            <legend>NUEVA PERSONA</legend>
+            <!-- <div>
+                <label for="dni">DNI</label>
+                <input type="text" id="dni" size="10" maxlength="9" value="27473339T" />
+            </div> -->
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" value="Marco Elio" />
+            </div>
+            <div>
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" size="40" value="García Gomariz" />
+            </div>
+            <div>
+                <label for="sexo">Sexo</label>
+                <select name="sexo" id="sexo"></select>
+            </div>
+            <div>
+                <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"></select>
+            </div>
+            <div>
+                <label for="estado_civil">Estado civil</label>
+                <select name="estado_civil" id="estado_civil"></select>
+            </div>
+            <div class="btn">
+                <button id="btAnade">Añadir </button>
+                <button id="btCancelar">Cancelar </button>
+            </div>
+        </fieldset>
+    </div>
+
+    <!-- MODIFICAR PERSONA -->
+    <div id="formPersonasMOD" class="formPersonas">
+        <fieldset>
+            <legend>EDITA PERSONA</legend>
+            <!-- <div>
+                <label for="dni">DNI</label>
+                <input type="text" id="dniMod" size="10" maxlength="9" />
+            </div> -->
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombreMod" />
+            </div>
+            <div>
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidosMod" size="40" />
+            </div>
+            <div>
+                <label for="sexo">Sexo</label>
+                <select name="sexo" id="sexoMod"></select>
+            </div>
+            <div>
+                <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                <input type="date" name="fecha_nacimiento" id="fecha_nacimientoMod"></select>
+            </div>
+            <div>
+                <label for="estado_civil">Estado civil</label>
+                <select name="estado_civil" id="estado_civilMod"></select>
+            </div>
+            <div class="btn">
+                <button id="btModifica">Modificar </button>
+                <button id="btCancelarMOD">Cancelar </button>
+            </div>
+        </fieldset>
+    </div>
+
+    <br/>
+
+    <button class="btn" id="btNuevaPersona">Nueva persona</button>
+    <br><br>
+    <table id="tabla_personas" border="1">
+        <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>APELLIDOS</th>
+            <th>SEXO</th>
+            <th>FECHA_NACIMIENTO</th>
+            <th>ESTADO_CIVIL</th>
+            <th>BORRAR</th>
+            <th>EDITAR</th>
+        </tr>
+
+        <tbody id="filas_tabla">
+
+        </tbody>
+    </table>
+
+    <br><br>
+
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+
+Se trata de crear un CRUD de la tabla de alumnos.
+Pintando en el listado, el sexo correspondiente y el estado civil correspondiente.
+
+Se deja libertad para decidir cuantas columnas y cuales se pintan en la lista de alumnado, pero que al menos sean 4.
+
+A la hora de añadir o modificar, tener en cuenta que hay que poner un desplegable (un select)
+  para que el usurio o usuaria escoga el sexo y estado civil correspondiente.
+
+Si sobra tiempo, también se puede hacer una gestión (un CRUD) de las tablas sexo y estados civiles.
+
+Más información en clase de desarrollo cliente.
+
