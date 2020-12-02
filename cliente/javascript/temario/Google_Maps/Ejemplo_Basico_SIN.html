@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0">
+  	<style type="text/css">
+  	/* TENEMOS QUE DARLE UN TAMAÑO AL DIV QUE CONTIENE EL MAPA. SI NO, NO SE VERÁ  */
+      #divmapa {
+      	width: 700px;
+      	height: 700px;
+      	border: 1px solid blue; 
+     	}
+          .map {
+      height: 400px;
+      width: 100%;
+    }
+    </style>
+  	
+    <title>API v3 de Google Maps. Ejemplo Básico</title>
+    
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBahlFBAy3VVdqSsqcQvSecFmnRhhbjP4o">
+    </script>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.4.3/build/ol.js"></script>
+
+    <script type="text/javascript">
+    window.onload = ()=>{
+       var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([-3.74922,40.463667]),
+          zoom: 4
+        })
+      });
+    console.log(document.querySelector('#btCargarMapa'));
+    document.querySelector('#btCargarMapa').onclick = ()=>{
+     const map = new google.maps.Map(document.querySelector('#divmapa'),{
+       zoom: 4,
+       center: {lat:40.463667,lng: -3.74922}
+     })
+     const marcador = new google.maps.Marker({
+       position: {lat:40.463667,lng: -3.74922},
+       map: map,
+       title: "Españita"
+     })
+     const infoWindow = new google.maps.InfoWindow({
+       position: {lat:43.483667,lng: -3.74922},
+       map: map,
+       content: "sdfgsdfg"
+     })
+    }
+     }
+		
+      
+    </script>
+  </head>
+  
+  <body>
+    <h3>API v3 de Google Maps. Ejemplo Básico</h3>
+    <p>
+    	<button id="btCargarMapa">Cargar Mapa</button>
+    </p>
+    <p>
+    	<div id="divmapa">
+    		Aquí pondremos el mapa
+      </div>
+       <div class="map" id="map"></div>
+    </p>
+  </body>
+  
+</html>

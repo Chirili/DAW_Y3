@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0">
+  	<style type="text/css">
+  	/* TENEMOS QUE DARLE UN TAMAÑO AL DIV QUE CONTIENE EL MAPA. SI NO, NO SE VERÁ  */
+      #divmapa {
+      	width: 700px;
+      	height: 700px;
+      	border: 1px solid blue; 
+     	}
+          .map {
+      height: 400px;
+      width: 100%;
+    }
+    </style>
+  	
+    <title>API v3 de Google Maps. Ejemplo Básico</title>
+    
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBahlFBAy3VVdqSsqcQvSecFmnRhhbjP4o">
+    </script>
+
+    <script type="text/javascript">
+    window.onload = ()=>{
+
+
+    document.querySelector('#btCargarMapa').onclick = ()=>{
+      navigator.geolocation.watchPosition((pos)=>{
+        console.log(pos);
+       const map = new google.maps.Map(document.querySelector('#divmapa'),{
+         zoom: 17,
+         center: {lat:pos.coords.latitude,lng: pos.coords.longitude}
+       })
+
+        const marcador = new google.maps.Marker({
+         position: {lat:pos.coords.latitude,lng: pos.coords.longitude},
+         map: map,
+         title: "Españita",
+         icon: "https://www.iconarchive.com/download/i49400/designcontest/outline/Marker.ico"
+        })
+      })
+      }
+    }
+		
+      
+    </script>
+  </head>
+  
+  <body>
+    <h3>API v3 de Google Maps. Ejemplo Básico</h3>
+    <p>
+    	<button id="btCargarMapa">Cargar Mapa</button>
+    </p>
+    <p>
+    	<div id="divmapa">
+    		Aquí pondremos el mapa
+      </div>
+    </p>
+  </body>
+  
+</html>

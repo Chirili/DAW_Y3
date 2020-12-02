@@ -47,14 +47,27 @@
         const URL = 'http://localhost/gestion_alumnos/servicios.php';
         document.querySelector('#btNuevaPersona').onclick = ()=>{
             document.querySelector("#formPersonas").classList.toggle("ver");
-            fillSelect();
+            fillSelect({CLASS_NAME:"estado_civil",SELECTED: TRUE,NOMBRE:""});
         };
         document.querySelector('#formPersonas #btCancelar').onclick = ()=>{
             document.querySelector('#formPersonas').classList.toggle("ver");
         }
         document.addEventListener('click',function(e){
-            console.log(e,e.path[2].childNodes[0].innerHTML);
+            if(e.target.id == "btBorrar"){
+                if(confirm("¿Estas seguro de que quieres eliminar a "+e.path[2].childNodes[1].innerHTML+"?")){
+                    getSendJsonData(2,(data)=>fillTable(data),{"ID":e.path[2].childNodes[0].innerHTML});
+                }
+            }
+            if(e.target.id == "btMod"){
+                document.querySelector('#formPersonasMOD').classList.toggle('ver');
+            }
         })
+        document.querySelector('#btCancelarMOD').onclick = ()=>{
+            document.querySelector('#formPersonasMOD').classList.toggle('ver');
+        }
+        document.querySelector('#btModifica').onclick = ()=>{
+
+        }
         document.querySelector('#btAnade').onclick = (e)=>{
             console.log(Array.from(document.querySelectorAll('#sexo option')).find(option => option.selected == true));
             let student = {
@@ -114,18 +127,18 @@
             .then(res => res.json())
             .then(result=>callBack(result));
         }
-        function fillSelect(){
+        function fillSelect(estado={},sexo={}){
             getSendJsonData(9,(data)=>{
                 for (object of data) {
-                    let optionContainer = document.querySelector('#estado_civil');
-                    let option = new Option(object.NOMBRE,object.ID);
+                    let optionContainer = document.querySelector('#'+estado.CLASS_NAME);
+                    let option = new Option(estado.NOMBRE,estado.ID,estado.SELECTED);
                     optionContainer.append(option);
                 }
             })
             getSendJsonData(5,(data)=>{
                 for (object of data) {
-                    let optionContainer = document.querySelector('#sexo');
-                    let option = new Option(object.NOMBRE,object.CODIGO);
+                    let optionContainer = document.querySelector('#'+sexo.CLASS_NAME);
+                    let option = new Option(sexo.NOMBRE,sexo.CODIGO,sexo.SELECTED);
                     optionContainer.append(option);
                 }
             })
