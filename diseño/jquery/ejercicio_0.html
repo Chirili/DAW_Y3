@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" <!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>Demo</title>
+
+    <style type="text/css">
+      div {
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 44px;
+        font-weight: bold;
+        cursor: pointer;
+				border: 2px solid red;
+				background-color: pink;
+      }
+    </style>
+
+    <script src="jquery.js"></script>
+	
+    <script type="text/javascript">
+      $(document).ready(function() {  //  Comienzo de jQuery:
+			
+				$("#btMotrar").click(()=>{
+					$("div").fadeIn(2000)
+				});
+        
+        $("div").click((e)=>{
+					console.log(e.target);
+					console.log($(e.target));
+					
+          $(e.target).hide(2000).show(1000).fadeOut(1000).slideDown(2000);  
+        });
+        
+      });
+
+    </script>
+
+  </head>
+  
+  
+  <body>
+    <h1>Ejemplo de Eventos en jQuery</h1>
+	
+	<p>
+    <button id="btMotrar">Motrar</button>
+  </p>
+		
+  <p>
+    <div>Pulsame para ocultarme!!!!</div>
+  </p>
+
+	<p>
+    <div>Este es otro: ocultarme!!!!</div>
+  </p>
+
+
+  </body>
+
+</html>
+
+

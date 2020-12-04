@@ -26,23 +26,28 @@
 
 
     document.querySelector('#btCargarMapa').onclick = ()=>{
-      navigator.geolocation.getCurrentPosition((pos)=>{
-        console.log(pos);
-       const map = new google.maps.Map(document.querySelector('#divmapa'),{
-         zoom: 17,
-         center: {lat:pos.coords.latitude,lng: pos.coords.longitude}
-       })
-
-        const marcador = new google.maps.Marker({
-         position: {lat:pos.coords.latitude,lng: pos.coords.longitude},
-         map: map,
-         title: "Españita",
-         icon: "https://www.iconarchive.com/download/i49400/designcontest/outline/Marker.ico"
-        })
-      })
-      }
+      cargarMapa();
     }
-		
+    }
+    function cargarMapa(){
+      let opciones ={
+        center: {lat:37,lng:-5},
+        zoom:14,
+
+      }
+      let mapa = new google.maps.Map(document.getElementById('divmapa'),opciones);
+      google.maps.event.addListener(mapa,'click',function(e){
+        ponVentana(e.latLng,mapa)
+      });
+    }
+    function ponVentana(pos,mapa){
+      console.log("aaaaaa");
+      new google.maps.InfoWindow({
+        position: pos,
+        map: mapa,
+        content:'Lat: '+pos.lat()+"Long:"+pos.lng()
+      })
+    }
       
     </script>
   </head>
