@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="utf-8">
+  	<style type="text/css">
+  	/* TENEMOS QUE DARLE UN TAMAÑO AL DIV QUE CONTIENE EL MAPA. SI NO, NO SE VERÁ  */
+      #divmapa {
+      	width: 700px;
+      	height: 700px;
+      	border: 1px solid blue; 
+     	}
+    </style>
+  	
+    <title>API v3 de Google Maps. Ejercicio Eventos 3_2</title>
+    
+    <script type="text/javascript" 
+    	src="http://maps.google.com/maps/api/js?sensor=false">
+    </script>
+    
+    <script type="text/javascript">
+    
+      var listaVentanas = new Array();
+      
+      function CargarMapa() {
+      	//  Creamos las opciones
+      	var opciones = {
+					center: new google.maps.LatLng(37.386719, -5.981365),//nos colocamos en Sevilla  
+					zoom: 17
+				};
+				//  Dibujamos el mapa:
+      	var mapa = new google.maps.Map(document.getElementById("divmapa"), opciones);
+  			
+  			//  Le asignamos el evento click al MAPA:
+  			google.maps.event.addListener(mapa, 'click', function(e) {
+    			ponVentana(e.latLng, mapa);
+  			});
+  			
+  			//  Le asignamos el evento zoom_changed al MAPA:
+  			google.maps.event.addListener(mapa, 'zoom_changed', function() {
+  				for(var i=0; i<listaVentanas.length; i++)
+  					listaVentanas[i].ventana.setContent(listaVentanas[i].coordenadas +
+  									"<br />Nivel de Zoom: <b>" + mapa.getZoom() + "</b>");
+						
+					//  Esto es porque Abraham es un pooquico caprichoso.
+					setTimeout(()=>{
+						for(var i=0; i<listaVentanas.length; i++)
+  					listaVentanas[i].ventana.setContent(listaVentanas[i].coordenadas +
+  									"<br />Nivel de Zoom: " + mapa.getZoom());
+					}, 1000);
+  			});
+  			
+      }  //  CargarMapa()
+      
+      
+      function ponVentana(pos, mapica) {
+      	//  Creamos la ventana, pero no le ponemos el texto, el contenido:
+  			var infowindow = new google.maps.InfoWindow({
+  				position: pos,
+        	map: mapica
+      	});
+      	//  Creamos un objeto donde guaramos la ventana y el contenido:
+      	var infoMensaje = {
+						ventana: infowindow,
+      			coordenadas:"Latitud: "+pos.lat()+" <br>Longitud: "+pos.lng(), 
+      			zoom:"<br>Nivel de Zoom: " + mapica.getZoom()
+					};
+      	//  Metemos el objeto en un arrya, para después poder recuperarlo
+      	listaVentanas.push(infoMensaje);
+      	//  Establecemos el contenido de la ventana (que no lo habíamos hecho):
+      	infowindow.setContent(infoMensaje.coordenadas + infoMensaje.zoom)
+  		}
+      
+      window.onload = CargarMapa;
+      
+    </script>
+  </head>
+  
+  <body>
+    <h3>API v3 de Google Maps. EJERCICIO Eventos 3_2</h3>
+    <h5>En este ejercicio se van poniendo ventanas de info </h5>
+    <p>El ejercicio consiste en poner una ventanica de info 
+    	   con las coordenadas <b>y el nivel de zoom</b> 
+    	   allí donde el usuario ha hecho click.
+    	   <b>Además, el nivel de zoom, se actualizará cuando el usuario lo cambie</b>
+    </p>
+    
+    <p>
+    	<div id="divmapa">
+    		Aquí pondremos el mapa
+    	</div>
+    </p>
+  </body>
+  
+</html>

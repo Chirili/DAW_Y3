@@ -1,0 +1,25 @@
+Un lenguaje de programación es un lenguaje formal o artificial
+Un lenguaje con reglas gramaticales bien definidas que le proporciona a una persona
+en este caso el programador la capacidad de escribir una serie de instrucciones o secuencias de comandos en forma de algoritmos con el fin de controlar el comportamiento físico o lógico de una computadora
+de manera que se puedan obtener diversas clases de datos o ejecutar determinadas tareas
+A todo este conjunto de comandos escritos mediante un lenguaje de programación se le denomina programa
+Programar viene a ser el proceso de crear un software fiable mediante la escritura
+prueba depuración compilación o interpretación y mantenimiento del código fuente de dicho programa informático
+Básicamente este proceso se define aplicando lógicamente los siguientes pasos
+El desarrollo lógico del programa para resolver un problema en particular
+Escritura de la lógica del programa empleando un lenguaje de programación específico codificación del programa
+Compilación o interpretación del programa hasta convertirlo en lenguaje de máquina
+Prueba y depuración del programa
+Desarrollo de la documentación
+Los lenguajes de programación están formados por un conjunto de símbolos llamado alfabeto
+reglas gramaticales y semánticas 
+que en conjunto definen las estructuras válidas del lenguaje y su significado
+Existe el error común de tratar como sinónimos los términos lenguaje de programación y lenguaje informático
+Los lenguajes informáticos engloban a los lenguajes de programación y a otros más
+como por ejemplo HTML lenguaje para el marcado de páginas web que no es propiamente un lenguaje de programación 
+sino un conjunto de instrucciones que permiten estructurar el contenido de los documentos
+El lenguaje de programación permite especificar de manera precisa sobre qué datos debe operar un software específico
+cómo deben ser almacenados o transmitidos dichos datos
+y qué acciones debe tomar el software bajo una variada gama de circunstancias
+Todo esto a través de un lenguaje que intenta estar relativamente próximo al lenguaje humano o natural
+Una característica relevante de los lenguajes de programación es precisamente que más de un programador pueda usar un conjunto común de instrucciones que sean comprendidas entre ellos para realizar la construcción de un programa de forma colaborativa

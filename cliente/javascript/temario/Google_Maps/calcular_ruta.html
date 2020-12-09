@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #mapa{
+            height: 400px;
+            width: 400px;
+        }
+    </style>
+</head>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyBahlFBAy3VVdqSsqcQvSecFmnRhhbjP4o"></script>
+<script>
+    window.onload = ()=>{
+        var directionsRenderer  = new google.maps.DirectionsRenderer();
+        var directionService = new google.maps.DirectionsService();
+        cargarMapa();
+        function cargarMapa(){
+        let opciones ={
+            center: {lat:37.38,lng:-5.8},
+            zoom:14,
+          }
+          let mapa = new google.maps.Map(document.getElementById('mapa'),opciones);
+            directionsRenderer.setMap(mapa);
+        }
+        document.querySelector('#calcular').onclick = ()=>{
+            let options = {
+                origin: document.querySelector('#origen').value,
+                destination: document.querySelector('#destino').value,
+                travelMode: 'DRIVING'
+            }
+            directionService.route(options,function(result,status){
+                directionsRenderer.setDirections(result);
+            })
+        }
+    }
+</script>
+<body>
+    Origen: <input type="text" id="origen" value="Sevilla"><br>
+    Destino: <input type="text" id="destino" value="Huelva"><br>
+    <button id="calcular">Calcular ruta</button>
+    <div id="mapa"></div>
+</body>
+</html>

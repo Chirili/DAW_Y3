@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+		<meta name="viewport" content="initial-scale=1.0">
+  	<meta charset="utf-8">
+  	<style type="text/css">
+  		html, body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+  		#info {
+  			width: 100%;
+  			height: 8%;
+  			font-size: 1.2em;
+  		}
+      #divmapa {
+      	width: 100%;
+      	height: 92%;
+     	}
+    </style>
+  	
+    <title>Geoloc. con Mapa</title>
+    
+    <script type="text/javascript" 
+    	src="https://maps.google.com/maps/api/js?key=AIzaSyBahlFBAy3VVdqSsqcQvSecFmnRhhbjP4o">
+    </script>
+    
+    <script type="text/javascript">
+
+      var mapa, centro;
+      
+      function CargarMapa() {	
+      	var opcionesMapa = {
+					zoom: 17,
+					position: new google.maps.LatLng(37.386719, -5.981365)
+				};
+      	mapa = new google.maps.Map(document.getElementById("divmapa"), opcionesMapa);	
+      	centro = new google.maps.Marker({
+        	map: mapa,
+        	position: new google.maps.LatLng(37.873390, -0.756281),
+					icon: "punto.png"
+      	});
+      	
+      	var opcionesGeo = {
+      		enableHighAccuracy: true,  //  por defecto es false
+      		maximumAge: 1000,  //  El tiempo máximo (en milisegundos) de la lectura 
+      		timeout: 30000  //  El tiempo máximo (en milisegundos) para el que está dispuesto a permitir obtener la posición.
+      	}
+      	//  Ahora vamos a centrar el mapa usando geolocalización de HTML5:
+      	navigator.geolocation.watchPosition(centrarMapa, muestraErr, opcionesGeo); 
+      }
+      
+      function centrarMapa(pos) {
+    //  	var alt = pos.coords.altitude;
+    //  	var tie = pos.timestamp;
+      	document.getElementById("info").innerHTML = "Latitud: " + pos.coords.latitude + 
+      								". Longitud: " + pos.coords.longitude +
+      								"<br />Dirección: " + pos.coords.heading + 
+      								". Velocidad: " + pos.coords.speed;
+      	
+			//	centro.setPosition({lat: pos.coords.latitude, lng: pos.coords.longitude});
+				
+				centro = new google.maps.Marker({
+        	map: mapa,
+        	position: {lat: pos.coords.latitude, lng: pos.coords.longitude},
+					icon: "punto.png"
+      	});
+				
+      	mapa.panTo(centro.getPosition());
+      }
+      
+      function muestraErr(error) {
+      	var errores = { 
+    			1: 'Permission denied',
+    			2: 'Position unavailable',
+    			3: 'Request timeout'
+  			};
+  			//  Si no podemos obtener la localización, nos vamos a la playa de la bota:
+  			mapa.setCenter(new google.maps.LatLng(37.205379, -7.035845)); 
+  			alert("\n Error al posicionar. " + errores[error.code] + "\n Centrando en la playa");
+      }
+      
+      window.onload = CargarMapa;
+      
+    </script>
+  </head>
+  
+  <body>
+    <div id="info"> </div>
+  	<div id="divmapa">
+  		Aquí pondremos el mapa
+  	</div>
+  </body>
+  
+</html>

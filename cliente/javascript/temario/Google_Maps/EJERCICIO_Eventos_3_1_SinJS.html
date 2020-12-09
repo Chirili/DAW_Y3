@@ -18,7 +18,30 @@
     </script>
     
     <script type="text/javascript">
-      
+      window.onload = ()=>{
+        cargarMapa();
+    
+    
+    function cargarMapa(){
+      let opciones ={
+        center: {lat:37,lng:-5},
+        zoom:14,
+
+      }
+      let mapa = new google.maps.Map(document.getElementById('divmapa'),opciones);
+      google.maps.event.addListener(mapa,'click',function(e){
+        ponVentana(e.latLng,mapa)
+      });
+    }
+    function ponVentana(pos,mapa){
+      console.log("aaaaaa");
+      new google.maps.InfoWindow({
+        position: pos,
+        map: mapa,
+        content:'Lat: '+pos.lat()+"Long:"+pos.lng()
+      })
+      }
+      }
       
     </script>
   </head>
