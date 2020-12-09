@@ -47,29 +47,47 @@
         const URL = 'http://localhost/gestion_alumnos/servicios.php';
         document.querySelector('#btNuevaPersona').onclick = ()=>{
             document.querySelector("#formPersonas").classList.toggle("ver");
-            fillSelect({CLASS_NAME:"estado_civil",SELECTED: TRUE,NOMBRE:""});
+            fillSelect("sexo","estado_civil");
         };
         document.querySelector('#formPersonas #btCancelar').onclick = ()=>{
             document.querySelector('#formPersonas').classList.toggle("ver");
         }
         document.addEventListener('click',function(e){
-            if(e.target.id == "btBorrar"){
+            if(e.target.id === "btBorrar"){
                 if(confirm("¿Estas seguro de que quieres eliminar a "+e.path[2].childNodes[1].innerHTML+"?")){
                     getSendJsonData(2,(data)=>fillTable(data),{"ID":e.path[2].childNodes[0].innerHTML});
                 }
             }
-            if(e.target.id == "btMod"){
+            if(e.target.id === "btMod"){
                 document.querySelector('#formPersonasMOD').classList.toggle('ver');
+                getSendJsonData(4,(data)=>{    
+                    document.querySelector('#nombreMod').value = data.NOMBRE;
+                    document.querySelector('#apellidosMod').value = data.APELLIDOS;
+                    fillSelect("sexoMod","estado_civilMod",data.SEXO,data.ESTADO_CIVIL);
+                    document.querySelector('#fecha_nacimientoMod').value = data.FECHA_NACIMIENTO;
+                    localStorage.setItem('id',e.path[2].childNodes[0].innerHTML)
+                },{ID:e.path[2].childNodes[0].innerHTML});
+                
             }
         })
         document.querySelector('#btCancelarMOD').onclick = ()=>{
             document.querySelector('#formPersonasMOD').classList.toggle('ver');
         }
-        document.querySelector('#btModifica').onclick = ()=>{
-
+        document.querySelector('#btModifica').onclick = (e)=>{
+            let student = {
+                "ID" : localStorage.getItem('id'),
+                "NOMBRE": document.querySelector('#nombreMod').value,
+                "APELLIDOS": document.querySelector('#apellidosMod').value, 
+                "SEXO":Array.from(document.querySelectorAll('#sexoMod option')).find(option => option.selected == true).value,
+                "FECHA_NACIMIENTO": document.querySelector('#fecha_nacimientoMod').value,
+                "ESTADO_CIVIL": Array.from(document.querySelectorAll('#estado_civilMod option')).find(option => option.selected == true).value
+            }
+            getSendJsonData(1,(data)=>{
+                fillTable(data);
+            },student);
+            document.querySelector('#formPersonasMOD').classList.toggle("ver");
         }
         document.querySelector('#btAnade').onclick = (e)=>{
-            console.log(Array.from(document.querySelectorAll('#sexo option')).find(option => option.selected == true));
             let student = {
                 "NOMBRE": document.querySelector('#nombre').value,
                 "APELLIDOS": document.querySelector('#apellidos').value, 
@@ -77,10 +95,11 @@
                 "FECHA_NACIMIENTO": document.querySelector('#fecha_nacimiento').value,
                 "ESTADO_CIVIL": Array.from(document.querySelectorAll('#estado_civil option')).find(option => option.selected == true).value
             }
-            console.log(student);
             getSendJsonData(0,(data)=>{
                 fillTable(data);
             },student);
+            document.querySelector('#formPersonas').classList.toggle("ver");
+
         }
         listStudents();
         }
@@ -122,23 +141,25 @@
             headers: new Headers({
                 'Content-Type' : 'application/json'
             }),
-            body: JSON.stringify((Object.entries(parameters)===0) ? {"accion":accion}:Object.assign({"accion":accion},parameters)),
+            body: JSON.stringify(( Object.entries(parameters)===0) ? {"accion":accion} : Object.assign({"accion":accion},parameters)),
             })
             .then(res => res.json())
             .then(result=>callBack(result));
         }
-        function fillSelect(estado={},sexo={}){
+        function fillSelect(sexo="",estado="",sexoSelected = "",estadoSelected=""){
             getSendJsonData(9,(data)=>{
                 for (object of data) {
-                    let optionContainer = document.querySelector('#'+estado.CLASS_NAME);
-                    let option = new Option(estado.NOMBRE,estado.ID,estado.SELECTED);
+                    let optionContainer = document.querySelector('#'+estado);
+                    let option = new Option(object.NOMBRE,object.ID,(estadoSelected == object.ID) ? true:false);
+                    if(object.ID === estadoSelected) option.selected = true;
                     optionContainer.append(option);
                 }
             })
             getSendJsonData(5,(data)=>{
                 for (object of data) {
-                    let optionContainer = document.querySelector('#'+sexo.CLASS_NAME);
-                    let option = new Option(sexo.NOMBRE,sexo.CODIGO,sexo.SELECTED);
+                    let optionContainer = document.querySelector('#'+sexo);
+                    let option = new Option(object.NOMBRE,object.CODIGO);
+                    if(object.CODIGO === sexoSelected) option.selected=true;
                     optionContainer.append(option);
                 }
             })
