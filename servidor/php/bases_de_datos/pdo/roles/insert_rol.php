@@ -1,0 +1,9 @@
+<?php
+include_once('../bd_data.php');
+if(empty($_REQUEST["rolName"])){
+    header("Location:role_form.php");
+}else{
+    insertRole($conexion,$_REQUEST["rolName"]);
+    header("Location:index.php");
+}
+?>

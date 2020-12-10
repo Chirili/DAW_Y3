@@ -1,6 +1,7 @@
 <?php
+include_once('bd_data.php');
 $conexion = new PDO('mysql:host=localhost;dbname=ejemplo','root','');
-print_r($_REQUEST);
+print_r(getRoles($conexion));
 if(!empty($_REQUEST["usuario"]) && !empty($_REQUEST["password"]) && isset($_REQUEST["rol"])){
     print "entra";
     $insert = $conexion->prepare('INSERT INTO usuarios(nombre,`password`,rol) VALUES (?,?,?)');
