@@ -19,9 +19,9 @@ if(empty($_REQUEST["username"]) && empty($_REQUEST["password"])){
         header("Location:user_form.php");
     }else{
         try{
-            insertUser($conexion,["username"=>$_REQUEST["username"],"password"=>$_REQUEST["password"],"rol"=>$_REQUEST["rolSelected"]]);
-        }catch(Exception $e){
-            print("Ya existe ese nombre de usuario");
+            insertUser($conexion,["username"=>$_REQUEST["username"],"password"=>md5($_REQUEST["password"]),"rol"=>$_REQUEST["rolSelected"]]);
+        }catch(PDOException $e){
+            print "Error el usuario ya existe <br>";
             print "<a href=user_form.php>Volver al formulario</a>";
         }
     }

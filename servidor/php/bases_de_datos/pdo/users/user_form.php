@@ -2,7 +2,6 @@
 include_once("../bd_data.php");
 session_name("users");
 session_start();
-print_r($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
