@@ -13,7 +13,7 @@
     </style>
     
     <script type="text/javascript" 
-    	src="http://maps.google.com/maps/api/js?key=">
+    	src="http://maps.google.com/maps/api/js?libraries=geometry">
     </script>
     
     <script type="text/javascript">
@@ -35,8 +35,8 @@
       	var reader = new FileReader();
       	
       	reader.onload = function(e) {
-				  tratarXML(new DOMParser().parseFromString(reader.result, "text/xml"));
-				}
+			tratarXML(new DOMParser().parseFromString(reader.result, "text/xml"));
+		}
       	reader.readAsText(fichero);
       }
       
@@ -46,20 +46,24 @@
 	        var latitud = puntos[0].getAttributeNode("lat").nodeValue;
 	        var longitud = puntos[0].getAttributeNode("lon").nodeValue;
 	        mapa.setCenter(new google.maps.LatLng(latitud, longitud)); 
-	        
+	        ruta = new Array();
 	        for (var i=0; i<puntos.length; i++) {
-	        	latitud = puntos[i].getAttributeNode("lat").nodeValue;
-	        	longitud = puntos[i].getAttributeNode("lon").nodeValue;
-	        	PonPunto(latitud, longitud);
-	        }
+	        	latitud = parseFloat(puntos[i].getAttributeNode("lat").nodeValue);
+	        	longitud = parseFloat(puntos[i].getAttributeNode("lon").nodeValue);
+	        	ruta.push({lat: latitud, lng: longitud});
+			}
+			CreaRuta(ruta)
       }
       
-      function PonPunto(lat, lon) {
-      	new google.maps.Marker({
-      		position: new google.maps.LatLng(lat, lon),
-      		map: mapa,
-      		icon: "punto.png"
-  			});
+      function CreaRuta(ruta) {
+      	new google.maps.Polyline({
+			path: ruta,
+			map: mapa,
+			geodesic: true,
+			strokeWeight: 2,
+			strokeOpacity: 1,
+			strokeColor: "red"
+  		});
       }
       
       function CargarMapa() {

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Ejemplo de acceso a fichero XML (local)</title>
+		<style>
+			#divmapa {
+				width: 1400px;
+				height: 850px;
+				border: 1px solid blue;
+			}
+		</style>
+		
+		<!-- 
+		
+		IMPORTANTE. PARA CALCULAR DISTANCIAS HAY QUE AÑADIR EL PARÁMETRO libraries=geometry
+		AL ENLAZAR LA API DE GOOGLE MAPS.
+		
+		Si quisieramos añadir más de una biblioteca podríamos sus nombres separados por comas:
+		
+				.......libraries=drawing,geometry,places,visualization
+		
+		-->
+		
+		<script type="text/javascript"
+		src="http://maps.google.com/maps/api/js?libraries=geometry">
+		</script>
+
+		<script type="text/javascript">
+		
+			//  Variables globales:
+			var mapa;
+
+			function Leer_Fichero(evento) {
+				var e = evento || window.event;
+				var fichero = e.target.files[0];
+
+				function Convertir_a_XML(texto) {
+					var xml = null;
+					if (window.ActiveXObject) {
+						xml = new ActiveXObject("Microsoft.XMLDOM");
+						xml.loadXML(texto);
+					} else
+						xml = new DOMParser().parseFromString(texto, "text/xml");
+					return xml;
+				}
+
+				var reader = new FileReader();
+
+				reader.onload = function(e) {
+					tratarXML(Convertir_a_XML(reader.result));
+				}
+				reader.readAsText(fichero);
+			}
+			
+			function tratarXML(xml) {
+				var ruta = new Array();
+				
+				var puntos = xml.getElementsByTagName("trkpt");
+				//  Cogemos la primera coordenada para centrar el mapa:
+				var latitud = puntos[0].getAttributeNode("lat").nodeValue;
+				var longitud = puntos[0].getAttributeNode("lon").nodeValue;
+				var p1 = new google.maps.LatLng(latitud, longitud);
+				var p2;
+				
+				// Tiempo inicial:
+				var tini = new Date(puntos[0].getElementsByTagName("time").item(0).firstChild.data);
+				
+				mapa.setCenter(p1);
+				ruta.push(p1);
+				
+				var distancia = 0;  //  Acumulamos la distancia (en metros) entre puntos.
+				for (var i = 1; i < puntos.length; i++) {
+					latitud = puntos[i].getAttributeNode("lat").nodeValue;
+					longitud = puntos[i].getAttributeNode("lon").nodeValue;
+					p2 = new google.maps.LatLng(latitud, longitud);
+					ruta.push(p2);
+					distancia += google.maps.geometry.spherical.computeDistanceBetween(p1, p2);
+					p1 = p2;
+				}
+				//  Tambíen podemos obtener la distancia (en metros) de una ruta (un array de puntos);
+				var distancia2 = google.maps.geometry.spherical.computeLength(ruta);
+				
+				if (distancia2 >999)
+					distancia2 /=1000;
+				
+				var tfin = new Date(puntos[puntos.length-1].getElementsByTagName("time").item(0).firstChild.data);
+				
+				var aux = (((tfin - tini)/1000)/60)/60;  //  El tiempo en horas.
+				
+				var tiempo = new Date(tfin - tini);
+
+				var unidadTiempo = tiempo.getUTCHours() + ":" + tiempo.getMinutes() + ":" + tiempo.getSeconds();
+				if (tiempo.getUTCHours() < 1) {
+					unidadTiempo = tiempo.getMinutes() + ":" + tiempo.getSeconds();
+				}
+				
+				var unidad = " metros";
+				if (distancia >= 1000) {
+					distancia = distancia / 1000;
+					unidad = " kilómetros";
+				}
+				
+				document.getElementById("sal").innerHTML = "Distancia: " + distancia.toFixed(2) + unidad +
+									". Distancia2: " + distancia2.toFixed(2) + ".   velocidad: " + (distancia/aux).toFixed(2) + 
+									" km/h   Duración: " + unidadTiempo;
+				
+				//  Pintamos la ruta (no la guardamos en ninguna variable, de momento) :
+				new google.maps.Polyline({
+	      	path: ruta,
+	        map: mapa,
+			    geodesic: true,
+		    	strokeColor: 'maroon',
+		    	strokeOpacity: 1.0,
+		    	strokeWeight: 5,
+		    	clickable: true
+		    });
+				
+			}
+
+			function CargarMapa() {
+				//  Creamos las opciones
+				var opciones = {
+					zoom : 15
+				};
+				//  Creamos el mapa:
+				mapa = new google.maps.Map(document.getElementById("divmapa"), opciones);
+			}
+			
+			
+			window.onload = function() {
+				document.getElementById("id_fichero").addEventListener('change', Leer_Fichero, false);
+				CargarMapa();
+			}
+
+		</script>
+	</head>
+
+	<body>
+
+		<p>
+			<label for="id_fichero">Selecciona el fichero a leer:</label>
+			<br>
+			<input id="id_fichero" type="file" />
+		</p>
+
+		<p>
+			<div id="sal"></div>
+		</p>
+		<p>
+			<div id="divmapa">
+				Aquí pondremos el mapa
+			</div>
+		</p>
+
+	</body>
+
+</html>
