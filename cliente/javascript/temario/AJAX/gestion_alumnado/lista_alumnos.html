@@ -44,7 +44,7 @@
     <!-- <script type="text/javascript" src="util2AJAX.js"></script> -->
     <script type="text/javascript">
     window.onload = ()=>{
-        const URL = 'http://localhost/gestion_alumnos/servicios.php';
+        const URL = 'http://localhost/php/servicios.php';
         document.querySelector('#btNuevaPersona').onclick = ()=>{
             document.querySelector("#formPersonas").classList.toggle("ver");
             fillSelect("sexo","estado_civil");
@@ -136,7 +136,7 @@
         
         function getSendJsonData(accion,callBack,parameters={}){
             let data;
-            fetch('http://localhost/gestion_alumnos/servicios.php',{
+            fetch('http://localhost/php/servicios.php',{
             method: 'POST',
             headers: new Headers({
                 'Content-Type' : 'application/json'
@@ -151,6 +151,7 @@
                 for (object of data) {
                     let optionContainer = document.querySelector('#'+estado);
                     let option = new Option(object.NOMBRE,object.ID,(estadoSelected == object.ID) ? true:false);
+                    console.log(object.ID,estadoSelected);
                     if(object.ID === estadoSelected) option.selected = true;
                     optionContainer.append(option);
                 }

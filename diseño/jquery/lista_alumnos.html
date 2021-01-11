@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Ejercicio Listado Personas. AJAX</title>
+    <link rel="stylesheet" href="./jqueryui/jquery-ui.css">
+    <style type="text/css">
+        h3 {
+            color: red;
+        }
+        /* CSS para el formulario:   */
+        label, input { display:block; }
+        input.text { margin-bottom:12px; width:95%; padding: .4em; }
+        fieldset { padding:0; border:0; margin-top:25px; }
+        h1 { font-size: 1.2em; margin: .6em 0; }
+        div#users-contain { width: 350px; margin: 20px 0; }
+        div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+        div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+        .ui-dialog .ui-state-error { padding: .3em; }
+        .validateTips { border: 1px solid transparent; padding: 0.3em; }
+        .formPersonas {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            z-index: 11;
+            background-color: pink;
+            border: 2px solid maroon;
+            border-radius: 15px;
+            padding: 1em;
+            color: red;
+            transition: all 1s;
+        }
+        
+        .formPersonas div label {
+            display: block;
+            margin-top: .5em;
+        }
+        
+        .formPersonas .btn {
+            display: block;
+            margin-top: 1em;
+        }
+        
+        .ver {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+
+    <!-- <script type="text/javascript" src="util2AJAX.js"></script> -->
+    <script src="./jquery.js" defer></script>
+    <script src="./jqueryui/jquery-ui.js" defer></script>
+    <script type="text/javascript">
+    
+    window.onload = ()=>{
+        $('#dialog-form-mod').dialog({
+            autoOpen:false,
+            height:"auto",
+            width:"auto",
+            open: function(){
+                fillSelect("sexoMOD","estado_civilMOD",$('#dialog-form-mod').data("sexoSelected"),$('#dialog-form-mod').data("estadoSelected"))
+            },
+            modal:true,
+            buttons:{
+                "Modificar Usuario": function(){
+                    let student = {
+                        "ID" : $('#dialog-form-mod').data('userID'),
+                        "NOMBRE": document.querySelector('#nombreMOD').value,
+                        "APELLIDOS": document.querySelector('#apellidosMOD').value, 
+                        "SEXO":Array.from(document.querySelectorAll('#sexoMOD option')).find(option => option.selected == true).value,
+                        "FECHA_NACIMIENTO": document.querySelector('#fecha_nacimientoMOD').value,
+                        "ESTADO_CIVIL": Array.from(document.querySelectorAll('#estado_civilMOD option')).find(option => option.selected == true).value
+                     }
+                     getSendJsonData(1,(data)=>{
+                         fillTable(data);
+                     },student);
+                     $('dialog-form-mod').dialog("close")
+                },
+                Cancelar: function(){
+                    $("#dialog-form-mod").dialog("close")
+                }
+            }
+        })
+        $('#dialog-confirm').dialog({
+            autoOpen:false,
+            resizable:false,
+            height:"auto",
+            width:400,
+            modal:true,
+            buttons:{
+                "Borrar usuario": function(){
+                    getSendJsonData(2,(data)=>fillTable(data),{"ID":$('#dialog-confirm').data('id')})
+                    $('#dialog-confirm').dialog("close")
+                },
+                "Cancelar": function(){
+                    $('#dialog-confirm').dialog("close")
+                }
+            }
+        })
+        $('#dialog-form').dialog({
+            autoOpen: false,
+            open: fillSelect("sexo","estado_civil"),
+            modal: true,
+            height: 400,
+            width: 400,
+            buttons: {
+                "Crear usuario": function(){
+                    let student = {
+                        "NOMBRE": document.querySelector('#nombre').value,
+                        "APELLIDOS": document.querySelector('#apellidos').value, 
+                        "SEXO":Array.from(document.querySelectorAll('#sexo option')).find(option => option.selected == true).value,
+                        "FECHA_NACIMIENTO": document.querySelector('#fecha_nacimiento').value,
+                        "ESTADO_CIVIL": Array.from(document.querySelectorAll('#estado_civil option')).find(option => option.selected == true).value
+                    }
+                    getSendJsonData(0,(data)=>{
+                        fillTable(data);
+                    },student);
+                    $('#dialog-form').dialog("close");
+                },
+                Cancelar: function(){
+                    $('#dialog-form').dialog("close")
+                }
+            }
+        });
+        $('#create-user').button().on('click',function(){
+            $('#dialog-form').dialog("open");
+        })
+        $(document).on('click',function(event){
+            if(event.target.id){
+               if(event.target.id == "btBorrar"){
+                   let userId = event.target.parentNode.parentNode.childNodes[0].innerHTML;
+                   $('#dialog-confirm').data('id',userId).dialog("open")
+               }else if(event.target.id == "btMod"){
+                   let userData = event.target.parentNode.parentNode.childNodes;
+                   let userId = event.target.parentNode.parentNode.childNodes[0].innerHTML;
+                   $('#nombreMOD').val(userData[1].innerHTML)
+                   $('#apellidosMOD').val(userData[2].innerHTML)
+                   $('#fecha_nacimientoMOD').val(userData[4].value)
+                   $('#dialog-form-mod').data('userID',userId).data("sexoSelected",userData[3].innerHTML).data('estadoSelected',userData[5].innerHTML).dialog("open")
+               }
+            }
+        })
+        const URL = 'http://localhost/php/servicios.php';
+        listStudents();
+        }
+        function listStudents(){
+           getSendJsonData(3,(data)=>fillTable(data))
+        }
+        function fillTable(data){
+            let ordenar =  ['ID','NOMBRE',"APELLIDOS","SEXO_NOMBRE","FECHA_NACIMIENTO","NOMBRE_EC",];
+            
+            table = document.querySelector('#tabla_personas');
+            tBodyFilas = document.querySelector('#filas_tabla');
+            if(tBodyFilas.hasChildNodes() || tBodyFilas.childNodes[0].nodeName === '#text'){
+                tBodyFilas.remove();
+                tBodyFilas = document.createElement('tbody',{id:"filas_tabla"});
+                tBodyFilas.id = "filas_tabla";
+                table.append(tBodyFilas);
+            }
+            for (object of data) {
+                let tr = document.createElement('tr');
+                for (let i = 0; i < ordenar.length;i++) {
+                        let td = document.createElement('td');
+                        td.innerHTML = object[ordenar[i]];
+                        tr.append(td);
+                }
+                let tdBorrar = document.createElement('td');
+                tdBorrar.innerHTML = "<button id='btBorrar'>Borrar</button>";
+                tr.append(tdBorrar);
+                let tdMod = document.createElement('td');
+                tdMod.innerHTML = "<button id='btMod'>Modificar</button>";
+                tr.append(tdMod);
+                tBodyFilas.append(tr);
+            }
+        }
+        
+        function getSendJsonData(accion,callBack,parameters={}){
+            let data;
+            fetch('http://localhost/php/servicios.php',{
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type' : 'application/json'
+            }),
+            body: JSON.stringify(( Object.entries(parameters)===0) ? {"accion":accion} : Object.assign({"accion":accion},parameters)),
+            })
+            .then(res => res.json())
+            .then(result=>callBack(result));
+        }
+        function fillSelect(sexo="",estado="",sexoSelected = "",estadoSelected=""){
+            getSendJsonData(9,(data)=>{
+                for (object of data) {
+                    let optionContainer = document.querySelector('#'+estado);
+                    let option = new Option(object.NOMBRE,object.ID,(estadoSelected == object.ID) ? true:false);
+                    if(object.NOMBRE === estadoSelected) option.selected = true;
+                    optionContainer.append(option);
+                }
+            })
+            getSendJsonData(5,(data)=>{
+                for (object of data) {
+                    let optionContainer = document.querySelector('#'+sexo);
+                    let option = new Option(object.NOMBRE,object.CODIGO);
+                    if(object.NOMBRE === sexoSelected) option.selected=true;
+                    optionContainer.append(option);
+                }
+            })
+        }
+    </script>
+</head>
+
+<body>
+    <div id="dialog-confirm" title="Empty the recycle bin?">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>¿Estás seguro de que quieres borrar este usuario?</p>
+    </div>
+    <h3>Registro de Usuarios</h3>
+    <!-- AÑADIR PERSONA -->
+    <div id="dialog-form" title="Crear nuevo usuario">
+        <fieldset>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre">
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" id="apellidos" size="40">
+            <label for="Sexo">Sexo:</label>
+            <select name="sexo" id="sexo"></select>
+            <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento">
+            <label for="estado_civil">Estado civil</label>
+            <select name="estado_civil" id="estado_civil"></select>
+        </fieldset>
+    </div>
+    <div id="dialog-form-mod" title="Modificar usuario">
+        <fieldset>
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombreMOD">
+            <label for="apellidos">Apellidos:</label>
+            <input type="text" id="apellidosMOD" size="40">
+            <label for="Sexo">Sexo:</label>
+            <select name="sexo" id="sexoMOD"></select>
+            <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+            <input type="date" name="fecha_nacimiento" id="fecha_nacimientoMOD">
+            <label for="estado_civil">Estado civil</label>
+            <select name="estado_civil" id="estado_civilMOD"></select>
+        </fieldset>
+    </div>
+    <!-- MODIFICAR PERSONA -->
+    <div id="formPersonasMOD" class="formPersonas">
+        <fieldset>
+            <legend>EDITA PERSONA</legend>
+            <!-- <div>
+                <label for="dni">DNI</label>
+                <input type="text" id="dniMod" size="10" maxlength="9" />
+            </div> -->
+            <div>
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombreMod" />
+            </div>
+            <div>
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidosMod" size="40" />
+            </div>
+            <div>
+                <label for="sexo">Sexo</label>
+                <select name="sexo" id="sexoMod"></select>
+            </div>
+            <div>
+                <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                <input type="date" name="fecha_nacimiento" id="fecha_nacimientoMod"></select>
+            </div>
+            <div>
+                <label for="estado_civil">Estado civil</label>
+                <select name="estado_civil" id="estado_civilMod"></select>
+            </div>
+            <div class="btn">
+                <button id="btModifica">Modificar </button>
+                <button id="btCancelarMOD">Cancelar </button>
+            </div>
+        </fieldset>
+    </div>
+
+    <br/>
+    <button id="create-user">Crear nuevo usuario</button>
+    <br><br>
+    <div id="users-contain" class="ui-widget">
+        <table id="tabla_personas" class="ui-widget ui-widget-content" border="1">
+            <tr class="ui-widget-header">
+                <th>ID</th>
+                <th>NOMBRE</th>
+                <th>APELLIDOS</th>
+                <th>SEXO</th>
+                <th>FECHA_NACIMIENTO</th>
+                <th>ESTADO_CIVIL</th>
+                <th>BORRAR</th>
+                <th>EDITAR</th>
+            </tr>
+            <tbody id="filas_tabla">
+            </tbody>
+        </table>
+    </div>
+    <br><br>
+
+</body>
+
+</html>
