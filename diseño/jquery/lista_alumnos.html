@@ -93,6 +93,7 @@
             buttons:{
                 "Borrar usuario": function(){
                     getSendJsonData(2,(data)=>fillTable(data),{"ID":$('#dialog-confirm').data('id')})
+                    $('#dialog-confirm p')
                     $('#dialog-confirm').dialog("close")
                 },
                 "Cancelar": function(){
@@ -132,7 +133,7 @@
             if(event.target.id){
                if(event.target.id == "btBorrar"){
                    let userId = event.target.parentNode.parentNode.childNodes[0].innerHTML;
-                   $('#dialog-confirm').data('id',userId).dialog("open")
+                   $('#dialog-confirm').data('id',userId).dialog("open");
                }else if(event.target.id == "btMod"){
                    let userData = event.target.parentNode.parentNode.childNodes;
                    let userId = event.target.parentNode.parentNode.childNodes[0].innerHTML;
@@ -211,7 +212,7 @@
 </head>
 
 <body>
-    <div id="dialog-confirm" title="Empty the recycle bin?">
+    <div id="dialog-confirm" title="¿Borrar usuario?">
         <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>¿Estás seguro de que quieres borrar este usuario?</p>
     </div>
     <h3>Registro de Usuarios</h3>
