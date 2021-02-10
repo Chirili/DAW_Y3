@@ -1,0 +1,69 @@
+@colorH1: teal;
+@r: red;
+@b: blue;
+@o: orange;
+@g: green;
+@pistacho: rgb(153, 209, 47);
+@v: purple;
+@vc: rgb(230, 6, 230);
+#titulo{
+    color: @colorH1
+}
+.destacado{
+    color: @o;
+}
+#subtitulo{
+    color: @b;
+}
+span.especial{
+    color: @v;
+}
+a{
+    color: @r;
+    em{
+        color: @o;
+    }
+}
+table{
+    caption{
+        color: @b;
+    }
+    thead{
+        th{
+            color: @o;
+        }
+    }
+    tbody{
+        td{
+            color: @g;
+            strong{
+                color: @o;
+            }
+        }
+        th{
+            color: @o;
+        }
+        .especial{
+            color: @r;
+        }
+    }
+    tfoot{
+        th{
+            color: @r;
+        }
+    }
+}
+strong{
+    color: @r;
+}
+div#adicional{
+    p{
+        color: @pistacho;
+        span{
+            color: @vc;
+        }
+        a{
+            color: @g;
+        }
+    }
+}

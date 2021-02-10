@@ -1,0 +1,26 @@
+
+1º) Instalar bootstrap en nuestro proyecto:
+
+	npm install --save bootstrap
+
+	entonces este link de arriba se sustituye colocando:
+		
+		"node_modules/bootstrap/dist/css/bootstrap.min.css" 
+
+	dentro de la entrada "styles": del fichero angular.json
+
+
+Para hacer uso de los componentes: (sin depender jQuery y)
+
+
+
+
+
+
+
+2ª) Instalar ng-bootstrap:
+
+	npm install --save @ng-bootstrap/ng-bootstrap
+
+	Y seguir las instrucciones de la página web
+

@@ -1,0 +1,7 @@
+<h1>Listado de propietarios</h1>
+<br>
+<a routerLink="">Inicio</a>
+<br>
+<div class="list-group">
+            <a *ngFor="let owner of this.owners" routerLink="{{owner.id}}">Nombre: {{owner.firstName}}, Apellidos: {{owner.lastName}}</a>
+</div>
