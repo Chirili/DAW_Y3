@@ -12,10 +12,16 @@ export class OwnersComponent implements OnInit {
 
   public owners: Owner[];
 
-  constructor(private ownerser: OwnerService) { }
-
+  constructor(private ownerService: OwnerService) { }
+  removeOwner(ownerId){
+    if(confirm(`¿Estás seguro que deseas borrar a ${ownerId}?`)){
+      this.ownerService.deleteOwner(ownerId).subscribe(data => {
+        this.owners = <Owner[]> data;
+      })
+    }
+  }
   ngOnInit(): void {
-    this.ownerser.getOwners().subscribe(data=>{
+    this.ownerService.getOwners().subscribe(data=>{
       this.owners = <Owner[]> data;
     })
   }

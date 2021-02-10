@@ -1,1 +1,12 @@
-<h1 *ngIf="this.owner.firstName">Detalles del Propietario {{this.owner.firstName}}</h1>
+<a routerLink="owners"><- Volver al listado</a>
+<div *ngIf="this.owner">
+    <h1 >Detalles del Propietario {{this.owner.firstName}}</h1>
+    <ul>
+        <li>Nombre: {{this.owner.firstName}}</li>
+        <li>Apellidos: {{this.owner.lastName}}</li>
+        <li>Address: {{this.owner.address}}</li>
+        <li>Mascotas: {{this.owner.pets}}</li>
+        <li>Teléfono: {{this.owner.telephone}}</li>
+        <li>Ciudad: {{this.owner.city}}</li>
+    </ul>
+</div>

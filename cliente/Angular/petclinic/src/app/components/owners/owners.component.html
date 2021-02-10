@@ -1,7 +1,26 @@
-<h1>Listado de propietarios</h1>
-<br>
-<a routerLink="">Inicio</a>
-<br>
-<div class="list-group">
-            <a *ngFor="let owner of this.owners" routerLink="{{owner.id}}">Nombre: {{owner.firstName}}, Apellidos: {{owner.lastName}}</a>
+<div class="container">
+<div class="row">
+<h1 class="text-center col-md-8 align-midle">Listado de propietarios</h1> 
+<button class="btn btn-primary col-md-2 mx-auto" routerLink="add/-1" style="height: 40px;">Añadir propietario</button>
+</div>
+
+<table class="table text-center">
+    <thead>
+        <tr>
+            <th scope="col">Propietario</th>
+            <th scope="col">Accion</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let owner of this.owners">
+            <td scope="col">
+                {{owner.firstName}}
+            </td>
+            <td scope="col">
+                <button type="button" class="btn btn-info"routerLink="">Editar</button>
+                <button type="button" class="btn btn-danger" (click)="removeOwner(owner.id)">Borrar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 </div>

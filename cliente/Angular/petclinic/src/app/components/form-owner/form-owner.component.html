@@ -1,0 +1,48 @@
+<div class="container">
+    <form #ownerForm="ngForm" (ngSubmit)="onSubmit(ownerForm.value)">
+        <h1 class="text-center">Añadir propietario</h1>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="nombre">Nombre:</label>
+                <input type="text" #firstName="ngModel" [(ngModel)]="owner.firstName" required name="firstName" class="form-control" required>
+                <div class="alert alert-danger" [hidden]="firstName.valid || firstName.pristine">
+                    El nombre es requerido
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="apellidos">Apellidos: </label>
+                <input type="text" #lastName="ngModel" [(ngModel)]="owner.lastName" name="lastName" class="form-control" required>
+                <div class="alert alert-danger" [hidden]="lastName.valid || lastName.pristine">
+                    Los apellidos son requeridos
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-5 mb-3">
+                <label for="direccion">Direccion: </label>
+                <input type="text" #address="ngModel" [(ngModel)]="owner.address" name="address" class="form-control" required>
+                <div class="alert alert-danger" [hidden]="address.valid || address.pristine">
+                    La direccion es requerida
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="ciudad">Ciudad: </label>
+                <input type="text" name="city" #city="ngModel" [(ngModel)]="owner.city" class="form-control" required>
+                <div class="alert alert-danger" [hidden]="city.valid || city.pristine">
+                    La ciudad es requerida
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="telefono">Telefono: </label>
+                <input type="text" required #telephone="ngModel" [(ngModel)]="owner.telephone" name="telephone" class="form-control">
+                <div class="alert alert-danger" [hidden]="telephone.valid || telephone.pristine">
+                    Telefono requerido
+                </div>
+            </div>
+        </div>
+        <div class="form-row justify-content-center">
+            <button class="btn btn-primary mr-3" [disabled]="!ownerForm.valid">Añadir</button>
+            <button routerLink="/owners" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </form>
+</div>
