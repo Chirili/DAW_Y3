@@ -1,0 +1,37 @@
+<a routerLink="/vets"><- Volver al listado</a>
+<div class="container">
+<div *ngIf="this.vet">
+    <table class="table text-center table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Campo</th>
+                <th scope="col">Dato</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col">Nombre</td>
+                <td scope="col">{{this.vet.firstName}}</td>
+            </tr>
+            <tr>
+                <td scope="col">Apellidos</td>
+                <td scope="col">{{this.vet.lastName}}</td>
+            </tr>
+            <tr>
+                <td scope="col">Especialidades</td>
+                <td scope="col">
+                    <div *ngFor="let spec of this.vet.specialties">
+                        {{spec.name}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><button class="btn btn-danger">Eliminar propietario</button></td>
+                <td><button class="btn btn-info" routerLink="/vets/add/{{this.vet.id}}">Editar propietario</button></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+</div>

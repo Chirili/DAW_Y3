@@ -127,10 +127,9 @@ if($objeto != null) {
 				
 			case "BorraOwner": 
 				$modelo->BorraOwner($objeto->id);
-				if ($objeto->listado == "OK")
+
 					print json_encode($modelo->ListarOwners());
-				else
-					print '{"result":"OK"}';
+
 				break;
 				
 			case "BorraPet": 
