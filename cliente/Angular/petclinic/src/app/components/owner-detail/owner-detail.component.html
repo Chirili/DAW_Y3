@@ -1,12 +1,45 @@
-<a routerLink="owners"><- Volver al listado</a>
+<a routerLink="/owners"><- Volver al listado</a>
+<div class="container">
 <div *ngIf="this.owner">
-    <h1 >Detalles del Propietario {{this.owner.firstName}}</h1>
-    <ul>
-        <li>Nombre: {{this.owner.firstName}}</li>
-        <li>Apellidos: {{this.owner.lastName}}</li>
-        <li>Address: {{this.owner.address}}</li>
-        <li>Mascotas: {{this.owner.pets}}</li>
-        <li>Teléfono: {{this.owner.telephone}}</li>
-        <li>Ciudad: {{this.owner.city}}</li>
-    </ul>
+    <table class="table text-center table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Campo</th>
+                <th scope="col">Dato</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td scope="col">Nombre</td>
+                <td scope="col">{{this.owner.firstName}}</td>
+            </tr>
+            <tr>
+                <td scope="col">Apellidos</td>
+                <td scope="col">{{this.owner.lastName}}</td>
+            </tr>
+            <tr>
+                <td scope="col">Direccion</td>
+                <td scope="col">{{this.owner.address}}</td>
+            </tr>
+            <tr>
+                <td scope="col">Mascotas</td>
+                <td scope="col">{{this.owner.pets}}</td>
+            </tr>
+            <tr>
+                <td scope="col">Teléfono</td>
+                <td scope="col">{{this.owner.telephone}}</td>
+            </tr>
+            <tr>
+                <td scope="col">Ciudad</td>
+                <td scope="col">{{this.owner.city}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><button class="btn btn-danger" [disabled]="this.owner.pets.length > 0">Eliminar propietario</button></td>
+                <td><button class="btn btn-info" routerLink="/owners/add/{{this.owner.id}}">Editar propietario</button></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
 </div>

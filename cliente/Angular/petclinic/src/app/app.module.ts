@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { OwnerDetailComponent } from './components/owner-detail/owner-detail.component';
 import { VetsComponent } from './components/vets/vets.component';
 import { FormOwnerComponent } from './components/form-owner/form-owner.component';
+import { VetDetailComponent } from './components/vet-detail/vet-detail.component';
+import { FormvetComponent } from './components/formvet/formvet.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { FormOwnerComponent } from './components/form-owner/form-owner.component
     OwnersComponent,
     OwnerDetailComponent,
     VetsComponent,
-    FormOwnerComponent
+    FormOwnerComponent,
+    VetDetailComponent,
+    FormvetComponent
   ],
   imports: [
     BrowserModule,

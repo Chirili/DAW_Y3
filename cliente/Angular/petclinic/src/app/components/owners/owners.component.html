@@ -4,7 +4,7 @@
 <button class="btn btn-primary col-md-2 mx-auto" routerLink="add/-1" style="height: 40px;">Añadir propietario</button>
 </div>
 
-<table class="table text-center">
+<table class="table text-center" *ngIf="this.owners">
     <thead>
         <tr>
             <th scope="col">Propietario</th>
@@ -14,11 +14,11 @@
     <tbody>
         <tr *ngFor="let owner of this.owners">
             <td scope="col">
-                {{owner.firstName}}
+                <a routerLink="{{owner.id}}">{{owner.firstName}} - {{owner.city}}</a>
             </td>
             <td scope="col">
-                <button type="button" class="btn btn-info"routerLink="">Editar</button>
-                <button type="button" class="btn btn-danger" (click)="removeOwner(owner.id)">Borrar</button>
+                <button type="button" class="btn btn-info"routerLink="add/{{owner.id}}">Editar</button>
+                <button type="button" [disabled]="owner.pets?.length > 0" class="btn btn-danger" (click)="removeOwner(owner.id)">Borrar</button>
             </td>
         </tr>
     </tbody>
