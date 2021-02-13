@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router,ActivatedRoute} from '@angular/router';
-import { Owner } from 'src/app/models/owner';
-import { OwnerService } from 'src/app/services/owner.service';
+import { Owner } from '../../models/owner';
+import { OwnerService } from '../../services/owner.service';
 import {Location} from '@angular/common';
 @Component({
   selector: 'app-owner-detail',

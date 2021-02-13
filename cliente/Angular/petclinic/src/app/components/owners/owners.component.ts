@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OwnerService } from 'src/app/services/owner.service';
+import { OwnerService } from '../../services/owner.service';
 import { Owner } from 'src/app/models/owner';
 import { Router } from '@angular/router';
 
@@ -14,6 +14,13 @@ export class OwnersComponent implements OnInit {
 
   constructor(private ownerService: OwnerService) { }
   removeOwner(ownerId){
+    this.ownerService.retrieveOwnerPets(ownerId).subscribe(data =>{
+      if(data.length > 0 ){
+        if(`¿Estás seguro que deseas borrar a ${ownerId} y sus mascotas?`){
+          
+        }
+      }
+    });
     if(confirm(`¿Estás seguro que deseas borrar a ${ownerId}?`)){
       this.ownerService.deleteOwner(ownerId).subscribe(data => {
         this.owners = <Owner[]> data;

@@ -24,7 +24,12 @@ export class OwnerService {
     return this.http.post(this.url,JSON.stringify({accion:"ModificaOwner"}))
   }
   deleteOwner(ownerId){
-    console.log(JSON.stringify({accion:"BorraOwner",id:ownerId}));
     return this.http.post(this.url,JSON.stringify({accion:"BorraOwner",id:ownerId}));
+  }
+  retrieveOwnerPets(id){
+    return this.http.post<Object[]>(this.url,JSON.stringify({
+      accion:"ListarPetsOwnerId",
+      id: id,
+    }));
   }
 }
