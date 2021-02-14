@@ -1,1 +1,33 @@
-<p>formvet works!</p>
+<div class="container" *ngIf="this.vet">
+    <form #vetForm="ngForm" (ngSubmit)="onSubmit(vetForm.value)">
+        <h1 class="text-center">{{this.vet && this.vet.id != -1 ? "Editar veterinario" : "Añadir veterinario"}}</h1>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="nombre">Nombre:</label>
+                <input type="text" #firstName="ngModel" [(ngModel)]="vet.firstName" required name="firstName" class="form-control" required>
+                <div class="alert alert-danger" [hidden]="firstName.valid || firstName.pristine">
+                    El nombre es requerido
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="apellidos">Apellidos: </label>
+                <input type="text" #lastName="ngModel" [(ngModel)]="vet.lastName" name="lastName" class="form-control" required>
+                <div class="alert alert-danger" [hidden]="lastName.valid || lastName.pristine">
+                    Los apellidos son requeridos
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-5 mb-3">
+                <label for="direccion">Especializaciones: </label>
+                <select multiple #sepecialties="ngModel" [(ngModel)]="vet.specialties" name="specialties" class="form-control">
+                    <option *ngFor="let specialty of specialties" value="{{specialty.id}}">{{specialty.name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row justify-content-center">
+            <button class="btn btn-primary mr-3" [disabled]="!vetForm.valid">{{this.vet.id && this.vet.id != -1 ? "Editar" : "Añadir"}}</button>
+            <button routerLink="/vets" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </form>
+</div>

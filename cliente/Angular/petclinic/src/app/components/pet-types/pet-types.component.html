@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="row">
+    <h1 class="text-center col-md-8 align-midle">Listado de Tipos de Mascotas</h1> 
+    <button class="btn btn-primary col-md-2 mx-auto" routerLink="add/-1" style="height: 40px;">Añadir tipo</button>
+    </div>
+    
+    <table class="table text-center" *ngIf="this.pettypes">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let petType of this.pettypes">
+                <td scope="col">
+                    {{petType.name}}
+                </td>
+                <td scope="col">
+                    <button type="button" class="btn btn-danger" (click)="removePetType(petType.id)">Borrar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>

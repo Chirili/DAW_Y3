@@ -12,7 +12,8 @@ export class OwnerDetailComponent implements OnInit {
 
   public owner: Owner;
 
-  constructor(private activeroute: ActivatedRoute, private ownerService: OwnerService, private location: Location) { }
+  constructor(private activeroute: ActivatedRoute, private ownerService: OwnerService, private location: Location,
+    private route: Router) { }
   previousPage(event){
     event.preventDefault();
     this.location.back();
@@ -20,8 +21,11 @@ export class OwnerDetailComponent implements OnInit {
   ngOnInit(): void {
     this.ownerService.getOwnerDetails(this.activeroute.snapshot.paramMap.get("id")).subscribe(data =>{
       this.owner = <Owner> data;
-      console.log(this.owner);
     })
   }
-
+  removeOwner(){
+    if(confirm(`¿Estás seguro que de seas borrar a ${this.owner.firstName}?`)){
+      this.ownerService.deleteOwner(this.owner.id).subscribe(() => this.route.navigate(['/owners']))
+    }
+  }
 }

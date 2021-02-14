@@ -11,7 +11,7 @@
                 <th scope="col">Accion</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody *ngIf="this.vets">
             <tr *ngFor="let vet of this.vets">
                 <td scope="col">
                     <a routerLink="{{vet.id}}">{{vet.firstName}} {{vet.lastName}}</a>

@@ -11,12 +11,10 @@ import { OwnerService } from '../../services/owner.service';
 })
 export class FormOwnerComponent implements OnInit {
   public owner: Owner;
-  public ownerCopy: Owner;
   constructor(private params: ActivatedRoute, private route: Router, private ownerService: OwnerService) {
       
    }
   onSubmit(formValues: Owner){
-    console.log(this.owner);
     if(this.owner.id > 0){
       this.ownerService.modOwner(this.owner).subscribe(data => {
         this.route.navigate(['/owners']);
@@ -35,7 +33,9 @@ export class FormOwnerComponent implements OnInit {
         this.owner = data;
       })
     }else{
-      this.owner = <Owner>{};  
+      this.owner = <Owner>{
+        pets: [],
+      };  
     }
   }
 

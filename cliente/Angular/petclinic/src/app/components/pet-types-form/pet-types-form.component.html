@@ -1,0 +1,18 @@
+<div class="container" *ngIf="this.petType">
+    <form #petTypeForm="ngForm" (ngSubmit)="onSubmit(petTypeForm.value)">
+        <h1 class="text-center">{{this.petType.id && this.petType.id != -1 ? "Editar propietario" : "Añadir propietario"}}</h1>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="nombre">Nombre:</label>
+                <input type="text" #name="ngModel" [(ngModel)]="petType.name" required name="name" class="form-control" required>
+                <div class="alert alert-danger" [hidden]="name.valid || name.pristine">
+                    El nombre del tipo de mascota es necesario
+                </div>
+            </div>
+        </div>
+        <div class="form-row justify-content-center">
+            <button class="btn btn-primary mr-3" [disabled]="!petTypeForm.valid">Añadir</button>
+            <button routerLink="/pet-types" class="btn btn-secondary">Cancelar</button>
+        </div>
+    </form>
+</div>

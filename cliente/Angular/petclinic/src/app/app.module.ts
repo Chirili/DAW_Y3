@@ -12,6 +12,11 @@ import { VetsComponent } from './components/vets/vets.component';
 import { FormOwnerComponent } from './components/form-owner/form-owner.component';
 import { VetDetailComponent } from './components/vet-detail/vet-detail.component';
 import { FormvetComponent } from './components/formvet/formvet.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PetTypesComponent } from './components/pet-types/pet-types.component';
+import { PetTypesFormComponent } from './components/pet-types-form/pet-types-form.component';
+import { SpecialtiesComponent } from './components/specialties/specialties.component';
+import { SpecialtiesFormComponent } from './components/specialties-form/specialties-form.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +27,11 @@ import { FormvetComponent } from './components/formvet/formvet.component';
     VetsComponent,
     FormOwnerComponent,
     VetDetailComponent,
-    FormvetComponent
+    FormvetComponent,
+    PetTypesComponent,
+    PetTypesFormComponent,
+    SpecialtiesComponent,
+    SpecialtiesFormComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +39,7 @@ import { FormvetComponent } from './components/formvet/formvet.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

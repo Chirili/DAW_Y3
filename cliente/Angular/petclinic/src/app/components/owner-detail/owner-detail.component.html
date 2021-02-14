@@ -36,7 +36,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td><button class="btn btn-danger" [disabled]="this.owner.pets.length > 0">Eliminar propietario</button></td>
+                <td><button class="btn btn-danger" [disabled]="this.owner.pets && this.owner.pets.length > 0" (click)="removeOwner()">Eliminar propietario</button></td>
                 <td><button class="btn btn-info" routerLink="/owners/add/{{this.owner.id}}">Editar propietario</button></td>
             </tr>
         </tfoot>

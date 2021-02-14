@@ -1,7 +1,38 @@
-<div class="list-group w-25">
-    <a routerLink="owners" class="list-group-item">Owners</a>
-    <a routerLink="vets" class="list-group-item">Vets</a>
-    <a href="" class="list-group-item">Pets</a>
-</div>
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <a class="navbar-brand" href="#">PetClinic</a>
+    <button class="navbar-toggler" type="button" (click)="navBar.isNavbarCollapsed = !navBar.isNavbarCollapsed" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+    <div [ngbCollapse]="navBar.isNavbarCollapsed" class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" routerLink="/" routerLinkActive="active">Inicio <span class="sr-only">(current)</span></a>
 
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" style="cursor: pointer;" (click)="navBar.owners.dropdown = !navBar.owners.dropdown" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Owners
+					</a>
+          <div [ngbCollapse]="navBar.owners.dropdown" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" routerLink="/owners" routerLinkActive="active" (click)="navBar.owners.dropdown = !navBar.owners.dropdown">
+								<span>Todos</span></a>
+            <a class="dropdown-item" routerLink="/owners/add/-1" routerLinkActive="active" (click)="navBar.owners.dropdown = !navBar.owners.dropdown">Añadir nuevo</a>
+          </div>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" style="cursor: pointer;" (click)="navBar.vets.dropdown = !navBar.vets.dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Veterinarios
+					</a>
+          <div [ngbCollapse]="navBar.vets.dropdown" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" routerLink="/vets" routerLinkActive="active" (click)="navBar.vets.dropdown = !navBar.vets.dropdown">Todos</a>
+            <a class="dropdown-item" routerLink="/vets/add/-1" routerLinkActive="active" (click)="navBar.vets.dropdown = !navBar.vets.dropdown">Añadir nuevo</a>
+          </div>
+        </li>
+
+        <a class="nav-item nav-link" routerLink="/pet-types" routerLinkActive="active">Pet Types</a>
+
+        <a class="nav-item nav-link" routerLink="/specialties" routerLinkActive="active">Especialidades</a>
+
+      </div>
+    </div>
+  </nav>
 <router-outlet></router-outlet>

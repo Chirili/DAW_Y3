@@ -22,14 +22,13 @@ export class OwnersComponent implements OnInit {
       }
     });
     if(confirm(`¿Estás seguro que deseas borrar a ${ownerId}?`)){
-      this.ownerService.deleteOwner(ownerId).subscribe(data => {
+      this.ownerService.deleteOwnerAndReturnList(ownerId).subscribe(data => {
         this.owners = <Owner[]> data;
       })
     }
   }
   ngOnInit(): void {
     this.ownerService.getOwners().subscribe(data=>{
-      console.log(data);
       this.owners = <Owner[]> data;
     })
   }

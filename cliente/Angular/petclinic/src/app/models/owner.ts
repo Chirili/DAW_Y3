@@ -1,4 +1,5 @@
 import { Pet } from "./pet";
+import { OwnerService } from '../services/owner.service';
 
 export class Owner {
     id: Number;

@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row">
+        <h1 class="text-center col-md-8 align-midle">Listado Especialidades</h1>
+        <button class="btn btn-primary col-md-2 mx-auto" routerLink="add/-1" style="height: 40px;">Añadir
+            especialidad</button>
+    </div>
+
+    <table class="table text-center" *ngIf="this.specialties">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let specialty of this.specialties">
+                <td scope="col">
+                    <a routerLink="{{specialty.id}}">{{specialty.name}}</a>
+                </td>
+                <td scope="col">
+                    <button type="button" class="btn btn-info" routerLink="add/{{specialty.id}}">Editar</button>
+                    <button type="button" [disabled]="specialty.pets?.length > 0" class="btn btn-danger"
+                        (click)="removeSpecialty(specialty.id)">Borrar</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
