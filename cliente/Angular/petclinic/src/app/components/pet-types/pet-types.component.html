@@ -13,10 +13,13 @@
         <tbody>
             <tr *ngFor="let petType of this.pettypes">
                 <td scope="col">
-                    {{petType.name}}
+                    <input type="text" value="{{petType.name}}" [disabled]="this.isEditing || this.petTypeCopy.id != petType.id">
                 </td>
                 <td scope="col">
-                    <button type="button" class="btn btn-danger" (click)="removePetType(petType.id)">Borrar</button>
+                    <button *ngIf="this.isEditing || this.petTypeCopy.id != petType.id" type="button" class="btn btn-info mr-2" (click)="editPetType(petType)">Editar</button>
+                    <button *ngIf="!this.isEditing && this.petTypeCopy.id == petType.id" type="button" class="btn btn-primary mr-2" (click)="savePetType()">Guardar</button>
+                    <button *ngIf="!this.isEditing && this.petTypeCopy.id == petType.id" type="button" class="btn btn-danger mr-2" (click)="editPetType(petType)">Cancelar</button>
+                    <button *ngIf="this.isEditing || this.petTypeCopy.id != petType.id" type="button" class="btn btn-danger" (click)="removePetType(petType.id)">Borrar</button>
                 </td>
             </tr>
         </tbody>

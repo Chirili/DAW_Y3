@@ -10,7 +10,6 @@ import { VetsComponent } from './components/vets/vets.component';
 import {PetTypesComponent} from './components/pet-types/pet-types.component';
 import { PetTypesFormComponent } from './components/pet-types-form/pet-types-form.component';
 import { SpecialtiesComponent } from './components/specialties/specialties.component';
-import { SpecialtiesFormComponent } from './components/specialties-form/specialties-form.component';
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'owners',component: OwnersComponent},
@@ -22,7 +21,6 @@ const routes: Routes = [
   {path: 'pet-types', component: PetTypesComponent} ,
   {path: 'pet-types/add/:id',component: PetTypesFormComponent},
   {path: 'specialties',component: SpecialtiesComponent},
-  {path: 'specialties/add/:id', component: SpecialtiesFormComponent}
 ];
 
 @NgModule({

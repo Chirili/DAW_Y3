@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Specialty } from 'src/app/models/specialty';
 import { SpecialtiesService } from 'src/app/services/specialties.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { SpecialtiesService } from 'src/app/services/specialties.service';
   styleUrls: ['./specialties.component.scss']
 })
 export class SpecialtiesComponent implements OnInit {
-  specialties: Object[];
+  specialties: Specialty[];
   constructor(private specialtiesService: SpecialtiesService) { }
 
   ngOnInit(): void {

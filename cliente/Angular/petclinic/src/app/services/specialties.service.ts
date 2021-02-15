@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { api } from 'src/environments/environment';
+import { Specialty } from '../models/specialty';
 @Injectable({
   providedIn: 'root'
 })
@@ -8,7 +9,7 @@ export class SpecialtiesService {
   readonly API = api;
   constructor(private http: HttpClient) { }
   getSpecialties(){
-    return this.http.post<Object[]>(this.API, JSON.stringify({
+    return this.http.post<Specialty[]>(this.API, JSON.stringify({
       accion: "ListarSpecialties"
     }))
   }
@@ -18,13 +19,13 @@ export class SpecialtiesService {
       id: id,
     }))
   }
-  addSpecialty(specialty: Object){
+  addSpecialty(specialty: Specialty){
     return this.http.post(this.API,JSON.stringify({
       accion: "AnadeSpecialty",
       specialty: specialty,
     }))
   }
-  modSpecialty(specialty: Object){
+  modSpecialty(specialty: Specialty){
     return this.http.post(this.API, JSON.stringify({
       accion: "ModificaSpecialty",
       specialty: specialty

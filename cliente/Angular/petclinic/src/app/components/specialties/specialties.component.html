@@ -18,7 +18,8 @@
                     <a routerLink="{{specialty.id}}">{{specialty.name}}</a>
                 </td>
                 <td scope="col">
-                    <button type="button" class="btn btn-info" routerLink="add/{{specialty.id}}">Editar</button>
+                    <button type="button" class="btn btn-info mr-2" routerLink="add/{{specialty.id}}">Editar</button>
+                    
                     <button type="button" [disabled]="specialty.pets?.length > 0" class="btn btn-danger"
                         (click)="removeSpecialty(specialty.id)">Borrar</button>
                 </td>
