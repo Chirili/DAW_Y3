@@ -19,8 +19,8 @@ export class SpecialtiesService {
       id: id,
     }))
   }
-  addSpecialty(specialty: Specialty){
-    return this.http.post(this.API,JSON.stringify({
+  addSpecialty(specialty){
+    return this.http.post<Specialty>(this.API,JSON.stringify({
       accion: "AnadeSpecialty",
       specialty: specialty,
     }))
