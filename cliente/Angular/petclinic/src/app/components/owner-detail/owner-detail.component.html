@@ -1,45 +1,60 @@
 <a routerLink="/owners"><- Volver al listado</a>
 <div class="container">
-<div *ngIf="this.owner">
-    <table class="table text-center table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Campo</th>
-                <th scope="col">Dato</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td scope="col">Nombre</td>
-                <td scope="col">{{this.owner.firstName}}</td>
-            </tr>
-            <tr>
-                <td scope="col">Apellidos</td>
-                <td scope="col">{{this.owner.lastName}}</td>
-            </tr>
-            <tr>
-                <td scope="col">Direccion</td>
-                <td scope="col">{{this.owner.address}}</td>
-            </tr>
-            <tr>
-                <td scope="col">Mascotas</td>
-                <td scope="col">{{this.owner.pets}}</td>
-            </tr>
-            <tr>
-                <td scope="col">Teléfono</td>
-                <td scope="col">{{this.owner.telephone}}</td>
-            </tr>
-            <tr>
-                <td scope="col">Ciudad</td>
-                <td scope="col">{{this.owner.city}}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td><button class="btn btn-danger" [disabled]="this.owner.pets && this.owner.pets.length > 0" (click)="removeOwner()">Eliminar propietario</button></td>
-                <td><button class="btn btn-info" routerLink="/owners/add/{{this.owner.id}}">Editar propietario</button></td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+    <div *ngIf="this.owner">
+        <table class="table text-center table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Campo</th>
+                    <th scope="col">Dato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="col">Nombre</td>
+                    <td scope="col">{{this.owner.firstName}}</td>
+                </tr>
+                <tr>
+                    <td scope="col">Apellidos</td>
+                    <td scope="col">{{this.owner.lastName}}</td>
+                </tr>
+                <tr>
+                    <td scope="col">Direccion</td>
+                    <td scope="col">{{this.owner.address}}</td>
+                </tr>
+                <tr>
+                    <td scope="col">Mascotas</td>
+                    <td scope="col">{{this.owner.pets}}</td>
+                </tr>
+                <tr>
+                    <td scope="col">Teléfono</td>
+                    <td scope="col">{{this.owner.telephone}}</td>
+                </tr>
+                <tr>
+                    <td scope="col">Ciudad</td>
+                    <td scope="col">{{this.owner.city}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><button class="btn btn-danger"
+                            [disabled]="this.owner.pets && this.owner.pets.length > 0"
+                            (click)="removeOwner()">Eliminar propietario</button></td>
+                    <td><button class="btn btn-info" routerLink="/owners/add/{{this.owner.id}}">Editar
+                            propietario</button></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="row">
+        <h1 class="col-12">Listado de mascotas y visitas</h1>
+        <div class="row">
+            <div class="col-6">
+                <h3>Datos de la mascota</h3>
+                <p></p>
+            </div>
+            <div class="col-6">
+                <h3>Visitas</h3>
+            </div>
+        </div>
+    </div>
 </div>

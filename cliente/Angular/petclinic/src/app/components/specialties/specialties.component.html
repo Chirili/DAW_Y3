@@ -19,20 +19,12 @@
                 </td>
                 <td scope="col">
                     <button *ngIf="this.isEditing || this.specialtySelected.id != specialty.id" type="button" class="btn btn-info mr-2" (click)="enterEditMode(specialty)">Editar</button>
-                    <button *ngIf="!this.isEditing && this.specialtySelected.id == specialty.id" type="button" class="btn btn-primary mr-2" (click)="saveSpecialty(specialtyNameEdit.value)">Guardar</button>
+                    <button *ngIf="!this.isEditing && this.specialtySelected.id == specialty.id" type="button" class="btn btn-primary mr-2" (click)="saveEditedSpecialty(specialtyNameEdit.value)">Guardar</button>
                     <button *ngIf="!this.isEditing && this.specialtySelected.id == specialty.id" type="button" class="btn btn-danger mr-2" (click)="enterEditMode(specialty)">Cancelar</button>
                     <button *ngIf="this.isEditing || this.specialtySelected.id != specialty.id"type="button" [disabled]="specialty.pets?.length > 0" class="btn btn-danger" (click)="removeSpecialty(specialty.id)">Borrar</button>
                     
                 </td>
             </tr>
-
-            
-            <!-- <tr  *ngFor="let specialty of test.controls, let i=index" formArrayName="test" [formGroupName]="i">
-                <td scope="col">
-                    <input type="text" formControlName="i">
-                    <button type="butotn" class="btn btn-danger" (click)="deleteSpecialty(i)">Borrar nueva especialidad</button>
-                </td>
-            </tr> -->
         </tbody>
     </table>
     <table class="table text-center" [formGroup]="form" *ngIf="this.getSpecialtiesForm.controls.length > 0">

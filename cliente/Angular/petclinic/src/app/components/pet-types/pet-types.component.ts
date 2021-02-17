@@ -12,10 +12,12 @@ export class PetTypesComponent implements OnInit {
   pettypes: PetType[];
   petTypeCopy: PetType;
   isEditing: boolean;
+  isInserting: boolean;
   constructor(private petTypeService: PetTypeService) { }
 
   ngOnInit(): void {
     this.isEditing = true;
+    this.isInserting = false;
     this.petTypeCopy = {
       id: 0,
       name: ""
@@ -24,6 +26,10 @@ export class PetTypesComponent implements OnInit {
     this.petTypeService.getPetTypes().subscribe(data => {
       this.pettypes = data;
     })
+  }
+  addNewPetType(event){
+    this.isInserting = !this.isInserting;
+    this.pettypes.push(event);
   }
   editPetType(petType){
     this.isEditing = !this.isEditing;

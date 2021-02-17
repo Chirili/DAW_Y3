@@ -26,7 +26,7 @@ export class SpecialtiesService {
     }))
   }
   modSpecialty(specialty: Specialty){
-    return this.http.post(this.API, JSON.stringify({
+    return this.http.post<Specialty>(this.API, JSON.stringify({
       accion: "ModificaSpecialty",
       specialty: specialty
     }))

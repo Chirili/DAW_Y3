@@ -1,27 +1,36 @@
 <div class="container">
     <div class="row">
-    <h1 class="text-center col-md-8 align-midle">Listado de Tipos de Mascotas</h1> 
-    <button class="btn btn-primary col-md-2 mx-auto" routerLink="add/-1" style="height: 40px;">Añadir tipo</button>
+        <h1 class="text-center col-md-8 align-midle">Listado de Tipos de Mascotas</h1>
+        <button class="btn btn-primary col-md-2 mx-auto" style="height: 40px;" (click)="this.isInserting = !this.isInserting">Añadir tipo</button>
     </div>
-    
+
     <table class="table text-center" *ngIf="this.pettypes">
         <thead>
             <tr>
                 <th scope="col">Nombre</th>
+                <th scope="col">Accion</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let petType of this.pettypes">
                 <td scope="col">
-                    <input type="text" value="{{petType.name}}" [disabled]="this.isEditing || this.petTypeCopy.id != petType.id">
+                    <input type="text" value="{{petType.name}}"
+                        [disabled]="this.isEditing || this.petTypeCopy.id != petType.id">
                 </td>
                 <td scope="col">
-                    <button *ngIf="this.isEditing || this.petTypeCopy.id != petType.id" type="button" class="btn btn-info mr-2" (click)="editPetType(petType)">Editar</button>
-                    <button *ngIf="!this.isEditing && this.petTypeCopy.id == petType.id" type="button" class="btn btn-primary mr-2" (click)="savePetType()">Guardar</button>
-                    <button *ngIf="!this.isEditing && this.petTypeCopy.id == petType.id" type="button" class="btn btn-danger mr-2" (click)="editPetType(petType)">Cancelar</button>
-                    <button *ngIf="this.isEditing || this.petTypeCopy.id != petType.id" type="button" class="btn btn-danger" (click)="removePetType(petType.id)">Borrar</button>
+                    <button *ngIf="this.isEditing || this.petTypeCopy.id != petType.id" type="button"
+                        class="btn btn-info mr-2" (click)="editPetType(petType)">Editar</button>
+                    <button *ngIf="!this.isEditing && this.petTypeCopy.id == petType.id" type="button"
+                        class="btn btn-primary mr-2" (click)="savePetType()">Guardar</button>
+                    <button *ngIf="!this.isEditing && this.petTypeCopy.id == petType.id" type="button"
+                        class="btn btn-danger mr-2" (click)="editPetType(petType)">Cancelar</button>
+                    <button *ngIf="this.isEditing || this.petTypeCopy.id != petType.id" type="button"
+                        class="btn btn-danger" (click)="removePetType(petType.id)">Borrar</button>
                 </td>
             </tr>
         </tbody>
     </table>
+    <div *ngIf="this.isInserting">
+        <app-pet-types-form (onNewPetType)="addNewPetType($event)"></app-pet-types-form>
     </div>
+</div>

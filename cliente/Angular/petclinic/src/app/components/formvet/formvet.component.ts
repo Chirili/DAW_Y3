@@ -35,6 +35,12 @@ export class FormvetComponent implements OnInit {
       });
     }
   }
+  findSpecialty(id){
+
+    console.log(id);
+    console.log(this.vet.specialties.some(spec => spec.id = id));
+    return this.vet.specialties.find(spec => spec.id == id);
+  }
   ngOnInit(): void {
     this.specialtiesService.getSpecialties().subscribe(data => {
       this.specialties = data;
@@ -42,6 +48,7 @@ export class FormvetComponent implements OnInit {
     let vetId = Number.parseInt(this.routeParams.snapshot.paramMap.get('id'));
     if(vetId != -1){
       this.vetService.getVetDetails(vetId).subscribe(data => {
+        console.log(data);
         this.vet = data;
       })
     }else{

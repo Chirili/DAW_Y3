@@ -11,7 +11,6 @@ export class SpecialtiesComponent implements OnInit {
   isEditing: boolean;
   specialtySelected: Specialty;
   specialties: Specialty[];
-  specialtyEditing: number;
   public form: FormGroup = this.formBuilder.group({
     specialtiesForm: this.formBuilder.array([])
   })
@@ -29,10 +28,19 @@ export class SpecialtiesComponent implements OnInit {
       this.specialties = [...this.specialties, data];
     })
     this.deleteSpecialty(i);
+    this.isEditing = !this.isEditing;
   }
 
   deleteSpecialty(i){
     this.getSpecialtiesForm.removeAt(i);
+  }
+  saveEditedSpecialty(name){
+    this.specialtySelected.name = name;
+    console.log(this.specialtySelected);
+    this.specialtiesService.modSpecialty(this.specialtySelected).subscribe(data => {
+      console.log(data);
+      this.isEditing = true;
+    })
   }
   ngOnInit(): void {
    
@@ -46,7 +54,7 @@ export class SpecialtiesComponent implements OnInit {
     })
   }
   enterEditMode(specialty: Specialty){
-    this.isEditing = !this.isEditing;
+    this.isEditing = false;
     this.specialtySelected = specialty;
   }
   removeSpecialty(id){

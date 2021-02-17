@@ -20,8 +20,8 @@
         <div class="form-row">
             <div class="col-md-5 mb-3">
                 <label for="direccion">Especializaciones: </label>
-                <select multiple #sepecialties="ngModel" [(ngModel)]="vet.specialties" name="specialties" class="form-control">
-                    <option *ngFor="let specialty of specialties" value="{{specialty.id}}">{{specialty.name}}</option>
+                <select class="custom-select" multiple #sepecialties="ngModel" [(ngModel)]="vet.specialties" name="specialties">
+                    <option *ngFor="let specialty of specialties" selected  value="{{this.specialty}}">{{specialty.name}}</option>
                 </select>
             </div>
         </div>

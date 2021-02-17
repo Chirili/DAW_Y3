@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'vets', component: VetsComponent},
   {path: 'vets/:id', component: VetDetailComponent},
   {path: 'vets/add/:id', component: FormvetComponent},
-  {path: 'pet-types', component: PetTypesComponent} ,
+  {path: 'pet-types', component: PetTypesComponent},
   {path: 'pet-types/add/:id',component: PetTypesFormComponent},
   {path: 'specialties',component: SpecialtiesComponent},
 ];
